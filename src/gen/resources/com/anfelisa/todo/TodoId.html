@@ -1,0 +1,19 @@
+<form class="form-horizontal">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-9">
+            <h4>{{texts.todoId}}</h4>
+        </div>
+    </div>
+
+	<div class="form-group" id="todoIdIdDiv">
+	    <label for="todoIdId" class="col-sm-3 control-label">* {{texts.todoid.id}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoIdId" placeholder="{{texts.todoid.id}}" value="{{todoId.id}}" onblur="new ValidateRequiredFieldAction({id : 'todoIdId'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.todoid.idNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	
+</form>

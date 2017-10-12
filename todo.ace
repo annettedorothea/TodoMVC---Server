@@ -1,0 +1,104 @@
+com.anfelisa.todo
+
+target JAVA
+
+models {
+	schema public
+	
+	persistent Todo {
+		primitiveAttributes {
+			Unique PrimaryKey NotNull Serial id
+			NotNull String description
+			NotNull Boolean done
+			DateTime createdDateTime
+			DateTime updatedDateTime
+		}
+	}
+	
+	TodoList {
+		complexAttributes {
+			List Todo todoList
+		}
+	}
+	
+	TodoId {
+		primitiveAttributes {
+			NotNull Serial id
+		}
+	}
+
+	TodoToggle {
+		primitiveAttributes {
+			NotNull Serial id
+			DateTime updatedDateTime
+		}
+	}
+
+	ToggleAll {
+		primitiveAttributes {
+			NotNull Boolean done
+			DateTime updatedDateTime
+		}
+	}
+
+}
+
+data {
+	TodoList : ( TodoList )
+	Todo : ( Todo )
+	TodoId : ( TodoId )
+	TodoToggle : ( TodoToggle )
+	ToggleAll : ( ToggleAll )
+	ClearDone : (  )
+}
+
+actions {
+	GET GetAllTodos uses TodoList
+	POST CreateTodo uses Todo executes CreateTodo
+	PUT ToggleTodo uses TodoToggle executes ToggleTodo
+	PUT ToggleAll uses ToggleAll executes ToggleAll
+	PUT UpdateTodo uses Todo executes UpdateTodo
+	DELETE DeleteTodo uses TodoId executes DeleteTodo
+	DELETE ClearDone uses ClearDone executes ClearDone
+}
+
+commands {
+	CreateTodo uses Todo {
+		on success publishes (CreateTodo)
+	}
+	ToggleTodo uses TodoToggle {
+		on success publishes (ToggleTodo)
+	}
+	ToggleAll uses ToggleAll {
+		on success publishes (ToggleAll)
+	}
+	UpdateTodo uses Todo {
+		on success publishes (UpdateTodo)
+	}
+	DeleteTodo uses TodoId {
+		on success publishes (DeleteTodo)
+	}
+	ClearDone uses ClearDone {
+		on success publishes (ClearDone)
+	}
+}
+
+events {
+	CreateTodo uses Todo listenedToBy ( Todo.create )
+	ToggleTodo uses TodoToggle listenedToBy ( Todo.toggle )
+	ToggleAll uses ToggleAll listenedToBy ( Todo.toggleAll )
+	UpdateTodo uses Todo listenedToBy ( Todo.update )
+	DeleteTodo uses TodoId listenedToBy ( Todo.delete )
+	ClearDone uses ClearDone listenedToBy ( Todo.clearDone )
+}
+
+views {
+	Todo {
+		create(Todo)
+		toggle(TodoToggle)
+		toggleAll(ToggleAll)
+		delete(TodoId)
+		update(Todo)
+		clearDone(ClearDone)
+	}
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+	<changeSet id="001" author="annette">
+		<createTable tableName="todo">
+			<column name="id" type="integer">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="description" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="done" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="createddatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
+			<column name="donedatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="002" author="annette">
+		<createTable tableName="timeline">
+			<column name="id" type="integer">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="type" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="method" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="time" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="data" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="uuid" type="character varying">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createTable tableName="errortimeline">
+			<column name="id" type="integer">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="type" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="method" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="time" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="data" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="uuid" type="character varying">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="003" author="annette">
+		<addColumn tableName="todo">
+			<column name="updateddatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="004" author="annette">
+		<dropColumn tableName="todo" columnName="donedatetime" />
+	</changeSet>
+
+
+
+</databaseChangeLog>

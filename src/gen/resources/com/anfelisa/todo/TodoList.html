@@ -1,0 +1,64 @@
+<form class="form-horizontal">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-9">
+            <h4>{{texts.todoList}}</h4>
+        </div>
+    </div>
+
+	{{#todoList}}
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+			<h4 class="panel-title">{{texts.id}}: {{id}}</h4>
+			<h4 class="panel-title">{{texts.description}}: {{description}}</h4>
+			<h4 class="panel-title">{{texts.done}}: {{done}}</h4>
+			<h4 class="panel-title">{{texts.createdDateTime}}: {{createdDateTime}}</h4>
+			<h4 class="panel-title">{{texts.updatedDateTime}}: {{updatedDateTime}}</h4>
+	    </div>
+	    <div class="panel-body">
+			{{texts.id}}: {{id}}<br>
+			{{texts.description}}: {{description}}<br>
+			{{texts.done}}: {{done}}<br>
+			{{texts.createdDateTime}}: {{createdDateTime}}<br>
+			{{texts.updatedDateTime}}: {{updatedDateTime}}<br>
+	    </div>
+	</div>
+	{{/todoList}}
+	{{^todoList}}
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+	        <h3 class="panel-title">{{texts.emptyTodoList}}</h3>
+	    </div>
+	</div>
+	{{/todoList}}
+	
+	<div class="table-responsive">
+	    <table class="table table-bordered table-hover table-responsive">
+	        <tr>
+				<th>{{texts.id}}</th>
+				<th>{{texts.description}}</th>
+				<th>{{texts.done}}</th>
+				<th>{{texts.createdDateTime}}</th>
+				<th>{{texts.updatedDateTime}}</th>
+	        </tr>
+	        {{#todoList}}
+	        <tr>
+				<td>{{id}}</td>
+				<td>{{description}}</td>
+				<td>{{done}}</td>
+				<td>{{createdDateTime}}</td>
+				<td>{{updatedDateTime}}</td>
+	        </tr>
+	        {{/todoList}}
+	        {{^todoList}}
+	        <tr>
+	            <td colspan="5">{{texts.emptyTodoList}}</td>
+	        </tr>
+	        {{/todoList}}
+	    </table>
+	</div>
+	
+	
+	
+</form>

@@ -1,0 +1,49 @@
+<form class="form-horizontal">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-9">
+            <h4>{{texts.todo}}</h4>
+        </div>
+    </div>
+
+	<div class="form-group" id="todoIdDiv">
+	    <label for="todoId" class="col-sm-3 control-label">* {{texts.todo.id}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoId" placeholder="{{texts.todo.id}}" value="{{todo.id}}" onblur="new ValidateRequiredFieldAction({id : 'todoId'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.todo.idNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoDescriptionDiv">
+	    <label for="todoDescription" class="col-sm-3 control-label">* {{texts.todo.description}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoDescription" placeholder="{{texts.todo.description}}" value="{{todo.description}}" onblur="new ValidateRequiredFieldAction({id : 'todoDescription'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.todo.descriptionNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoDoneDiv">
+	    <label for="todoDone" class="col-sm-3 control-label">* {{texts.todo.done}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoDone" placeholder="{{texts.todo.done}}" value="{{todo.done}}" onblur="new ValidateRequiredFieldAction({id : 'todoDone'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.todo.doneNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoCreatedDateTimeDiv">
+	    <label for="todoCreatedDateTime" class="col-sm-3 control-label">{{texts.todo.createdDateTime}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoCreatedDateTime" placeholder="{{texts.todo.createdDateTime}}" value="{{todo.createdDateTime}}">
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoUpdatedDateTimeDiv">
+	    <label for="todoUpdatedDateTime" class="col-sm-3 control-label">{{texts.todo.updatedDateTime}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoUpdatedDateTime" placeholder="{{texts.todo.updatedDateTime}}" value="{{todo.updatedDateTime}}">
+	    </div>
+	</div>
+	
+	
+</form>
