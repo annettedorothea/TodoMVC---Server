@@ -3,3 +3,5 @@ replay.yml
 .settings
 bin
 target
+live.yml
+replay-live.yml
