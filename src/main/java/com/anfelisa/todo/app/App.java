@@ -56,7 +56,7 @@ public class App extends Application<AppConfiguration> {
 		DBI jdbiTimeline = null;
 
 		if (configuration.getTimelineDataSourceFactory().getUrl() != null) {
-			AceController.setAceExecutionMode(AceExecutionMode.E2E);
+			AceController.setAceExecutionMode(AceExecutionMode.REPLAY);
 			jdbiTimeline = factory.build(environment, configuration.getTimelineDataSourceFactory(),
 					"todo_replay");
 			environment.jersey().register(new ClearDatabaseResource(jdbi));
