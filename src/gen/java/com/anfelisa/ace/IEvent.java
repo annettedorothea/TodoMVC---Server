@@ -14,6 +14,10 @@ public interface IEvent {
 	DatabaseHandle getDatabaseHandle();
 	
 	void publish();
+	
+	void initEventData(String json);
+	
+	void notifyListeners();
 
 }
 

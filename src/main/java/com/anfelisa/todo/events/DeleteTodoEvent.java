@@ -15,6 +15,10 @@ public class DeleteTodoEvent extends AbstractDeleteTodoEvent {
 		super(eventParam, databaseHandle);
 	}
 
+	public DeleteTodoEvent(DatabaseHandle databaseHandle) {
+		this(null, databaseHandle);
+	}
+
 	@Override
 	protected void prepareDataForView() {
 		this.eventData = this.eventParam;

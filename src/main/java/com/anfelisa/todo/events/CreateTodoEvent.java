@@ -15,6 +15,10 @@ public class CreateTodoEvent extends AbstractCreateTodoEvent {
 		super(eventParam, databaseHandle);
 	}
 
+	public CreateTodoEvent(DatabaseHandle databaseHandle) {
+		this(null, databaseHandle);
+	}
+
 	@Override
 	protected void prepareDataForView() {
 		this.eventData = this.eventParam;

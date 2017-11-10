@@ -15,6 +15,10 @@ public class UpdateTodoEvent extends AbstractUpdateTodoEvent {
 		super(eventParam, databaseHandle);
 	}
 
+	public UpdateTodoEvent(DatabaseHandle databaseHandle) {
+		this(null, databaseHandle);
+	}
+
 	@Override
 	protected void prepareDataForView() {
 		this.eventData = this.eventParam;

@@ -13,6 +13,6 @@ public interface IDataContainer {
 	DateTime getSystemTime();
 	
 	void setSystemTime(DateTime systemTime);
-	
+
 }
 

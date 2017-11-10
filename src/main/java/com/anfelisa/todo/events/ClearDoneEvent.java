@@ -15,6 +15,10 @@ public class ClearDoneEvent extends AbstractClearDoneEvent {
 		super(eventParam, databaseHandle);
 	}
 
+	public ClearDoneEvent(DatabaseHandle databaseHandle) {
+		this(null, databaseHandle);
+	}
+
 	@Override
 	protected void prepareDataForView() {
 		this.eventData = this.eventParam;

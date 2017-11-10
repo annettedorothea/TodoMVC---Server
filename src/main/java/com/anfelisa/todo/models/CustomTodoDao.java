@@ -1,9 +1,12 @@
 package com.anfelisa.todo.models;
 
+import org.joda.time.DateTime;
 import org.skife.jdbi.v2.Handle;
+import org.skife.jdbi.v2.PreparedBatch;
 import org.skife.jdbi.v2.Query;
 import org.skife.jdbi.v2.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +65,20 @@ public class CustomTodoDao {
 		statement.bind("done", dataContainer.getDone());
 		statement.bind("updateddatetime", dataContainer.getUpdatedDateTime());
 		statement.execute();
+	}
+	
+	public Integer insert(Handle handle, DateTime now) {
+		
+		PreparedBatch pb = handle.prepareBatch("INSERT INTO public.todo (id, description, done, createddatetime, updateddatetime) VALUES ( :id, :description, :done, :createddatetime, :updateddatetime) RETURNING id");
+		for (int i=0; i<100000; i++) {
+			 pb.add()
+			 .bind("id", 10000+i)
+			 .bind("description", "TODO" + i)
+			 .bind("done", false)
+			 .bind("createddatetime", now)
+			 .bind("updateddatetime", now);
+		}
+		return pb.execute().length;
 	}
 	
 

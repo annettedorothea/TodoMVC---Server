@@ -15,25 +15,26 @@ import com.anfelisa.todo.models.TodoDao;
 @SuppressWarnings("all")
 public class TodoView {
 
-	private TodoDao todoDao = new TodoDao();
-	private CustomTodoDao customTodoDao = new CustomTodoDao();
+	private static TodoDao todoDao = new TodoDao();
+	private static CustomTodoDao customTodoDao = new CustomTodoDao();
 
-	public BiConsumer<TodoData, Handle> create = (dataContainer, handle) -> {
+	public static BiConsumer<TodoData, Handle> create = (dataContainer, handle) -> {
 		todoDao.insert(handle, dataContainer);
+		//customTodoDao.insert(handle, dataContainer.getSystemTime());
 	};
-	public BiConsumer<TodoData, Handle> update = (dataContainer, handle) -> {
+	public static BiConsumer<TodoData, Handle> update = (dataContainer, handle) -> {
 		customTodoDao.updateById(handle, dataContainer);
 	};
-	public BiConsumer<TodoToggleData, Handle> toggle = (dataContainer, handle) -> {
+	public static BiConsumer<TodoToggleData, Handle> toggle = (dataContainer, handle) -> {
 		customTodoDao.toggleTodo(handle, dataContainer);
 	};
-	public BiConsumer<ToggleAllData, Handle> toggleAll = (dataContainer, handle) -> {
+	public static BiConsumer<ToggleAllData, Handle> toggleAll = (dataContainer, handle) -> {
 		customTodoDao.toggleAll(handle, dataContainer);
 	};
-	public BiConsumer<TodoIdData, Handle> delete = (dataContainer, handle) -> {
+	public static BiConsumer<TodoIdData, Handle> delete = (dataContainer, handle) -> {
 		todoDao.deleteById(handle, dataContainer.getId());
 	};
-	public BiConsumer<ClearDoneData, Handle> clearDone = (dataContainer, handle) -> {
+	public static BiConsumer<ClearDoneData, Handle> clearDone = (dataContainer, handle) -> {
 		customTodoDao.deleteDone(handle);
 	};
 

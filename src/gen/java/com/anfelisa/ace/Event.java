@@ -18,19 +18,21 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 	private String eventName;
 	@JsonIgnore
 	protected DatabaseHandle databaseHandle;
+	protected JodaObjectMapper mapper;
 
 	public Event(String eventName, T eventParam, DatabaseHandle databaseHandle) {
 		super();
 		this.eventParam = eventParam;
 		this.eventName = eventName;
 		this.databaseHandle = databaseHandle;
+		mapper = new JodaObjectMapper();
 	}
 
 	protected void prepareDataForView() {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void notifyListeners() {
+	public void notifyListeners() {
 		List<BiConsumer<? extends IDataContainer, Handle>> consumerList = AceController.getConsumerForEvent(eventName);
 		if (consumerList != null) {
 			for (BiConsumer<? extends IDataContainer, Handle> consumer : consumerList) {

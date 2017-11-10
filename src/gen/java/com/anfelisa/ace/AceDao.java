@@ -117,4 +117,20 @@ public class AceDao {
 				+ "where uuid = :uuid").bind("uuid", uuid).map(new TimelineItemMapper()).first();
 	}
 
+	public ITimelineItem selectNextEvent(Handle handle, String uuid) {
+		if (uuid != null) {
+			return handle
+					.createQuery("SELECT id, type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
+							+ "where id > " + "(select id from " + timelineTable()
+							+ " where uuid = :uuid and type = 'event' limit 1) " + "and type = 'event' "
+							+ "order by time asc " + "limit 1")
+					.bind("uuid", uuid).map(new TimelineItemMapper()).first();
+		} else {
+			return handle
+					.createQuery("SELECT id, type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
+							+ "where type = 'event' " + "order by time asc " + "limit 1")
+					.bind("uuid", uuid).map(new TimelineItemMapper()).first();
+		}
+	}
+
 }

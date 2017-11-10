@@ -6,7 +6,7 @@ import com.anfelisa.ace.AceExecutionMode;
 
 import org.skife.jdbi.v2.DBI;
 
-import com.anfelisa.todo.views.*;
+import com.anfelisa.todo.views.TodoView;
 import com.anfelisa.todo.actions.*;
 
 @SuppressWarnings("all")
@@ -23,15 +23,12 @@ public class AppRegistration {
 	}
 
 	public static void registerConsumers() {
-		TodoView todoView = null;
-			todoView = new TodoView();
-		
-			AceController.addConsumer("com.anfelisa.todo.events.CreateTodoEvent", todoView.create);
-			AceController.addConsumer("com.anfelisa.todo.events.ToggleTodoEvent", todoView.toggle);
-			AceController.addConsumer("com.anfelisa.todo.events.ToggleAllEvent", todoView.toggleAll);
-			AceController.addConsumer("com.anfelisa.todo.events.UpdateTodoEvent", todoView.update);
-			AceController.addConsumer("com.anfelisa.todo.events.DeleteTodoEvent", todoView.delete);
-			AceController.addConsumer("com.anfelisa.todo.events.ClearDoneEvent", todoView.clearDone);
+			AceController.addConsumer("com.anfelisa.todo.events.CreateTodoEvent", TodoView.create);
+			AceController.addConsumer("com.anfelisa.todo.events.ToggleTodoEvent", TodoView.toggle);
+			AceController.addConsumer("com.anfelisa.todo.events.ToggleAllEvent", TodoView.toggleAll);
+			AceController.addConsumer("com.anfelisa.todo.events.UpdateTodoEvent", TodoView.update);
+			AceController.addConsumer("com.anfelisa.todo.events.DeleteTodoEvent", TodoView.delete);
+			AceController.addConsumer("com.anfelisa.todo.events.ClearDoneEvent", TodoView.clearDone);
     }
 }
 

@@ -27,7 +27,7 @@ public class App extends Application<AppConfiguration> {
 
 	@Override
 	public String getName() {
-		return "obeyandpray";
+		return "Todo MVC";
 	}
 
 	public String getVersion() {
@@ -63,6 +63,7 @@ public class App extends Application<AppConfiguration> {
 			environment.jersey().register(new PrepareDatabaseResource(jdbi, jdbiTimeline));
 		} else {
 			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
+			environment.jersey().register(new MigrateDatabaseResource(jdbi));
 		}
 
 		DBIExceptionsBundle dbiExceptionsBundle = new DBIExceptionsBundle();

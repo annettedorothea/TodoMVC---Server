@@ -48,6 +48,9 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	protected abstract void loadDataForGetRequest();
 
 	public Response apply() {
+		if (AceController.getAceExecutionMode() == AceExecutionMode.MIGRATE) {
+			this.throwServiceUnavailable("service is in maintenance mode");
+		}
 		this.databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		Handle timelineHandle = null;
 		databaseHandle.beginTransaction();
@@ -138,6 +141,10 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 		throw new WebApplicationException(error, Response.Status.FORBIDDEN);
 	}
 	
+	protected void throwServiceUnavailable(String error) {
+		throw new WebApplicationException(error, Response.Status.SERVICE_UNAVAILABLE);
+	}
+
 	protected void throwInternalServerError(Exception x) {
 		String message = x.getMessage();
 		StackTraceElement[] stackTrace = x.getStackTrace();

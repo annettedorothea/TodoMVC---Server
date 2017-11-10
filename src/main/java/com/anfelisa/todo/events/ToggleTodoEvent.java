@@ -15,6 +15,10 @@ public class ToggleTodoEvent extends AbstractToggleTodoEvent {
 		super(eventParam, databaseHandle);
 	}
 
+	public ToggleTodoEvent(DatabaseHandle databaseHandle) {
+		this(null, databaseHandle);
+	}
+
 	@Override
 	protected void prepareDataForView() {
 		this.eventData = this.eventParam;
