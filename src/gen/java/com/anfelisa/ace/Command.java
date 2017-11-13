@@ -30,7 +30,9 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 
 	public void execute() {
 		this.executeCommand();
-		AceController.addCommandToTimeline(this);
+		if (AceController.getAceExecutionMode() != AceExecutionMode.MIGRATE) {
+			AceController.addCommandToTimeline(this);
+		}
 		this.publishEvents();
 	}
 

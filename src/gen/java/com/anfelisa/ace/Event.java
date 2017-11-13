@@ -60,7 +60,9 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 
 	public void publish() {
 		this.prepareDataForView();
-		AceController.addEventToTimeline(this);
+		if (AceController.getAceExecutionMode() != AceExecutionMode.MIGRATE) {
+			AceController.addEventToTimeline(this);
+		}
 		this.notifyListeners();
 	}
 

@@ -20,8 +20,7 @@ import org.slf4j.LoggerFactory;
 import com.anfelisa.ace.AceController;
 import com.anfelisa.ace.AceDao;
 import com.anfelisa.ace.DatabaseHandle;
-import com.anfelisa.ace.IAction;
-import com.anfelisa.ace.ICommand;
+import com.anfelisa.ace.IEvent;
 import com.anfelisa.ace.ITimelineItem;
 import com.codahale.metrics.annotation.Timed;
 
@@ -55,26 +54,22 @@ public class PrepareDatabaseResource {
 		try {
 			databaseHandle.beginTransaction();
 
-			ITimelineItem lastItem = aceDao.selectLastAction(databaseHandle.getHandle());
+			ITimelineItem lastAction = aceDao.selectLastAction(databaseHandle.getHandle());
 
-			ITimelineItem nextItem = aceDao.selectNextAction(timelineHandle,
-					lastItem != null ? lastItem.getUuid() : null);
-			while (nextItem != null && !nextItem.getUuid().equals(uuid)) {
-				if (!nextItem.getMethod().equalsIgnoreCase("GET")) {
-					LOG.info("APPLY ACTION " + nextItem);
-					Class<?> cl = Class.forName(nextItem.getName());
-					Constructor<?> con = cl.getConstructor(DBI.class, DBI.class);
-					IAction action = (IAction) con.newInstance(jdbi, jdbiTimeline);
-					action.initActionData(nextItem.getData());
-					action.setDatabaseHandle(databaseHandle);
-					AceController.addActionToTimeline(action);
-
-					ICommand command = action.getCommand();
-					if (command != null) {
-						command.execute();
-					}
+			ITimelineItem nextAction = aceDao.selectNextAction(timelineHandle,
+					lastAction != null ? lastAction.getUuid() : null);
+			while (nextAction != null && !nextAction.getUuid().equals(uuid)) {
+				if (!nextAction.getMethod().equalsIgnoreCase("GET")) {
+					ITimelineItem nextEvent = aceDao.selectEvent(timelineHandle, nextAction.getUuid());
+					LOG.info("PUBLISH EVENT " + nextEvent);
+					Class<?> cl = Class.forName(nextEvent.getName());
+					Constructor<?> con = cl.getConstructor(DatabaseHandle.class);
+					IEvent event = (IEvent) con.newInstance(databaseHandle);
+					event.initEventData(nextEvent.getData());
+					event.notifyListeners();
+					AceController.addPreparingEventToTimeline(event, nextAction.getUuid());
 				}
-				nextItem = aceDao.selectNextAction(timelineHandle, nextItem.getUuid());
+				nextAction = aceDao.selectNextAction(timelineHandle, nextAction.getUuid());
 			}
 
 			databaseHandle.commitTransaction();

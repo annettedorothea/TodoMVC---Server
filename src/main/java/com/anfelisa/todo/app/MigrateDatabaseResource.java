@@ -2,7 +2,6 @@ package com.anfelisa.todo.app;
 
 import java.lang.reflect.Constructor;
 
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -20,6 +19,8 @@ import com.anfelisa.ace.AceController;
 import com.anfelisa.ace.AceDao;
 import com.anfelisa.ace.AceExecutionMode;
 import com.anfelisa.ace.DatabaseHandle;
+import com.anfelisa.ace.IAction;
+import com.anfelisa.ace.ICommand;
 import com.anfelisa.ace.IEvent;
 import com.anfelisa.ace.ITimelineItem;
 import com.anfelisa.todo.models.TodoDao;
@@ -47,7 +48,7 @@ public class MigrateDatabaseResource {
 	@Timed
 	@Path("/migrate")
 	// We should protect this resource!
-	public Response put(@NotNull @QueryParam("uuid") String uuid) {
+	public Response put(@QueryParam("uuid") String uuid) {
 		AceController.setAceExecutionMode(AceExecutionMode.MIGRATE);
 		
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
@@ -58,7 +59,7 @@ public class MigrateDatabaseResource {
 			todoDao.truncate(databaseHandle.getHandle());
 
 			ITimelineItem nextItem = aceDao.selectNextEvent(databaseHandle.getHandle(), null);
-			while (nextItem != null) {
+			while (nextItem != null && !nextItem.getUuid().equals(uuid)) {
 				LOG.info("PUBLISH EVENT " + nextItem);
 				Class<?> cl = Class.forName(nextItem.getName());
 				Constructor<?> con = cl.getConstructor(DatabaseHandle.class);
@@ -66,6 +67,28 @@ public class MigrateDatabaseResource {
 				event.initEventData(nextItem.getData());
 				event.notifyListeners();
 				nextItem = aceDao.selectNextEvent(databaseHandle.getHandle(), nextItem.getUuid());
+			}
+			if (uuid != null) {
+				ITimelineItem lastItem = nextItem;
+
+				nextItem = aceDao.selectNextAction(databaseHandle.getHandle(),
+						lastItem != null ? lastItem.getUuid() : null);
+				while (nextItem != null && !nextItem.getUuid().equals(uuid)) {
+					if (!nextItem.getMethod().equalsIgnoreCase("GET")) {
+						LOG.info("APPLY ACTION " + nextItem);
+						Class<?> cl = Class.forName(nextItem.getName());
+						Constructor<?> con = cl.getConstructor(DBI.class, DBI.class);
+						IAction action = (IAction) con.newInstance(jdbi, null);
+						action.initActionData(nextItem.getData());
+						action.setDatabaseHandle(databaseHandle);
+
+						ICommand command = action.getCommand();
+						if (command != null) {
+							command.execute();
+						}
+					}
+					nextItem = aceDao.selectNextAction(databaseHandle.getHandle(), nextItem.getUuid());
+				}
 			}
 			databaseHandle.commitTransaction();
 			LOG.info("MIGRATION FINISHED");

@@ -60,6 +60,15 @@ public class AceController {
 		}
 	}
 
+	public static void addPreparingEventToTimeline(IEvent event, String uuid) {
+		try {
+			addItemToTimeline("preparing event", null, event.getEventName(), mapper.writeValueAsString(event.getEventData()),
+					uuid, event.getDatabaseHandle());
+		} catch (JsonProcessingException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+
 	public static void addExceptionToTimeline(String uuid, Throwable x, DatabaseHandle databaseHandle) {
 		aceDao.insertIntoErrorTimeline(databaseHandle.getErrorHandle(), "exception", null, x.getClass().getName(),
 				x.getMessage(), uuid);

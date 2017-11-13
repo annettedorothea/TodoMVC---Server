@@ -133,4 +133,11 @@ public class AceDao {
 		}
 	}
 
+	public ITimelineItem selectEvent(Handle handle, String uuid) {
+		return handle
+				.createQuery("SELECT id, type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
+						+ "where uuid = :uuid and type = 'event'")
+				.bind("uuid", uuid).map(new TimelineItemMapper()).first();
+	}
+
 }
