@@ -87,5 +87,23 @@
 	</changeSet>
 
 
+	<changeSet id="005" author="annette">
+		<createTable tableName="scenario">
+			<column name="id" type="integer">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="description" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="data" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="createddatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
+		</createTable>
+	</changeSet>
+
+
 
 </databaseChangeLog>
