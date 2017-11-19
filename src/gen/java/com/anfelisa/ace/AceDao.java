@@ -28,32 +28,19 @@ public class AceDao {
 		}
 	}
 
-	public void createTimelineTable(Handle handle) {
-		handle.execute("CREATE TABLE if not exists " + timelineTable() + " ( id serial NOT NULL, "
-				+ "type character varying NOT NULL, method character varying, name character varying, "
-				+ "time timestamp with time zone NOT NULL, data character varying NOT NULL, "
-				+ "uuid character varying NOT NULL, CONSTRAINT \"TimelinePkey\" PRIMARY KEY (id))");
-	}
-
-	public void createErrorTimelineTable(Handle handle) {
-		handle.execute("CREATE TABLE if not exists " + errorTimelineTable() + " ( id serial NOT NULL, "
-				+ "type character varying NOT NULL, method character varying, name character varying, "
-				+ "time timestamp with time zone NOT NULL, data character varying NOT NULL, "
-				+ "uuid character varying NOT NULL, CONSTRAINT \"ErrorTimelinePkey\" PRIMARY KEY (id))");
-	}
-
 	public void truncateTimelineTable(Handle handle) {
 		handle.execute("TRUNCATE " + timelineTable());
+		handle.execute("ALTER SEQUENCE " + timelineTable() + "_id_seq RESTART");
 	}
 
 	public void truncateErrorTimelineTable(Handle handle) {
 		handle.execute("TRUNCATE " + errorTimelineTable());
+		handle.execute("ALTER SEQUENCE " + errorTimelineTable() + "_id_seq RESTART");
 	}
 
 	public void insertIntoTimeline(Handle handle, String type, String method, String name, String data, String uuid) {
 		Update statement = handle.createStatement("INSERT INTO " + timelineTable()
-				+ " (id, type, method, name, time, data, uuid) " + "VALUES ((select COALESCE(MAX(id),0) + 1 from " + timelineTable()
-				+ "), :type, :method, :name, NOW(), :data, :uuid);");
+				+ " (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
 		statement.bind("type", type);
 		if (method != null) {
 			statement.bind("method", method);
@@ -70,8 +57,7 @@ public class AceDao {
 			String uuid) {
 		if (handle != null) {
 			Update statement = handle.createStatement("INSERT INTO " + errorTimelineTable()
-					+ " (id, type, method, name, time, data, uuid) " + "VALUES ((select COALESCE(MAX(id),0) + 1 from " + errorTimelineTable()
-					+ "), :type, :method, :name, NOW(), :data, :uuid);");
+					+ " (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
 			statement.bind("type", type);
 			if (method != null) {
 				statement.bind("method", method);

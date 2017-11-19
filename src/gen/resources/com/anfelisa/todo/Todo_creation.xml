@@ -1,5 +1,5 @@
 <createTable tableName="todo">
-	<column name="id" type="integer">
+	<column name="id" type="serial">
 		<constraints primaryKey="true" nullable="false"/>
 	</column>
 	<column name="description" type="character varying">

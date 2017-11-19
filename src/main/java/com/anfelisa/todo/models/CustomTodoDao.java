@@ -70,14 +70,18 @@ public class CustomTodoDao {
 	public Integer insert(Handle handle, DateTime now) {
 		
 		PreparedBatch pb = handle.prepareBatch("INSERT INTO public.todo (id, description, done, createddatetime, updateddatetime) VALUES ( :id, :description, :done, :createddatetime, :updateddatetime) RETURNING id");
-		for (int i=0; i<100000; i++) {
+		for (int i=0; i<1000000; i++) {
+			if (i%1000 == 0) {
+				System.out.println("i " + i);
+			}
 			 pb.add()
-			 .bind("id", 10000+i)
+			 .bind("id", i+2)
 			 .bind("description", "TODO" + i)
 			 .bind("done", false)
 			 .bind("createddatetime", now)
 			 .bind("updateddatetime", now);
 		}
+		System.out.println("prepare data");
 		return pb.execute().length;
 	}
 	

@@ -6,28 +6,8 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
 	<changeSet id="001" author="annette">
-		<createTable tableName="todo">
-			<column name="id" type="integer">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-			<column name="description" type="character varying">
-				<constraints nullable="false" />
-			</column>
-			<column name="done" type="boolean">
-				<constraints nullable="false" />
-			</column>
-			<column name="createddatetime" type="timestamp with time zone">
-				<constraints />
-			</column>
-			<column name="donedatetime" type="timestamp with time zone">
-				<constraints />
-			</column>
-		</createTable>
-	</changeSet>
-
-	<changeSet id="002" author="annette">
 		<createTable tableName="timeline">
-			<column name="id" type="integer">
+			<column name="id" type="serial">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="type" type="character varying">
@@ -50,7 +30,7 @@
 			</column>
 		</createTable>
 		<createTable tableName="errortimeline">
-			<column name="id" type="integer">
+			<column name="id" type="serial">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="type" type="character varying">
@@ -74,22 +54,29 @@
 		</createTable>
 	</changeSet>
 
-	<changeSet id="003" author="annette">
-		<addColumn tableName="todo">
+	<changeSet id="002" author="annette">
+		<createTable tableName="todo">
+			<column name="id" type="serial">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="description" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="done" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="createddatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
 			<column name="updateddatetime" type="timestamp with time zone">
 				<constraints />
 			</column>
-		</addColumn>
+		</createTable>
 	</changeSet>
 
-	<changeSet id="004" author="annette">
-		<dropColumn tableName="todo" columnName="donedatetime" />
-	</changeSet>
-
-
-	<changeSet id="005" author="annette">
+	<changeSet id="003" author="annette">
 		<createTable tableName="scenario">
-			<column name="id" type="integer">
+			<column name="id" type="serial">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="description" type="character varying">
@@ -103,7 +90,6 @@
 			</column>
 		</createTable>
 	</changeSet>
-
 
 
 </databaseChangeLog>
