@@ -43,10 +43,10 @@ public class GetScenarioResource {
 	public Response get(@NotNull @QueryParam("id") int id) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		IScenarioModel scenario = scenarioDao.selectById(handle, id);
+		handle.close();
 		if (scenario == null) {
 			throw new WebApplicationException(Response.Status.BAD_REQUEST);
 		}
-		handle.close();
 		return Response.ok(scenario).build();
 	}
 
