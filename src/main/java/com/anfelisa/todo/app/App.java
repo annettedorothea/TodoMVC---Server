@@ -63,11 +63,17 @@ public class App extends Application<AppConfiguration> {
 			environment.jersey().register(new PrepareDatabaseResource(jdbi, jdbiTimeline));
 		} else {
 			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
+			
 			environment.jersey().register(new MigrateDatabaseResource(jdbi));
+			
 			environment.jersey().register(new CreateScenarioResource(jdbi));
 			environment.jersey().register(new DeleteScenarioResource(jdbi));
-			environment.jersey().register(new GetScenarioResource(jdbi));
 			environment.jersey().register(new GetAllScenariosResource(jdbi));
+			
+			environment.jersey().register(new CreateBugResource(jdbi));
+			environment.jersey().register(new DeleteBugResource(jdbi));
+			environment.jersey().register(new GetAllBugsResource(jdbi));
+			environment.jersey().register(new ResolveBugResource(jdbi));
 		}
 
 		DBIExceptionsBundle dbiExceptionsBundle = new DBIExceptionsBundle();

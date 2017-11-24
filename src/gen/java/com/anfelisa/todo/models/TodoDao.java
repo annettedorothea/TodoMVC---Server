@@ -27,8 +27,7 @@ public class TodoDao {
 	
 	
 	public void updateById(Handle handle, ITodoModel todoModel) {
-		Update statement = handle.createStatement("UPDATE public.todo SET id = :id, description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
-		statement.bind("id",  todoModel.getId() );
+		Update statement = handle.createStatement("UPDATE public.todo SET description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
 		statement.bind("description",  todoModel.getDescription() );
 		statement.bind("done",  todoModel.getDone() );
 		statement.bind("createddatetime",  todoModel.getCreatedDateTime() );

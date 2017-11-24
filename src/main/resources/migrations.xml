@@ -91,5 +91,31 @@
 		</createTable>
 	</changeSet>
 
+	<changeSet id="004" author="annette">
+		<createTable tableName="bug">
+			<column name="id" type="serial">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="description" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="data" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="reporter" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="resolved" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="createddatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
+			<column name="updateddatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
+		</createTable>
+	</changeSet>
+
 
 </databaseChangeLog>

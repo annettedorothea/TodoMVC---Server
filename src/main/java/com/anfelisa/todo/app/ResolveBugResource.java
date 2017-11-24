@@ -10,43 +10,44 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anfelisa.todo.app.scenario.IScenarioModel;
-import com.anfelisa.todo.app.scenario.ScenarioDao;
+import com.anfelisa.todo.app.bug.BugDao;
+import com.anfelisa.todo.app.bug.IBugModel;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@Path("/scenario")
+@Path("/bug")
 @Produces(MediaType.TEXT_PLAIN)
 @Consumes(MediaType.APPLICATION_JSON)
-public class DeleteScenarioResource {
-	static final Logger LOG = LoggerFactory.getLogger(DeleteScenarioResource.class);
+public class ResolveBugResource {
+	static final Logger LOG = LoggerFactory.getLogger(ResolveBugResource.class);
 
 	private DBI jdbi;
 	
-	private ScenarioDao scenarioDao = new ScenarioDao();
+	private BugDao bugDao = new BugDao();
 
-	public DeleteScenarioResource(DBI jdbi) {
+	public ResolveBugResource(DBI jdbi) {
 		super();
 		this.jdbi = jdbi;
 	}
 
 	@DELETE
 	@Timed
-	@Path("/delete")
+	@Path("/resolve")
 	// We should protect this resource!
 	public Response delete(@NotNull @QueryParam("id") int id) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		try {
-			IScenarioModel scenario = scenarioDao.selectById(handle, id);
-			if (scenario == null) {
+			IBugModel bug = bugDao.selectById(handle, id);
+			if (bug == null) {
 				throw new WebApplicationException(Response.Status.BAD_REQUEST);
 			}
-			scenarioDao.deleteById(handle, id);
+			bugDao.updateResolvedById(handle, id, new DateTime());
 			return Response.ok().build();
 		} catch (Exception e) {
 			throw new WebApplicationException(e);

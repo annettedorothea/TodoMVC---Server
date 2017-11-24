@@ -2,52 +2,50 @@ package com.anfelisa.todo.app;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anfelisa.todo.app.scenario.IScenarioModel;
-import com.anfelisa.todo.app.scenario.ScenarioDao;
+import com.anfelisa.todo.app.bug.BugDao;
+import com.anfelisa.todo.app.bug.BugModel;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@Path("/scenario")
+@Path("/bug")
 @Produces(MediaType.TEXT_PLAIN)
 @Consumes(MediaType.APPLICATION_JSON)
-public class DeleteScenarioResource {
-	static final Logger LOG = LoggerFactory.getLogger(DeleteScenarioResource.class);
+public class CreateBugResource {
+	static final Logger LOG = LoggerFactory.getLogger(CreateBugResource.class);
 
 	private DBI jdbi;
-	
-	private ScenarioDao scenarioDao = new ScenarioDao();
 
-	public DeleteScenarioResource(DBI jdbi) {
+	private BugDao bugDao = new BugDao();
+
+	public CreateBugResource(DBI jdbi) {
 		super();
 		this.jdbi = jdbi;
 	}
 
-	@DELETE
+	@POST
 	@Timed
-	@Path("/delete")
-	// We should protect this resource!
-	public Response delete(@NotNull @QueryParam("id") int id) throws JsonProcessingException {
+	@Path("/create")
+	// We might want to protect this resource!
+	public Response post(@NotNull BugModel data) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		try {
-			IScenarioModel scenario = scenarioDao.selectById(handle, id);
-			if (scenario == null) {
-				throw new WebApplicationException(Response.Status.BAD_REQUEST);
-			}
-			scenarioDao.deleteById(handle, id);
-			return Response.ok().build();
+			data.setCreatedDateTime(new DateTime());
+			data.setResolved(false);
+			Integer id = bugDao.insert(handle, data);
+			return Response.ok(id).build();
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		} finally {

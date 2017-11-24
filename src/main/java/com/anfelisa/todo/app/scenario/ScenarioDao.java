@@ -15,12 +15,8 @@ import com.anfelisa.ace.encryption.EncryptionService;
 @JsonIgnoreType
 public class ScenarioDao {
 	
-	public void create(Handle handle) {
-		handle.execute("CREATE TABLE IF NOT EXISTS public.scenario (id integer NOT NULL  , description character varying NOT NULL  , data character varying NOT NULL  , createddatetime timestamp with time zone  , CONSTRAINT scenario_pkey PRIMARY KEY (id), CONSTRAINT scenario_id_unique UNIQUE (id))");
-	}
-	
 	public Integer insert(Handle handle, IScenarioModel scenarioModel) {
-		Query<Map<String, Object>> statement = handle.createQuery("INSERT INTO public.scenario (id, description, data, createddatetime) VALUES ( (SELECT COALESCE(MAX(id),0) + 1 FROM public.scenario), :description, :data, :createddatetime) RETURNING id");
+		Query<Map<String, Object>> statement = handle.createQuery("INSERT INTO public.scenario (description, data, createddatetime) VALUES ( :description, :data, :createddatetime) RETURNING id");
 		statement.bind("description",  scenarioModel.getDescription() );
 		statement.bind("data",  scenarioModel.getData() );
 		statement.bind("createddatetime",  scenarioModel.getCreatedDateTime() );
@@ -30,8 +26,7 @@ public class ScenarioDao {
 	
 	
 	public void updateById(Handle handle, IScenarioModel scenarioModel) {
-		Update statement = handle.createStatement("UPDATE public.scenario SET id = :id, description = :description, data = :data, createddatetime = :createddatetime WHERE id = :id");
-		statement.bind("id",  scenarioModel.getId() );
+		Update statement = handle.createStatement("UPDATE public.scenario SET description = :description, data = :data, createddatetime = :createddatetime WHERE id = :id");
 		statement.bind("description",  scenarioModel.getDescription() );
 		statement.bind("data",  scenarioModel.getData() );
 		statement.bind("createddatetime",  scenarioModel.getCreatedDateTime() );
@@ -45,20 +40,22 @@ public class ScenarioDao {
 	}
 
 	public IScenarioModel selectById(Handle handle, Integer id) {
-		return handle.createQuery("SELECT * FROM public.scenario WHERE id = :id")
+		return handle.createQuery("SELECT id, description, data, createddatetime FROM public.scenario WHERE id = :id")
 			.bind("id", id)
 			.map(new ScenarioMapper())
 			.first();
 	}
 	
 	public List<IScenarioModel> selectAll(Handle handle) {
-		return handle.createQuery("SELECT * FROM public.scenario")
+		return handle.createQuery("SELECT id, description, data, createddatetime FROM public.scenario order by createddatetime")
 			.map(new ScenarioMapper())
 			.list();
 	}
 
 	public void truncate(Handle handle) {
 		Update statement = handle.createStatement("TRUNCATE public.scenario");
+		statement.execute();
+		statement = handle.createStatement("ALTER SEQUENCE public.scenario_id_seq RESTART");
 		statement.execute();
 	}
 
