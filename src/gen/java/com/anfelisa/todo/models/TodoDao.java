@@ -32,6 +32,7 @@ public class TodoDao {
 		statement.bind("done",  todoModel.getDone() );
 		statement.bind("createddatetime",  todoModel.getCreatedDateTime() );
 		statement.bind("updateddatetime",  todoModel.getUpdatedDateTime() );
+		statement.bind("id",  todoModel.getId()  );
 		statement.execute();
 	}
 

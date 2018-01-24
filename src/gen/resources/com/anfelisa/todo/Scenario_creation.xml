@@ -1,0 +1,29 @@
+<createTable tableName="scenario">
+	<column name="id" type="serial">
+		<constraints primaryKey="true" nullable="false"  />
+	</column>
+	<column name="description" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="timeline" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="creator" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="createddatetime" type="timestamp with time zone">
+		<constraints    />
+	</column>
+	<column name="updateddatetime" type="timestamp with time zone">
+		<constraints    />
+	</column>
+	<column name="serverversion" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="clientversion" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="device" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+</createTable>

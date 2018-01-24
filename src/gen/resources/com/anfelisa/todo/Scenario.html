@@ -1,0 +1,81 @@
+<form class="form-horizontal">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-9">
+            <h4>{{texts.scenario}}</h4>
+        </div>
+    </div>
+
+	<div class="form-group" id="scenarioIdDiv">
+	    <label for="scenarioId" class="col-sm-3 control-label">* {{texts.scenario.id}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioId" placeholder="{{texts.scenario.id}}" value="{{scenario.id}}" onblur="new ValidateRequiredFieldAction({id : 'scenarioId'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.scenario.idNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioDescriptionDiv">
+	    <label for="scenarioDescription" class="col-sm-3 control-label">* {{texts.scenario.description}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioDescription" placeholder="{{texts.scenario.description}}" value="{{scenario.description}}" onblur="new ValidateRequiredFieldAction({id : 'scenarioDescription'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.scenario.descriptionNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioTimelineDiv">
+	    <label for="scenarioTimeline" class="col-sm-3 control-label">* {{texts.scenario.timeline}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioTimeline" placeholder="{{texts.scenario.timeline}}" value="{{scenario.timeline}}" onblur="new ValidateRequiredFieldAction({id : 'scenarioTimeline'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.scenario.timelineNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioCreatorDiv">
+	    <label for="scenarioCreator" class="col-sm-3 control-label">* {{texts.scenario.creator}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioCreator" placeholder="{{texts.scenario.creator}}" value="{{scenario.creator}}" onblur="new ValidateRequiredFieldAction({id : 'scenarioCreator'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.scenario.creatorNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioCreatedDateTimeDiv">
+	    <label for="scenarioCreatedDateTime" class="col-sm-3 control-label">{{texts.scenario.createdDateTime}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioCreatedDateTime" placeholder="{{texts.scenario.createdDateTime}}" value="{{scenario.createdDateTime}}">
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioUpdatedDateTimeDiv">
+	    <label for="scenarioUpdatedDateTime" class="col-sm-3 control-label">{{texts.scenario.updatedDateTime}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioUpdatedDateTime" placeholder="{{texts.scenario.updatedDateTime}}" value="{{scenario.updatedDateTime}}">
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioServerVersionDiv">
+	    <label for="scenarioServerVersion" class="col-sm-3 control-label">* {{texts.scenario.serverVersion}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioServerVersion" placeholder="{{texts.scenario.serverVersion}}" value="{{scenario.serverVersion}}" onblur="new ValidateRequiredFieldAction({id : 'scenarioServerVersion'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.scenario.serverVersionNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioClientVersionDiv">
+	    <label for="scenarioClientVersion" class="col-sm-3 control-label">* {{texts.scenario.clientVersion}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioClientVersion" placeholder="{{texts.scenario.clientVersion}}" value="{{scenario.clientVersion}}" onblur="new ValidateRequiredFieldAction({id : 'scenarioClientVersion'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.scenario.clientVersionNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="scenarioDeviceDiv">
+	    <label for="scenarioDevice" class="col-sm-3 control-label">* {{texts.scenario.device}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="scenarioDevice" placeholder="{{texts.scenario.device}}" value="{{scenario.device}}" onblur="new ValidateRequiredFieldAction({id : 'scenarioDevice'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.scenario.deviceNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	
+</form>

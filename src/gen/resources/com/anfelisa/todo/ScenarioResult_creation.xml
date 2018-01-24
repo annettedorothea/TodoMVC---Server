@@ -1,0 +1,29 @@
+<createTable tableName="scenarioresult">
+	<column name="id" type="serial">
+		<constraints primaryKey="true" nullable="false"  />
+	</column>
+	<column name="scenarioid" type="integer">
+		<constraints  nullable="false" 	references="scenario(id)" deleteCascade="true" foreignKeyName="fk_scenarioresult_scenario" />
+	</column>
+	<column name="description" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="timeline" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="executor" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="createddatetime" type="timestamp with time zone">
+		<constraints    />
+	</column>
+	<column name="serverversion" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="clientversion" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="device" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+</createTable>

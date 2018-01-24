@@ -15,6 +15,49 @@ models {
 		}
 	}
 	
+	persistent Bug {
+		primitiveAttributes {
+			Unique PrimaryKey NotNull Serial id
+			NotNull String description
+			NotNull String timeline
+			NotNull String reporter
+			NotNull Boolean resolved
+			DateTime createdDateTime
+			DateTime updatedDateTime
+			NotNull String serverVersion
+			NotNull String clientVersion
+			NotNull String device
+		}
+	}
+	
+	persistent Scenario {
+		primitiveAttributes {
+			Unique PrimaryKey NotNull Serial id
+			NotNull String description
+			NotNull String timeline
+			NotNull String creator
+			DateTime createdDateTime
+			DateTime updatedDateTime
+			NotNull String serverVersion
+			NotNull String clientVersion
+			NotNull String device
+		}
+	}
+	
+	persistent ScenarioResult {
+		primitiveAttributes {
+			Unique PrimaryKey NotNull Serial id
+			NotNull Integer scenarioId references Scenario.id
+			NotNull String description
+			NotNull String timeline
+			NotNull String executor
+			DateTime createdDateTime
+			NotNull String serverVersion
+			NotNull String clientVersion
+			NotNull String device
+		}
+	}
+	
 	TodoList {
 		complexAttributes {
 			List Todo todoList

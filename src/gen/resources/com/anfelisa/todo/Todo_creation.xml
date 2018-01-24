@@ -1,17 +1,17 @@
 <createTable tableName="todo">
 	<column name="id" type="serial">
-		<constraints primaryKey="true" nullable="false"/>
+		<constraints primaryKey="true" nullable="false"  />
 	</column>
 	<column name="description" type="character varying">
-		<constraints  nullable="false"/>
+		<constraints  nullable="false"  />
 	</column>
 	<column name="done" type="boolean">
-		<constraints  nullable="false"/>
+		<constraints  nullable="false"  />
 	</column>
 	<column name="createddatetime" type="timestamp with time zone">
-		<constraints  />
+		<constraints    />
 	</column>
 	<column name="updateddatetime" type="timestamp with time zone">
-		<constraints  />
+		<constraints    />
 	</column>
 </createTable>
