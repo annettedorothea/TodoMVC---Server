@@ -12,6 +12,10 @@ public abstract class AbstractUpdateTodoEvent extends Event<TodoData> {
 		super("com.anfelisa.todo.events.UpdateTodoEvent", eventParam, databaseHandle);
 	}
 	
+	public AbstractUpdateTodoEvent(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.UpdateTodoEvent", null, databaseHandle);
+	}
+	
 	public void initEventData(String json) {
 		try {
 			this.eventData = mapper.readValue(json, TodoData.class);

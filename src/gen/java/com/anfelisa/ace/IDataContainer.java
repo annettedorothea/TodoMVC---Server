@@ -5,6 +5,10 @@ import org.joda.time.DateTime;
 public interface IDataContainer {
 
 	String getUuid();
+
+	String getOutcome();
+
+	void setOutcome(String outcome);
 	
 	String getCreatedId();
 	

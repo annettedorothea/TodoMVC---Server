@@ -56,7 +56,7 @@ public class TodoDao {
 	}
 
 	public void truncate(Handle handle) {
-		Update statement = handle.createStatement("TRUNCATE public.todo");
+		Update statement = handle.createStatement("TRUNCATE public.todo CASCADE");
 		statement.execute();
 		statement = handle.createStatement("ALTER SEQUENCE public.todo_id_seq RESTART");
 		statement.execute();

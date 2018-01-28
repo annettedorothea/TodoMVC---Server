@@ -10,10 +10,10 @@ import java.util.List;
 
 import com.anfelisa.ace.IDataContainer;
 
-import com.anfelisa.todo.models.ITodoModel;
+import com.anfelisa.todo.models.ITodoHistoryModel;
 
 @SuppressWarnings("all")
-public class TodoData implements ITodoData {
+public class TodoHistoryData implements ITodoHistoryData {
 	
 	private String uuid;
 	
@@ -24,37 +24,45 @@ public class TodoData implements ITodoData {
 	@NotNull
 	private Integer id;
 	
-	@NotNull
+	private Integer todoId;
+	
 	private String description;
 	
-	@NotNull
 	private Boolean done;
 	
-	private org.joda.time.DateTime createdDateTime;
+	@NotNull
+	private Boolean deleted;
 	
-	private org.joda.time.DateTime updatedDateTime;
+	private org.joda.time.DateTime changedTime;
+	
+	@NotNull
+	private String action;
 	
 
 	
 	private org.joda.time.DateTime systemTime;
 	
-	public TodoData(
+	public TodoHistoryData(
 		@JsonProperty("id") Integer id,
+		@JsonProperty("todoId") Integer todoId,
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
-		@JsonProperty("createdDateTime") org.joda.time.DateTime createdDateTime,
-		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
+		@JsonProperty("deleted") Boolean deleted,
+		@JsonProperty("changedTime") org.joda.time.DateTime changedTime,
+		@JsonProperty("action") String action
 ,		@JsonProperty("uuid") String uuid
 	) {
 		this.id = id;
+		this.todoId = todoId;
 		this.description = description;
 		this.done = done;
-		this.createdDateTime = createdDateTime;
-		this.updatedDateTime = updatedDateTime;
+		this.deleted = deleted;
+		this.changedTime = changedTime;
+		this.action = action;
 		this.uuid = uuid;
 	}
 
-	public TodoData( String uuid ) {
+	public TodoHistoryData( String uuid ) {
 		this.uuid = uuid;
 	}
 
@@ -65,8 +73,20 @@ public class TodoData implements ITodoData {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public TodoData withId(Integer id) {
+	public TodoHistoryData withId(Integer id) {
 		this.id = id;
+		return this;
+	}
+	
+	@JsonProperty
+	public Integer getTodoId() {
+		return this.todoId;
+	}
+	public void setTodoId(Integer todoId) {
+		this.todoId = todoId;
+	}
+	public TodoHistoryData withTodoId(Integer todoId) {
+		this.todoId = todoId;
 		return this;
 	}
 	
@@ -77,7 +97,7 @@ public class TodoData implements ITodoData {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public TodoData withDescription(String description) {
+	public TodoHistoryData withDescription(String description) {
 		this.description = description;
 		return this;
 	}
@@ -89,32 +109,44 @@ public class TodoData implements ITodoData {
 	public void setDone(Boolean done) {
 		this.done = done;
 	}
-	public TodoData withDone(Boolean done) {
+	public TodoHistoryData withDone(Boolean done) {
 		this.done = done;
 		return this;
 	}
 	
 	@JsonProperty
-	public org.joda.time.DateTime getCreatedDateTime() {
-		return this.createdDateTime;
+	public Boolean getDeleted() {
+		return this.deleted;
 	}
-	public void setCreatedDateTime(org.joda.time.DateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
-	public TodoData withCreatedDateTime(org.joda.time.DateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
+	public TodoHistoryData withDeleted(Boolean deleted) {
+		this.deleted = deleted;
 		return this;
 	}
 	
 	@JsonProperty
-	public org.joda.time.DateTime getUpdatedDateTime() {
-		return this.updatedDateTime;
+	public org.joda.time.DateTime getChangedTime() {
+		return this.changedTime;
 	}
-	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
-		this.updatedDateTime = updatedDateTime;
+	public void setChangedTime(org.joda.time.DateTime changedTime) {
+		this.changedTime = changedTime;
 	}
-	public TodoData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
-		this.updatedDateTime = updatedDateTime;
+	public TodoHistoryData withChangedTime(org.joda.time.DateTime changedTime) {
+		this.changedTime = changedTime;
+		return this;
+	}
+	
+	@JsonProperty
+	public String getAction() {
+		return this.action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
+	public TodoHistoryData withAction(String action) {
+		this.action = action;
 		return this;
 	}
 	

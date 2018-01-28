@@ -15,14 +15,26 @@ public abstract class AbstractToggleTodoCommand extends Command<TodoToggleData> 
 		super("com.anfelisa.todo.commands.ToggleTodoCommand", commandParam, databaseHandle);
 	}
 
+	public AbstractToggleTodoCommand(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.commands.ToggleTodoCommand", null, databaseHandle);
+	}
+
 	@Override
-	protected void publishEvents() {
-		switch (this.outcome) {
+	public void publishEvents() {
+		switch (this.commandData.getOutcome()) {
 		case success:
 			new com.anfelisa.todo.events.ToggleTodoEvent(this.commandData, databaseHandle).publish();
 			break;
 		default:
-			throw new WebApplicationException("unhandled outcome " + outcome);
+			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());
+		}
+	}
+	
+	public void initCommandData(String json) {
+		try {
+			this.commandData = mapper.readValue(json, TodoToggleData.class);
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
 		}
 	}
 

@@ -12,6 +12,10 @@ public abstract class AbstractToggleAllEvent extends Event<ToggleAllData> {
 		super("com.anfelisa.todo.events.ToggleAllEvent", eventParam, databaseHandle);
 	}
 	
+	public AbstractToggleAllEvent(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.ToggleAllEvent", null, databaseHandle);
+	}
+	
 	public void initEventData(String json) {
 		try {
 			this.eventData = mapper.readValue(json, ToggleAllData.class);

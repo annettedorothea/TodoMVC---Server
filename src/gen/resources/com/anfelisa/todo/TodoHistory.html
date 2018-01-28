@@ -1,0 +1,63 @@
+<form class="form-horizontal">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-9">
+            <h4>{{texts.todoHistory}}</h4>
+        </div>
+    </div>
+
+	<div class="form-group" id="todoHistoryIdDiv">
+	    <label for="todoHistoryId" class="col-sm-3 control-label">* {{texts.todohistory.id}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoHistoryId" placeholder="{{texts.todohistory.id}}" value="{{todoHistory.id}}" onblur="new ValidateRequiredFieldAction({id : 'todoHistoryId'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.todohistory.idNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoHistoryTodoIdDiv">
+	    <label for="todoHistoryTodoId" class="col-sm-3 control-label">{{texts.todohistory.todoId}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoHistoryTodoId" placeholder="{{texts.todohistory.todoId}}" value="{{todoHistory.todoId}}">
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoHistoryDescriptionDiv">
+	    <label for="todoHistoryDescription" class="col-sm-3 control-label">{{texts.todohistory.description}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoHistoryDescription" placeholder="{{texts.todohistory.description}}" value="{{todoHistory.description}}">
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoHistoryDoneDiv">
+	    <label for="todoHistoryDone" class="col-sm-3 control-label">{{texts.todohistory.done}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoHistoryDone" placeholder="{{texts.todohistory.done}}" value="{{todoHistory.done}}">
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoHistoryDeletedDiv">
+	    <label for="todoHistoryDeleted" class="col-sm-3 control-label">* {{texts.todohistory.deleted}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoHistoryDeleted" placeholder="{{texts.todohistory.deleted}}" value="{{todoHistory.deleted}}" onblur="new ValidateRequiredFieldAction({id : 'todoHistoryDeleted'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.todohistory.deletedNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoHistoryChangedTimeDiv">
+	    <label for="todoHistoryChangedTime" class="col-sm-3 control-label">{{texts.todohistory.changedTime}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoHistoryChangedTime" placeholder="{{texts.todohistory.changedTime}}" value="{{todoHistory.changedTime}}">
+	    </div>
+	</div>
+	
+	<div class="form-group" id="todoHistoryActionDiv">
+	    <label for="todoHistoryAction" class="col-sm-3 control-label">* {{texts.todohistory.action}}</label>
+	    <div class="col-sm-9">
+	        <input type="text" class="form-control" id="todoHistoryAction" placeholder="{{texts.todohistory.action}}" value="{{todoHistory.action}}" onblur="new ValidateRequiredFieldAction({id : 'todoHistoryAction'}).apply()">
+	        <span class="help-block notEmpty" style="display: none">{{texts.todohistory.actionNotEmpty}}</span>
+	    </div>
+	</div>
+	
+	
+</form>

@@ -20,6 +20,10 @@ public class ToggleAllCommand extends AbstractToggleAllCommand {
 		super(commandParam, databaseHandle);
 	}
 
+	public ToggleAllCommand(DatabaseHandle databaseHandle) {
+		super(null, databaseHandle);
+	}
+	
 	@Override
 	protected void executeCommand() {
 		this.commandData.setUpdatedDateTime(this.commandData.getSystemTime());
@@ -32,7 +36,7 @@ public class ToggleAllCommand extends AbstractToggleAllCommand {
 			}
 		}
 		this.commandData.setDone(!allAreDone);
-		this.outcome = success;
+		this.commandData.setOutcome(success);
 	}
 
 }

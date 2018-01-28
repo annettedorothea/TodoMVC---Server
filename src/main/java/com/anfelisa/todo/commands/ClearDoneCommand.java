@@ -15,9 +15,13 @@ public class ClearDoneCommand extends AbstractClearDoneCommand {
 		super(commandParam, databaseHandle);
 	}
 
+	public ClearDoneCommand(DatabaseHandle databaseHandle) {
+		super(null, databaseHandle);
+	}
+	
 	@Override
 	protected void executeCommand() {
-		this.outcome = success;
+		this.commandData.setOutcome(success);
 	}
 
 }

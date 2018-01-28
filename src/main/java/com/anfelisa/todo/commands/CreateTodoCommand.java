@@ -15,12 +15,16 @@ public class CreateTodoCommand extends AbstractCreateTodoCommand {
 		super(commandParam, databaseHandle);
 	}
 
+	public CreateTodoCommand(DatabaseHandle databaseHandle) {
+		super(null, databaseHandle);
+	}
+	
 	@Override
 	protected void executeCommand() {
 		this.commandData.setDone(false);
 		this.commandData.setCreatedDateTime(this.commandData.getSystemTime());
 		this.commandData.setDescription(this.commandData.getDescription());
-		this.outcome = success;
+		this.commandData.setOutcome(success);
 	}
 
 }

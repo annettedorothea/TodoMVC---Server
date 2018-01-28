@@ -66,7 +66,7 @@ public class BugDao {
 	}
 
 	public void truncate(Handle handle) {
-		Update statement = handle.createStatement("TRUNCATE public.bug");
+		Update statement = handle.createStatement("TRUNCATE public.bug CASCADE");
 		statement.execute();
 		statement = handle.createStatement("ALTER SEQUENCE public.bug_id_seq RESTART");
 		statement.execute();

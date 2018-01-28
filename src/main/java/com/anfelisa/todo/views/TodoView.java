@@ -19,8 +19,8 @@ public class TodoView {
 	private static CustomTodoDao customTodoDao = new CustomTodoDao();
 
 	public static BiConsumer<TodoData, Handle> create = (dataContainer, handle) -> {
-		todoDao.insert(handle, dataContainer);
-		//customTodoDao.insert(handle, dataContainer.getSystemTime());
+		int id = todoDao.insert(handle, dataContainer);
+		dataContainer.setId(id);
 	};
 	public static BiConsumer<TodoData, Handle> update = (dataContainer, handle) -> {
 		customTodoDao.updateById(handle, dataContainer);

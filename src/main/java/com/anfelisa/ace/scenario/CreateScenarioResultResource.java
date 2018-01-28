@@ -63,7 +63,6 @@ public class CreateScenarioResultResource {
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		} finally {
-			handle.commit();
 			handle.close();
 		}
 	}

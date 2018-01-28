@@ -1,8 +1,10 @@
 package com.anfelisa.ace.scenario;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -15,37 +17,34 @@ import org.skife.jdbi.v2.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anfelisa.ace.scenario.models.CustomScenarioResultDao;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@Path("/scenario")
-@Produces(MediaType.TEXT_PLAIN)
+@Path("/scenario-result")
+@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class DeleteScenarioResource {
-	static final Logger LOG = LoggerFactory.getLogger(DeleteScenarioResource.class);
+public class GetAllScenarioResultsResource {
+	static final Logger LOG = LoggerFactory.getLogger(GetAllScenarioResultsResource.class);
 
 	private DBI jdbi;
-	
-	private ScenarioDao scenarioDao = new ScenarioDao();
 
-	public DeleteScenarioResource(DBI jdbi) {
+	private CustomScenarioResultDao customScenarioResultDao = new CustomScenarioResultDao();
+
+	public GetAllScenarioResultsResource(DBI jdbi) {
 		super();
 		this.jdbi = jdbi;
 	}
 
-	@DELETE
+	@GET
 	@Timed
-	@Path("/delete")
+	@Path("/all")
 	// We should protect this resource!
-	public Response delete(@NotNull @QueryParam("id") int id) throws JsonProcessingException {
+	public Response get(@NotNull @QueryParam("scenarioId") int scenarioId) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		try {
-			IScenarioModel scenario = scenarioDao.selectById(handle, id);
-			if (scenario == null) {
-				throw new WebApplicationException(Response.Status.BAD_REQUEST);
-			}
-			scenarioDao.deleteById(handle, id);
-			return Response.ok().build();
+			List<IScenarioResultModel> scenarioResults = customScenarioResultDao.selectAll(handle, scenarioId);
+			return Response.ok(scenarioResults).build();
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		} finally {

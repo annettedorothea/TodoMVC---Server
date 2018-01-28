@@ -15,10 +15,14 @@ public class UpdateTodoCommand extends AbstractUpdateTodoCommand {
 		super(commandParam, databaseHandle);
 	}
 
+	public UpdateTodoCommand(DatabaseHandle databaseHandle) {
+		super(null, databaseHandle);
+	}
+	
 	@Override
 	protected void executeCommand() {
 		this.commandData.setUpdatedDateTime(this.commandData.getSystemTime());
-		this.outcome = success;
+		this.commandData.setOutcome(success);
 	}
 
 }

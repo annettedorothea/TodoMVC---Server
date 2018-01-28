@@ -12,6 +12,10 @@ public abstract class AbstractDeleteTodoEvent extends Event<TodoIdData> {
 		super("com.anfelisa.todo.events.DeleteTodoEvent", eventParam, databaseHandle);
 	}
 	
+	public AbstractDeleteTodoEvent(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.DeleteTodoEvent", null, databaseHandle);
+	}
+	
 	public void initEventData(String json) {
 		try {
 			this.eventData = mapper.readValue(json, TodoIdData.class);

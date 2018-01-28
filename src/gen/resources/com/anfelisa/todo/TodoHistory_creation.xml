@@ -1,0 +1,23 @@
+<createTable tableName="todohistory">
+	<column name="id" type="serial">
+		<constraints primaryKey="true" nullable="false"  />
+	</column>
+	<column name="todoid" type="integer">
+		<constraints    />
+	</column>
+	<column name="description" type="character varying">
+		<constraints    />
+	</column>
+	<column name="done" type="boolean">
+		<constraints    />
+	</column>
+	<column name="deleted" type="boolean">
+		<constraints  nullable="false"  />
+	</column>
+	<column name="changedtime" type="timestamp with time zone">
+		<constraints    />
+	</column>
+	<column name="action" type="character varying">
+		<constraints  nullable="false"  />
+	</column>
+</createTable>

@@ -60,7 +60,6 @@ public class CreateScenarioResource {
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		} finally {
-			handle.commit();
 			handle.close();
 		}
 	}

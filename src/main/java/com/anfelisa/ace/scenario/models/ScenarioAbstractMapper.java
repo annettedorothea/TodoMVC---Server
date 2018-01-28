@@ -1,4 +1,4 @@
-package com.anfelisa.todo.models;
+package com.anfelisa.ace.scenario.models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,13 +6,13 @@ import java.sql.SQLException;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-import com.anfelisa.ace.encryption.EncryptionService;
+import com.anfelisa.ace.scenario.ScenarioModel;
 
 @SuppressWarnings("all")
-public class ScenarioMapper implements ResultSetMapper<IScenarioModel> {
+public class ScenarioAbstractMapper implements ResultSetMapper<IScenarioAbstractModel> {
 	
-	public IScenarioModel map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-		return new ScenarioModel(
+	public IScenarioAbstractModel map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+		return new ScenarioAbstractModel(
 			r.getInt("id"),
 			r.getString("description"),
 			r.getString("timeline"),
@@ -21,9 +21,11 @@ public class ScenarioMapper implements ResultSetMapper<IScenarioModel> {
 			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")) : null,
 			r.getString("serverVersion"),
 			r.getString("clientVersion"),
-			r.getString("device")
+			r.getString("device"),
+			r.getBoolean("lastresult")
 		);
 	}
 }
 
 /*       S.D.G.       */
+

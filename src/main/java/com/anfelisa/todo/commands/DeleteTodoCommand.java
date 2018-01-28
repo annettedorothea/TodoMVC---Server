@@ -15,9 +15,13 @@ public class DeleteTodoCommand extends AbstractDeleteTodoCommand {
 		super(commandParam, databaseHandle);
 	}
 
+	public DeleteTodoCommand(DatabaseHandle databaseHandle) {
+		super(null, databaseHandle);
+	}
+	
 	@Override
 	protected void executeCommand() {
-		this.outcome = success;
+		this.commandData.setOutcome(success);
 	}
 
 }

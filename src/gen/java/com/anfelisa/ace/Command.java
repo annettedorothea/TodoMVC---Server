@@ -11,21 +11,19 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 
 	protected T commandData;
 	private String commandName;
-	protected String outcome;
 	@JsonIgnore
 	protected DatabaseHandle databaseHandle;
+	protected JodaObjectMapper mapper;
 
 	public Command(String commandName, T commandData, DatabaseHandle databaseHandle) {
 		super();
 		this.commandData = commandData;
 		this.commandName = commandName;
 		this.databaseHandle = databaseHandle;
+		mapper = new JodaObjectMapper();
 	}
 
 	protected void executeCommand() {
-	}
-
-	protected void publishEvents() {
 	}
 
 	public void execute() {

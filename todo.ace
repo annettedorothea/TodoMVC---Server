@@ -15,6 +15,18 @@ models {
 		}
 	}
 	
+	persistent TodoHistory {
+		primitiveAttributes {
+			Unique PrimaryKey NotNull Serial id
+			Integer todoId
+			String description
+			Boolean done
+			NotNull Boolean deleted
+			DateTime changedTime
+			NotNull String action
+		}
+	}
+	
 	persistent Bug {
 		primitiveAttributes {
 			Unique PrimaryKey NotNull Serial id
@@ -24,34 +36,6 @@ models {
 			NotNull Boolean resolved
 			DateTime createdDateTime
 			DateTime updatedDateTime
-			NotNull String serverVersion
-			NotNull String clientVersion
-			NotNull String device
-		}
-	}
-	
-	persistent Scenario {
-		primitiveAttributes {
-			Unique PrimaryKey NotNull Serial id
-			NotNull String description
-			NotNull String timeline
-			NotNull String creator
-			DateTime createdDateTime
-			DateTime updatedDateTime
-			NotNull String serverVersion
-			NotNull String clientVersion
-			NotNull String device
-		}
-	}
-	
-	persistent ScenarioResult {
-		primitiveAttributes {
-			Unique PrimaryKey NotNull Serial id
-			NotNull Integer scenarioId references Scenario.id
-			NotNull String description
-			NotNull String timeline
-			NotNull String executor
-			DateTime createdDateTime
 			NotNull String serverVersion
 			NotNull String clientVersion
 			NotNull String device
@@ -83,7 +67,7 @@ models {
 			DateTime updatedDateTime
 		}
 	}
-
+	
 }
 
 data {
@@ -93,6 +77,7 @@ data {
 	TodoToggle : ( TodoToggle )
 	ToggleAll : ( ToggleAll )
 	ClearDone : (  )
+	TodoHistory : ( TodoHistory )
 }
 
 actions {
@@ -127,16 +112,24 @@ commands {
 }
 
 events {
-	CreateTodo uses Todo listenedToBy ( Todo.create )
-	ToggleTodo uses TodoToggle listenedToBy ( Todo.toggle )
-	ToggleAll uses ToggleAll listenedToBy ( Todo.toggleAll )
-	UpdateTodo uses Todo listenedToBy ( Todo.update )
-	DeleteTodo uses TodoId listenedToBy ( Todo.delete )
-	ClearDone uses ClearDone listenedToBy ( Todo.clearDone )
+	CreateTodo uses Todo listenedToBy ( Todo.create TodoHistory.create )
+	ToggleTodo uses TodoToggle listenedToBy ( Todo.toggle TodoHistory.toggle )
+	ToggleAll uses ToggleAll listenedToBy ( Todo.toggleAll TodoHistory.toggleAll )
+	UpdateTodo uses Todo listenedToBy ( Todo.update TodoHistory.update )
+	DeleteTodo uses TodoId listenedToBy ( TodoHistory.delete Todo.delete  )
+	ClearDone uses ClearDone listenedToBy ( TodoHistory.clearDone Todo.clearDone )
 }
 
 views {
 	Todo {
+		create(Todo)
+		toggle(TodoToggle)
+		toggleAll(ToggleAll)
+		delete(TodoId)
+		update(Todo)
+		clearDone(ClearDone)
+	}
+	TodoHistory {
 		create(Todo)
 		toggle(TodoToggle)
 		toggleAll(ToggleAll)

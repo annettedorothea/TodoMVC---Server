@@ -15,14 +15,26 @@ public abstract class AbstractCreateTodoCommand extends Command<TodoData> {
 		super("com.anfelisa.todo.commands.CreateTodoCommand", commandParam, databaseHandle);
 	}
 
+	public AbstractCreateTodoCommand(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.commands.CreateTodoCommand", null, databaseHandle);
+	}
+
 	@Override
-	protected void publishEvents() {
-		switch (this.outcome) {
+	public void publishEvents() {
+		switch (this.commandData.getOutcome()) {
 		case success:
 			new com.anfelisa.todo.events.CreateTodoEvent(this.commandData, databaseHandle).publish();
 			break;
 		default:
-			throw new WebApplicationException("unhandled outcome " + outcome);
+			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());
+		}
+	}
+	
+	public void initCommandData(String json) {
+		try {
+			this.commandData = mapper.readValue(json, TodoData.class);
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
 		}
 	}
 

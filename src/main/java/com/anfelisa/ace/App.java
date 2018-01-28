@@ -12,6 +12,8 @@ import com.anfelisa.ace.bug.ResolveBugResource;
 import com.anfelisa.ace.scenario.CreateScenarioResource;
 import com.anfelisa.ace.scenario.CreateScenarioResultResource;
 import com.anfelisa.ace.scenario.DeleteScenarioResource;
+import com.anfelisa.ace.scenario.GetAllScenarioAbstractsResource;
+import com.anfelisa.ace.scenario.GetAllScenarioResultsResource;
 import com.anfelisa.ace.scenario.GetAllScenariosResource;
 import com.anfelisa.ace.scenario.GetScenarioResource;
 
@@ -76,6 +78,8 @@ public class App extends Application<AppConfiguration> {
 			environment.jersey().register(new DeleteScenarioResource(jdbi));
 			environment.jersey().register(new GetAllScenariosResource(jdbi));
 			environment.jersey().register(new GetScenarioResource(jdbi));
+			environment.jersey().register(new GetAllScenarioAbstractsResource(jdbi));
+			environment.jersey().register(new GetAllScenarioResultsResource(jdbi));
 			
 			environment.jersey().register(new CreateScenarioResultResource(jdbi));
 

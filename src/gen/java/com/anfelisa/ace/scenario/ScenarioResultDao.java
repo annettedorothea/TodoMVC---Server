@@ -55,14 +55,14 @@ public class ScenarioResultDao {
 	}
 
 	public IScenarioResultModel selectById(Handle handle, Integer id) {
-		return handle.createQuery("SELECT id, scenarioid, description, timeline, executor, createddatetime, serverversion, clientversion, device FROM public.scenarioresult WHERE id = :id")
+		return handle.createQuery("SELECT id, scenarioid, description, timeline, executor, createddatetime, serverversion, clientversion, device, result, e2e FROM public.scenarioresult WHERE id = :id")
 			.bind("id", id)
 			.map(new ScenarioResultMapper())
 			.first();
 	}
 	
 	public List<IScenarioResultModel> selectAll(Handle handle) {
-		return handle.createQuery("SELECT id, scenarioid, description, timeline, executor, createddatetime, serverversion, clientversion, device FROM public.scenarioresult")
+		return handle.createQuery("SELECT id, scenarioid, description, timeline, executor, createddatetime, serverversion, clientversion, device, result, e2e FROM public.scenarioresult")
 			.map(new ScenarioResultMapper())
 			.list();
 	}

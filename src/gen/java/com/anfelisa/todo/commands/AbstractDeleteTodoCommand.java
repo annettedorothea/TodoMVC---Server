@@ -15,14 +15,26 @@ public abstract class AbstractDeleteTodoCommand extends Command<TodoIdData> {
 		super("com.anfelisa.todo.commands.DeleteTodoCommand", commandParam, databaseHandle);
 	}
 
+	public AbstractDeleteTodoCommand(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.commands.DeleteTodoCommand", null, databaseHandle);
+	}
+
 	@Override
-	protected void publishEvents() {
-		switch (this.outcome) {
+	public void publishEvents() {
+		switch (this.commandData.getOutcome()) {
 		case success:
 			new com.anfelisa.todo.events.DeleteTodoEvent(this.commandData, databaseHandle).publish();
 			break;
 		default:
-			throw new WebApplicationException("unhandled outcome " + outcome);
+			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());
+		}
+	}
+	
+	public void initCommandData(String json) {
+		try {
+			this.commandData = mapper.readValue(json, TodoIdData.class);
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
 		}
 	}
 

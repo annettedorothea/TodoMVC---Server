@@ -12,6 +12,10 @@ public abstract class AbstractClearDoneEvent extends Event<ClearDoneData> {
 		super("com.anfelisa.todo.events.ClearDoneEvent", eventParam, databaseHandle);
 	}
 	
+	public AbstractClearDoneEvent(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.ClearDoneEvent", null, databaseHandle);
+	}
+	
 	public void initEventData(String json) {
 		try {
 			this.eventData = mapper.readValue(json, ClearDoneData.class);
