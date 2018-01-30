@@ -1,8 +1,9 @@
 package com.anfelisa.todo.events;
 
+import javax.ws.rs.WebApplicationException;
+
 import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.Event;
-import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.todo.data.TodoIdData;
 

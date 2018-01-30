@@ -41,6 +41,7 @@ public class CreateScenarioResource {
 	public Response post(@NotNull ScenarioModel data) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		try {
+			handle.getConnection().setAutoCommit(false);
 			data.setCreatedDateTime(new DateTime());
 			if (data.getClientVersion() == null) {
 				data.setClientVersion("unknown");
@@ -56,8 +57,10 @@ public class CreateScenarioResource {
 			}
 			data.setServerVersion(App.getVersion());
 			Integer id = scenarioDao.insert(handle, data);
+			handle.commit();
 			return Response.ok(id).build();
 		} catch (Exception e) {
+			handle.rollback();
 			throw new WebApplicationException(e);
 		} finally {
 			handle.close();

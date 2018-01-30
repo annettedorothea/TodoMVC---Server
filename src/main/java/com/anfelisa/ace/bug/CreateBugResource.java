@@ -41,6 +41,7 @@ public class CreateBugResource {
 	public Response post(@NotNull BugModel data) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		try {
+			handle.getConnection().setAutoCommit(false);
 			data.setCreatedDateTime(new DateTime());
 			data.setResolved(false);
 			if (data.getClientVersion() == null) {
@@ -57,11 +58,12 @@ public class CreateBugResource {
 			}
 			data.setServerVersion(App.getVersion());
 			Integer id = bugDao.insert(handle, data);
+			handle.commit();
 			return Response.ok(id).build();
 		} catch (Exception e) {
+			handle.rollback();
 			throw new WebApplicationException(e);
 		} finally {
-			handle.commit();
 			handle.close();
 		}
 	}

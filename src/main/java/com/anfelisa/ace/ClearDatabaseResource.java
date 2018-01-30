@@ -37,11 +37,14 @@ public class ClearDatabaseResource {
 	public Response put() {
 		Handle handle = jdbi.open();
 		try {
+			handle.getConnection().setAutoCommit(false);
 			aceDao.truncateErrorTimelineTable(handle);
 			aceDao.truncateTimelineTable(handle);
 			todoDao.truncate(handle);
+			handle.commit();
 			return Response.ok().build();
 		} catch (Exception e) {
+			handle.rollback();
 			throw new WebApplicationException(e);
 		} finally {
 			handle.close();

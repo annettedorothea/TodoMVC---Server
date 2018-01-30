@@ -40,13 +40,16 @@ public class DeleteScenarioResource {
 	public Response delete(@NotNull @QueryParam("id") int id) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		try {
+			handle.getConnection().setAutoCommit(false);
 			IScenarioModel scenario = scenarioDao.selectById(handle, id);
 			if (scenario == null) {
 				throw new WebApplicationException(Response.Status.BAD_REQUEST);
 			}
 			scenarioDao.deleteById(handle, id);
+			handle.commit();
 			return Response.ok().build();
 		} catch (Exception e) {
+			handle.rollback();
 			throw new WebApplicationException(e);
 		} finally {
 			handle.close();

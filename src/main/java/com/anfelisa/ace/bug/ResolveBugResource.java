@@ -41,16 +41,18 @@ public class ResolveBugResource {
 	public Response delete(@NotNull @QueryParam("id") int id) throws JsonProcessingException {
 		Handle handle = jdbi.open();
 		try {
+			handle.getConnection().setAutoCommit(false);
 			IBugModel bug = bugDao.selectById(handle, id);
 			if (bug == null) {
 				throw new WebApplicationException(Response.Status.BAD_REQUEST);
 			}
 			bugDao.updateResolvedById(handle, id, new DateTime());
+			handle.commit();
 			return Response.ok().build();
 		} catch (Exception e) {
+			handle.rollback();
 			throw new WebApplicationException(e);
 		} finally {
-			handle.commit();
 			handle.close();
 		}
 	}
