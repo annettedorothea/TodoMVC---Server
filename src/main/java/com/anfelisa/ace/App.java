@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.anfelisa.ace.bug.CreateBugResource;
 import com.anfelisa.ace.bug.DeleteBugResource;
 import com.anfelisa.ace.bug.GetAllBugsResource;
+import com.anfelisa.ace.bug.GetBugResource;
 import com.anfelisa.ace.bug.ResolveBugResource;
 import com.anfelisa.ace.scenario.CreateScenarioResource;
 import com.anfelisa.ace.scenario.CreateScenarioResultResource;
@@ -39,7 +40,7 @@ public class App extends Application<AppConfiguration> {
 	}
 
 	public static String getVersion() {
-		return "1.0.0";
+		return "1.1.0";
 	}
 
 	@Override
@@ -86,6 +87,7 @@ public class App extends Application<AppConfiguration> {
 			environment.jersey().register(new CreateBugResource(jdbi));
 			environment.jersey().register(new DeleteBugResource(jdbi));
 			environment.jersey().register(new GetAllBugsResource(jdbi));
+			environment.jersey().register(new GetBugResource(jdbi));
 			environment.jersey().register(new ResolveBugResource(jdbi));
 		}
 
