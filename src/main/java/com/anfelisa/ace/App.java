@@ -5,19 +5,6 @@ import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anfelisa.ace.bug.CreateBugResource;
-import com.anfelisa.ace.bug.DeleteBugResource;
-import com.anfelisa.ace.bug.GetAllBugsResource;
-import com.anfelisa.ace.bug.GetBugResource;
-import com.anfelisa.ace.bug.ResolveBugResource;
-import com.anfelisa.ace.scenario.CreateScenarioResource;
-import com.anfelisa.ace.scenario.CreateScenarioResultResource;
-import com.anfelisa.ace.scenario.DeleteScenarioResource;
-import com.anfelisa.ace.scenario.GetAllScenarioAbstractsResource;
-import com.anfelisa.ace.scenario.GetAllScenarioResultsResource;
-import com.anfelisa.ace.scenario.GetAllScenariosResource;
-import com.anfelisa.ace.scenario.GetScenarioResource;
-
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
@@ -74,22 +61,9 @@ public class App extends Application<AppConfiguration> {
 			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
 			
 			environment.jersey().register(new MigrateDatabaseResource(jdbi));
-			
-			environment.jersey().register(new CreateScenarioResource(jdbi));
-			environment.jersey().register(new DeleteScenarioResource(jdbi));
-			environment.jersey().register(new GetAllScenariosResource(jdbi));
-			environment.jersey().register(new GetScenarioResource(jdbi));
-			environment.jersey().register(new GetAllScenarioAbstractsResource(jdbi));
-			environment.jersey().register(new GetAllScenarioResultsResource(jdbi));
-			
-			environment.jersey().register(new CreateScenarioResultResource(jdbi));
-
-			environment.jersey().register(new CreateBugResource(jdbi));
-			environment.jersey().register(new DeleteBugResource(jdbi));
-			environment.jersey().register(new GetAllBugsResource(jdbi));
-			environment.jersey().register(new GetBugResource(jdbi));
-			environment.jersey().register(new ResolveBugResource(jdbi));
 		}
+
+		environment.jersey().register(new GetServerVersionResource());
 
 		DBIExceptionsBundle dbiExceptionsBundle = new DBIExceptionsBundle();
 		environment.jersey().register(dbiExceptionsBundle);
