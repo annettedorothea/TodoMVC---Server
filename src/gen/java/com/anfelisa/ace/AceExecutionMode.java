@@ -1,6 +1,6 @@
 package com.anfelisa.ace;
 
 public enum AceExecutionMode {
-	LIVE, REPLAY, MIGRATE
+	LIVE, REPLAY, DEV
 }
 

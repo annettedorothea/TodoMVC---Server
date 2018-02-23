@@ -25,8 +25,8 @@ public class ToggleAllAction extends AbstractToggleAllAction {
 
 	static final Logger LOG = LoggerFactory.getLogger(ToggleAllAction.class);
 
-	public ToggleAllAction(DBI jdbi, DBI jdbiTimeline) {
-		super(jdbi, jdbiTimeline);
+	public ToggleAllAction(DBI jdbi) {
+		super(jdbi);
 	}
 
 	@PUT

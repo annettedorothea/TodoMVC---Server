@@ -25,8 +25,8 @@ public class DeleteTodoAction extends AbstractDeleteTodoAction {
 
 	static final Logger LOG = LoggerFactory.getLogger(DeleteTodoAction.class);
 
-	public DeleteTodoAction(DBI jdbi, DBI jdbiTimeline) {
-		super(jdbi, jdbiTimeline);
+	public DeleteTodoAction(DBI jdbi) {
+		super(jdbi);
 	}
 
 	@DELETE

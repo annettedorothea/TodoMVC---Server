@@ -20,16 +20,13 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	private HttpMethod httpMethod;
 	protected DatabaseHandle databaseHandle;
 	private DBI jdbi;
-	private DBI jdbiTimeline;
 	protected JodaObjectMapper mapper;
-	private AceDao aceDao = new AceDao();
 
-	public Action(String actionName, HttpMethod httpMethod, DBI jdbi, DBI jdbiTimeline) {
+	public Action(String actionName, HttpMethod httpMethod, DBI jdbi) {
 		super();
 		this.actionName = actionName;
 		this.httpMethod = httpMethod;
 		this.jdbi = jdbi;
-		this.jdbiTimeline = jdbiTimeline;
 		mapper = new JodaObjectMapper();
 	}
 
@@ -48,22 +45,18 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	protected abstract void loadDataForGetRequest();
 
 	public Response apply() {
-		if (AceController.getAceExecutionMode() == AceExecutionMode.MIGRATE) {
-			this.throwServiceUnavailable("service is in maintenance mode");
-		}
 		this.databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		Handle timelineHandle = null;
 		databaseHandle.beginTransaction();
 		try {
-			if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE) {
+			if (AceController.getAceExecutionMode() != AceExecutionMode.REPLAY) {
 				this.actionData.setSystemTime(new DateTime());
 			} else {
-				timelineHandle = jdbiTimeline.open();
-				ITimelineItem timelineItem = aceDao.selectTimelineItem(timelineHandle, this.actionData.getUuid());
+				ITimelineItem timelineItem = E2E.selectAction(this.actionData.getUuid());
 				if (timelineItem != null) {
 					Class<?> cl = Class.forName(timelineItem.getName());
 					Constructor<?> con = cl.getConstructor(DBI.class, DBI.class);
-					IAction action = (IAction) con.newInstance(jdbi, jdbiTimeline);
+					IAction action = (IAction) con.newInstance(jdbi);
 					action.initActionData(timelineItem.getData());
 					this.actionData.setSystemTime(action.getActionData().getSystemTime());
 				} else {

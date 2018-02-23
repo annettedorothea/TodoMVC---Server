@@ -14,8 +14,10 @@ public class AppConfiguration extends Configuration {
 	@NotNull
 	private DataSourceFactory database = new DataSourceFactory();
 
-	private DataSourceFactory timelineDatabase = new DataSourceFactory();
-	
+	@Valid
+	@NotNull
+	private ServerConfiguration serverConfiguration = new ServerConfiguration();
+
 	@JsonProperty("database")
 	public DataSourceFactory getDataSourceFactory() {
 		return database;
@@ -26,14 +28,14 @@ public class AppConfiguration extends Configuration {
 		this.database = dataSourceFactory;
 	}
 
-	@JsonProperty("timelineDatabase")
-	public DataSourceFactory getTimelineDataSourceFactory() {
-		return timelineDatabase;
+	@JsonProperty("config")
+	public ServerConfiguration getServerConfiguration() {
+		return serverConfiguration;
 	}
-	
-	@JsonProperty("timelineDatabase")
-	public void setTimelineDataSourceFactory(DataSourceFactory dataSourceFactory) {
-		this.timelineDatabase = dataSourceFactory;
+
+	@JsonProperty("config")
+	public void setServerConfiguration(ServerConfiguration serverConfiguration) {
+		this.serverConfiguration = serverConfiguration;
 	}
-	
+
 }

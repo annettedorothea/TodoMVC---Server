@@ -12,8 +12,8 @@ import com.anfelisa.todo.commands.CreateTodoCommand;
 
 public abstract class AbstractCreateTodoAction extends Action<TodoData> {
 
-	public AbstractCreateTodoAction(DBI jdbi, DBI jdbiTimeline) {
-		super("com.anfelisa.todo.actions.CreateTodoAction", HttpMethod.POST, jdbi, jdbiTimeline);
+	public AbstractCreateTodoAction(DBI jdbi) {
+		super("com.anfelisa.todo.actions.CreateTodoAction", HttpMethod.POST, jdbi);
 	}
 
 	@Override

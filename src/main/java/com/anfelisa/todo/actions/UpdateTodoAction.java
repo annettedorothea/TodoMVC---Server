@@ -24,8 +24,8 @@ public class UpdateTodoAction extends AbstractUpdateTodoAction {
 
 	static final Logger LOG = LoggerFactory.getLogger(UpdateTodoAction.class);
 
-	public UpdateTodoAction(DBI jdbi, DBI jdbiTimeline) {
-		super(jdbi, jdbiTimeline);
+	public UpdateTodoAction(DBI jdbi) {
+		super(jdbi);
 	}
 
 	@PUT

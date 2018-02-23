@@ -31,8 +31,8 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 
 	private CustomTodoDao todoDao = new CustomTodoDao();
 
-	public GetAllTodosAction(DBI jdbi, DBI jdbiTimeline) {
-		super(jdbi, jdbiTimeline);
+	public GetAllTodosAction(DBI jdbi) {
+		super(jdbi);
 	}
 
 	@GET

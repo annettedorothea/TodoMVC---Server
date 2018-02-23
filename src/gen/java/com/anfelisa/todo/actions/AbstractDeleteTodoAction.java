@@ -12,8 +12,8 @@ import com.anfelisa.todo.commands.DeleteTodoCommand;
 
 public abstract class AbstractDeleteTodoAction extends Action<TodoIdData> {
 
-	public AbstractDeleteTodoAction(DBI jdbi, DBI jdbiTimeline) {
-		super("com.anfelisa.todo.actions.DeleteTodoAction", HttpMethod.DELETE, jdbi, jdbiTimeline);
+	public AbstractDeleteTodoAction(DBI jdbi) {
+		super("com.anfelisa.todo.actions.DeleteTodoAction", HttpMethod.DELETE, jdbi);
 	}
 
 	@Override

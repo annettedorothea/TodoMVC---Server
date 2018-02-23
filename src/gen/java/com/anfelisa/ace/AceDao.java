@@ -1,5 +1,7 @@
 package com.anfelisa.ace;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.Update;
@@ -147,6 +149,13 @@ public class AceDao {
 				.createQuery("SELECT id, type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
 						+ "where uuid = :uuid and type = 'event'")
 				.bind("uuid", uuid).map(new TimelineItemMapper()).first();
+	}
+	
+	public List<ITimelineItem> selectServerTimeline(Handle handle) {
+		return handle
+				.createQuery("SELECT id, type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
+						+ "where method != 'GET' order by id asc ")
+				.map(new TimelineItemMapper()).list();
 	}
 
 }

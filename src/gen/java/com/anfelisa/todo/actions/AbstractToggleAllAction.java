@@ -12,8 +12,8 @@ import com.anfelisa.todo.commands.ToggleAllCommand;
 
 public abstract class AbstractToggleAllAction extends Action<ToggleAllData> {
 
-	public AbstractToggleAllAction(DBI jdbi, DBI jdbiTimeline) {
-		super("com.anfelisa.todo.actions.ToggleAllAction", HttpMethod.PUT, jdbi, jdbiTimeline);
+	public AbstractToggleAllAction(DBI jdbi) {
+		super("com.anfelisa.todo.actions.ToggleAllAction", HttpMethod.PUT, jdbi);
 	}
 
 	@Override

@@ -11,8 +11,8 @@ import com.anfelisa.todo.data.TodoListData;
 
 public abstract class AbstractGetAllTodosAction extends Action<TodoListData> {
 
-	public AbstractGetAllTodosAction(DBI jdbi, DBI jdbiTimeline) {
-		super("com.anfelisa.todo.actions.GetAllTodosAction", HttpMethod.GET, jdbi, jdbiTimeline);
+	public AbstractGetAllTodosAction(DBI jdbi) {
+		super("com.anfelisa.todo.actions.GetAllTodosAction", HttpMethod.GET, jdbi);
 	}
 
 	@Override

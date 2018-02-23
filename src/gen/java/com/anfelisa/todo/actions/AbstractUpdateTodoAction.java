@@ -12,8 +12,8 @@ import com.anfelisa.todo.commands.UpdateTodoCommand;
 
 public abstract class AbstractUpdateTodoAction extends Action<TodoData> {
 
-	public AbstractUpdateTodoAction(DBI jdbi, DBI jdbiTimeline) {
-		super("com.anfelisa.todo.actions.UpdateTodoAction", HttpMethod.PUT, jdbi, jdbiTimeline);
+	public AbstractUpdateTodoAction(DBI jdbi) {
+		super("com.anfelisa.todo.actions.UpdateTodoAction", HttpMethod.PUT, jdbi);
 	}
 
 	@Override

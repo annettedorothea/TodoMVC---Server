@@ -2,6 +2,7 @@ package com.anfelisa.ace;
 
 import java.lang.reflect.Constructor;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -12,53 +13,44 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anfelisa.todo.models.TodoDao;
-import com.anfelisa.todo.models.TodoHistoryDao;
 import com.codahale.metrics.annotation.Timed;
 
-@Path("/database")
+@Path("/e2e")
 @Produces(MediaType.TEXT_PLAIN)
 @Consumes(MediaType.APPLICATION_JSON)
-public class MigrateDatabaseResource {
+public class PrepareE2EResource {
 
 	private DBI jdbi;
 
-	static final Logger LOG = LoggerFactory.getLogger(MigrateDatabaseResource.class);
+	static final Logger LOG = LoggerFactory.getLogger(PrepareE2EResource.class);
 
 	private AceDao aceDao = new AceDao();
 
-	private TodoDao todoDao = new TodoDao();
-	private TodoHistoryDao todoHistoryDao = new TodoHistoryDao();
-
-	public MigrateDatabaseResource(DBI jdbi) {
+	public PrepareE2EResource(DBI jdbi) {
 		super();
 		this.jdbi = jdbi;
 	}
 
 	@PUT
 	@Timed
-	@Path("/migrate")
-	// We should protect this resource!
-	public Response put(@QueryParam("uuid") String uuid) {
-		AceController.setAceExecutionMode(AceExecutionMode.MIGRATE);
+	@Path("/prepare")
+	public Response put(@NotNull @QueryParam("uuid") String uuid) {
+		ITimelineItem actionToBePrepared = E2E.selectAction(uuid);
 
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
-		LOG.info("START MIGRATION");
+		LOG.info("PREPARE ACTION " + actionToBePrepared);
 		try {
 			databaseHandle.beginTransaction();
 
-			Handle handle = databaseHandle.getHandle();
-			todoDao.truncate(handle);
-			todoHistoryDao.truncate(handle);
+			ITimelineItem lastAction = aceDao.selectLastAction(databaseHandle.getHandle());
 
-			ITimelineItem nextAction = aceDao.selectNextAction(handle, null);
+			ITimelineItem nextAction = E2E.selectNextAction(lastAction != null ? lastAction.getUuid() : null);
 			while (nextAction != null && !nextAction.getUuid().equals(uuid)) {
 				if (!nextAction.getMethod().equalsIgnoreCase("GET")) {
-					ITimelineItem nextEvent = aceDao.selectEvent(handle, nextAction.getUuid());
+					ITimelineItem nextEvent = E2E.selectEvent(nextAction.getUuid());
 					LOG.info("PUBLISH EVENT " + nextEvent);
 					Class<?> cl = Class.forName(nextEvent.getName());
 					Constructor<?> con = cl.getConstructor(DatabaseHandle.class);
@@ -67,21 +59,18 @@ public class MigrateDatabaseResource {
 					event.notifyListeners();
 					AceController.addPreparingEventToTimeline(event, nextAction.getUuid());
 				}
-				nextAction = aceDao.selectNextAction(handle, nextAction.getUuid());
+				nextAction = E2E.selectNextAction(nextAction.getUuid());
 			}
 
 			databaseHandle.commitTransaction();
-
-			LOG.info("MIGRATION FINISHED");
 			return Response.ok().build();
 		} catch (Exception e) {
 			databaseHandle.rollbackTransaction();
-			LOG.info("MIGRATION ABORTED " + e.getMessage());
 			throw new WebApplicationException(e);
 		} finally {
 			databaseHandle.close();
-			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
 		}
 	}
 
 }
+

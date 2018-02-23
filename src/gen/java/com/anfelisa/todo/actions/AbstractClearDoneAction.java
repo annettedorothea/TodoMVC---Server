@@ -12,8 +12,8 @@ import com.anfelisa.todo.commands.ClearDoneCommand;
 
 public abstract class AbstractClearDoneAction extends Action<ClearDoneData> {
 
-	public AbstractClearDoneAction(DBI jdbi, DBI jdbiTimeline) {
-		super("com.anfelisa.todo.actions.ClearDoneAction", HttpMethod.DELETE, jdbi, jdbiTimeline);
+	public AbstractClearDoneAction(DBI jdbi) {
+		super("com.anfelisa.todo.actions.ClearDoneAction", HttpMethod.DELETE, jdbi);
 	}
 
 	@Override

@@ -24,8 +24,8 @@ public class CreateTodoAction extends AbstractCreateTodoAction {
 
 	static final Logger LOG = LoggerFactory.getLogger(CreateTodoAction.class);
 
-	public CreateTodoAction(DBI jdbi, DBI jdbiTimeline) {
-		super(jdbi, jdbiTimeline);
+	public CreateTodoAction(DBI jdbi) {
+		super(jdbi);
 	}
 
 	@POST

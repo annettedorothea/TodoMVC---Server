@@ -49,18 +49,19 @@ public class App extends Application<AppConfiguration> {
 		final DBIFactory factory = new DBIFactory();
 
 		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
-		DBI jdbiTimeline = null;
 
-		if (configuration.getTimelineDataSourceFactory().getUrl() != null) {
+		if (ServerConfiguration.REPLAY.equals(configuration.getServerConfiguration().getMode())) {
 			AceController.setAceExecutionMode(AceExecutionMode.REPLAY);
-			jdbiTimeline = factory.build(environment, configuration.getTimelineDataSourceFactory(),
-					"todo_replay");
 			environment.jersey().register(new ClearDatabaseResource(jdbi));
-			environment.jersey().register(new PrepareDatabaseResource(jdbi, jdbiTimeline));
+			environment.jersey().register(new PrepareE2EResource(jdbi));
+			environment.jersey().register(new StartE2ESessionResource());
+			environment.jersey().register(new StopE2ESessionResource());
+		} else if (ServerConfiguration.DEV.equals(configuration.getServerConfiguration().getMode())) {
+			AceController.setAceExecutionMode(AceExecutionMode.DEV);
+			//environment.jersey().register(new MigrateDatabaseResource(jdbi));
+			environment.jersey().register(new GetServerTimelineResource(jdbi));
 		} else {
 			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
-			
-			environment.jersey().register(new MigrateDatabaseResource(jdbi));
 		}
 
 		environment.jersey().register(new GetServerVersionResource());
@@ -70,7 +71,7 @@ public class App extends Application<AppConfiguration> {
 
 		environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-		com.anfelisa.todo.AppRegistration.registerResources(environment, jdbi, jdbiTimeline);
+		com.anfelisa.todo.AppRegistration.registerResources(environment, jdbi);
 		com.anfelisa.todo.AppRegistration.registerConsumers();
 
 	}

@@ -25,8 +25,8 @@ public class ClearDoneAction extends AbstractClearDoneAction {
 
 	static final Logger LOG = LoggerFactory.getLogger(ClearDoneAction.class);
 
-	public ClearDoneAction(DBI jdbi, DBI jdbiTimeline) {
-		super(jdbi, jdbiTimeline);
+	public ClearDoneAction(DBI jdbi) {
+		super(jdbi);
 	}
 
 	@DELETE

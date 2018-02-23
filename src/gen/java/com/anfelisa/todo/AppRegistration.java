@@ -13,14 +13,14 @@ import com.anfelisa.todo.actions.*;
 @SuppressWarnings("all")
 public class AppRegistration {
 
-	public static void registerResources(Environment environment, DBI jdbi, DBI jdbiTimeline) {
-		environment.jersey().register(new GetAllTodosAction(jdbi, jdbiTimeline));
-		environment.jersey().register(new CreateTodoAction(jdbi, jdbiTimeline));
-		environment.jersey().register(new ToggleTodoAction(jdbi, jdbiTimeline));
-		environment.jersey().register(new ToggleAllAction(jdbi, jdbiTimeline));
-		environment.jersey().register(new UpdateTodoAction(jdbi, jdbiTimeline));
-		environment.jersey().register(new DeleteTodoAction(jdbi, jdbiTimeline));
-		environment.jersey().register(new ClearDoneAction(jdbi, jdbiTimeline));
+	public static void registerResources(Environment environment, DBI jdbi) {
+		environment.jersey().register(new GetAllTodosAction(jdbi));
+		environment.jersey().register(new CreateTodoAction(jdbi));
+		environment.jersey().register(new ToggleTodoAction(jdbi));
+		environment.jersey().register(new ToggleAllAction(jdbi));
+		environment.jersey().register(new UpdateTodoAction(jdbi));
+		environment.jersey().register(new DeleteTodoAction(jdbi));
+		environment.jersey().register(new ClearDoneAction(jdbi));
 	}
 
 	public static void registerConsumers() {
