@@ -38,6 +38,8 @@ public class App extends Application<AppConfiguration> {
 				return configuration.getDataSourceFactory();
 			}
 		});
+		
+		bootstrap.addCommand(new EventReplayCommand(this));
 	}
 
 	@Override
@@ -52,19 +54,18 @@ public class App extends Application<AppConfiguration> {
 
 		if (ServerConfiguration.REPLAY.equals(configuration.getServerConfiguration().getMode())) {
 			AceController.setAceExecutionMode(AceExecutionMode.REPLAY);
-			environment.jersey().register(new ClearDatabaseResource(jdbi));
 			environment.jersey().register(new PrepareE2EResource(jdbi));
-			environment.jersey().register(new StartE2ESessionResource());
+			environment.jersey().register(new StartE2ESessionResource(jdbi));
 			environment.jersey().register(new StopE2ESessionResource());
+			environment.jersey().register(new GetServerTimelineResource(jdbi));
 		} else if (ServerConfiguration.DEV.equals(configuration.getServerConfiguration().getMode())) {
 			AceController.setAceExecutionMode(AceExecutionMode.DEV);
-			//environment.jersey().register(new MigrateDatabaseResource(jdbi));
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
 		} else {
 			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
 		}
 
-		environment.jersey().register(new GetServerVersionResource());
+		environment.jersey().register(new GetServerInfoResource());
 
 		DBIExceptionsBundle dbiExceptionsBundle = new DBIExceptionsBundle();
 		environment.jersey().register(dbiExceptionsBundle);

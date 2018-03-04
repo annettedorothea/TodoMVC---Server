@@ -55,7 +55,7 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 				ITimelineItem timelineItem = E2E.selectAction(this.actionData.getUuid());
 				if (timelineItem != null) {
 					Class<?> cl = Class.forName(timelineItem.getName());
-					Constructor<?> con = cl.getConstructor(DBI.class, DBI.class);
+					Constructor<?> con = cl.getConstructor(DBI.class);
 					IAction action = (IAction) con.newInstance(jdbi);
 					action.initActionData(timelineItem.getData());
 					this.actionData.setSystemTime(action.getActionData().getSystemTime());

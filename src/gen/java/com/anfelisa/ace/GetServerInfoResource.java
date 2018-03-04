@@ -12,9 +12,9 @@ import com.codahale.metrics.annotation.Timed;
 @Path("/server")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class GetServerVersionResource {
+public class GetServerInfoResource {
 
-	public GetServerVersionResource() {
+	public GetServerInfoResource() {
 		super();
 	}
 
@@ -26,3 +26,4 @@ public class GetServerVersionResource {
 	}
 
 }
+

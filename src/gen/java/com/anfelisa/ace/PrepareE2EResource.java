@@ -47,6 +47,7 @@ public class PrepareE2EResource {
 
 			ITimelineItem lastAction = aceDao.selectLastAction(databaseHandle.getHandle());
 
+			int eventCount = 0;
 			ITimelineItem nextAction = E2E.selectNextAction(lastAction != null ? lastAction.getUuid() : null);
 			while (nextAction != null && !nextAction.getUuid().equals(uuid)) {
 				if (!nextAction.getMethod().equalsIgnoreCase("GET")) {
@@ -58,12 +59,13 @@ public class PrepareE2EResource {
 					event.initEventData(nextEvent.getData());
 					event.notifyListeners();
 					AceController.addPreparingEventToTimeline(event, nextAction.getUuid());
+					eventCount++;
 				}
 				nextAction = E2E.selectNextAction(nextAction.getUuid());
 			}
 
 			databaseHandle.commitTransaction();
-			return Response.ok().build();
+			return Response.ok("prepared action " + uuid + " by publishing " + eventCount + " events").build();
 		} catch (Exception e) {
 			databaseHandle.rollbackTransaction();
 			throw new WebApplicationException(e);

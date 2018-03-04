@@ -1,6 +1,7 @@
 package com.anfelisa.ace;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TimelineItem implements ITimelineItem {
 
@@ -19,8 +20,15 @@ public class TimelineItem implements ITimelineItem {
 	private String uuid;
 
 	
-	public TimelineItem(Integer id, String type, String method, String name, DateTime timestamp, String data,
-			String uuid) {
+	public TimelineItem(
+		@JsonProperty("id") Integer id, 
+		@JsonProperty("type") String type, 
+		@JsonProperty("method") String method, 
+		@JsonProperty("name") String name, 
+		@JsonProperty("timestamp") DateTime timestamp, 
+		@JsonProperty("data") String data,
+		@JsonProperty("uuid") String uuid
+	) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -31,30 +39,37 @@ public class TimelineItem implements ITimelineItem {
 		this.uuid = uuid;
 	}
 
+	@JsonProperty
 	public Integer getId() {
 		return id;
 	}
 
+	@JsonProperty
 	public String getType() {
 		return type;
 	}
 
+	@JsonProperty
 	public String getMethod() {
 		return method;
 	}
 
+	@JsonProperty
 	public String getName() {
 		return name;
 	}
 
+	@JsonProperty
 	public DateTime getTimestamp() {
 		return timestamp;
 	}
 
+	@JsonProperty
 	public String getData() {
 		return data;
 	}
 
+	@JsonProperty
 	public String getUuid() {
 		return uuid;
 	}

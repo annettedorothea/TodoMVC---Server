@@ -10,10 +10,10 @@ public class E2E {
 	
 	public static DateTime sessionStartedAt;
 	
-	public static List<TimelineItem> timeline;
+	public static List<ITimelineItem> timeline;
 	
-	public static TimelineItem selectAction(String uuid) {
-		for (TimelineItem timelineItem : timeline) {
+	public static ITimelineItem selectAction(String uuid) {
+		for (ITimelineItem timelineItem : timeline) {
 			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("action")) {
 				return timelineItem;
 			}
@@ -21,8 +21,8 @@ public class E2E {
 		return null;
 	}
 	
-	public static TimelineItem selectEvent(String uuid) {
-		for (TimelineItem timelineItem : timeline) {
+	public static ITimelineItem selectEvent(String uuid) {
+		for (ITimelineItem timelineItem : timeline) {
 			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("event")) {
 				return timelineItem;
 			}
@@ -31,19 +31,19 @@ public class E2E {
 	}
 
 	
-	public static TimelineItem selectNextAction(String uuid) {
+	public static ITimelineItem selectNextAction(String uuid) {
 		if (uuid != null) {
 			boolean returnNextAction = false;
-			for (TimelineItem timelineItem : timeline) {
+			for (ITimelineItem timelineItem : timeline) {
+				if (returnNextAction && timelineItem.getType().equals("action")) {
+					return timelineItem;
+				}
 				if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("action")) {
-					if (returnNextAction) {
-						return timelineItem;
-					}
 					returnNextAction = true;
 				}
 			}
 		} else {
-			for (TimelineItem timelineItem : timeline) {
+			for (ITimelineItem timelineItem : timeline) {
 				if (timelineItem.getType().equals("action")) {
 					return timelineItem;
 				}

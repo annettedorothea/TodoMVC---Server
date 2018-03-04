@@ -24,18 +24,42 @@ public class AppRegistration {
 	}
 
 	public static void registerConsumers() {
-			AceController.addConsumer("com.anfelisa.todo.events.CreateTodoEvent", TodoView.create);
+		AceController.addConsumer("com.anfelisa.todo.events.CreateTodoEvent", TodoView.create);
+
+		if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE || AceController.getAceExecutionMode() == AceExecutionMode.DEV) {
 			AceController.addConsumer("com.anfelisa.todo.events.CreateTodoEvent", TodoHistoryView.create);
-			AceController.addConsumer("com.anfelisa.todo.events.ToggleTodoEvent", TodoView.toggle);
+		}
+		
+		AceController.addConsumer("com.anfelisa.todo.events.ToggleTodoEvent", TodoView.toggle);
+
+		if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE || AceController.getAceExecutionMode() == AceExecutionMode.DEV) {
 			AceController.addConsumer("com.anfelisa.todo.events.ToggleTodoEvent", TodoHistoryView.toggle);
-			AceController.addConsumer("com.anfelisa.todo.events.ToggleAllEvent", TodoView.toggleAll);
+		}
+		
+		AceController.addConsumer("com.anfelisa.todo.events.ToggleAllEvent", TodoView.toggleAll);
+
+		if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE || AceController.getAceExecutionMode() == AceExecutionMode.DEV) {
 			AceController.addConsumer("com.anfelisa.todo.events.ToggleAllEvent", TodoHistoryView.toggleAll);
-			AceController.addConsumer("com.anfelisa.todo.events.UpdateTodoEvent", TodoView.update);
+		}
+		
+		AceController.addConsumer("com.anfelisa.todo.events.UpdateTodoEvent", TodoView.update);
+
+		if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE || AceController.getAceExecutionMode() == AceExecutionMode.DEV) {
 			AceController.addConsumer("com.anfelisa.todo.events.UpdateTodoEvent", TodoHistoryView.update);
+		}
+		
+		if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE || AceController.getAceExecutionMode() == AceExecutionMode.DEV) {
 			AceController.addConsumer("com.anfelisa.todo.events.DeleteTodoEvent", TodoHistoryView.delete);
-			AceController.addConsumer("com.anfelisa.todo.events.DeleteTodoEvent", TodoView.delete);
+		}
+		
+		AceController.addConsumer("com.anfelisa.todo.events.DeleteTodoEvent", TodoView.delete);
+
+		if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE || AceController.getAceExecutionMode() == AceExecutionMode.DEV) {
 			AceController.addConsumer("com.anfelisa.todo.events.ClearDoneEvent", TodoHistoryView.clearDone);
-			AceController.addConsumer("com.anfelisa.todo.events.ClearDoneEvent", TodoView.clearDone);
+		}
+		
+		AceController.addConsumer("com.anfelisa.todo.events.ClearDoneEvent", TodoView.clearDone);
+
     }
 }
 

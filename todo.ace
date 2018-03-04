@@ -129,7 +129,7 @@ views {
 		update(Todo)
 		clearDone(ClearDone)
 	}
-	TodoHistory {
+	external TodoHistory {
 		create(Todo)
 		toggle(TodoToggle)
 		toggleAll(ToggleAll)

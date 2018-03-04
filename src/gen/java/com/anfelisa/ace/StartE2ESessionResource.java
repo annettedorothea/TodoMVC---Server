@@ -11,6 +11,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.Handle;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,21 +28,44 @@ public class StartE2ESessionResource {
 
 	static final Logger LOG = LoggerFactory.getLogger(StartE2ESessionResource.class);
 
-	public StartE2ESessionResource() {
+	private DBI jdbi;
+
+	private AceDao aceDao = new AceDao();
+
+	public StartE2ESessionResource(DBI jdbi) {
 		super();
+		this.jdbi = jdbi;
 	}
 
 	@PUT
 	@Timed
 	@Path("/start")
-	public Response put(@NotNull List<TimelineItem> timeline) throws JsonProcessingException {
+	public Response put(@NotNull List<ITimelineItem> timeline) throws JsonProcessingException {
 		if (E2E.sessionIsRunning) {
 			throw new WebApplicationException("session is already running", Response.Status.SERVICE_UNAVAILABLE);
 		}
 		E2E.sessionIsRunning = true;
 		E2E.sessionStartedAt = new DateTime(System.currentTimeMillis());
 		E2E.timeline = timeline;
-		return Response.ok().build();
+		
+		Handle handle = jdbi.open();
+		try {
+			handle.getConnection().setAutoCommit(false);
+			
+			aceDao.truncateErrorTimelineTable(handle);
+			aceDao.truncateTimelineTable(handle);
+
+			AppUtils.truncateAllViews(handle);
+
+			handle.commit();
+
+			return Response.ok().build();
+		} catch (Exception e) {
+			handle.rollback();
+			throw new WebApplicationException(e);
+		} finally {
+			handle.close();
+		}
 	}
 
 }
