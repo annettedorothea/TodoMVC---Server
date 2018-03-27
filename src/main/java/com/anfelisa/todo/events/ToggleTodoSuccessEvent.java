@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.TodoToggleData;
 
-public class ToggleTodoEvent extends AbstractToggleTodoEvent {
+public class ToggleTodoSuccessEvent extends AbstractToggleTodoSuccessEvent {
 
-	static final Logger LOG = LoggerFactory.getLogger(ToggleTodoEvent.class);
+	static final Logger LOG = LoggerFactory.getLogger(ToggleTodoSuccessEvent.class);
 
-	public ToggleTodoEvent(TodoToggleData eventParam, DatabaseHandle databaseHandle) {
+	public ToggleTodoSuccessEvent(TodoToggleData eventParam, DatabaseHandle databaseHandle) {
 		super(eventParam, databaseHandle);
 	}
 
-	public ToggleTodoEvent(DatabaseHandle databaseHandle) {
+	public ToggleTodoSuccessEvent(DatabaseHandle databaseHandle) {
 		this(null, databaseHandle);
 	}
 

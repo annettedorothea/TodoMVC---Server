@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.ClearDoneData;
 
-public class ClearDoneEvent extends AbstractClearDoneEvent {
+public class ClearDoneSuccessEvent extends AbstractClearDoneSuccessEvent {
 
-	static final Logger LOG = LoggerFactory.getLogger(ClearDoneEvent.class);
+	static final Logger LOG = LoggerFactory.getLogger(ClearDoneSuccessEvent.class);
 
-	public ClearDoneEvent(ClearDoneData eventParam, DatabaseHandle databaseHandle) {
+	public ClearDoneSuccessEvent(ClearDoneData eventParam, DatabaseHandle databaseHandle) {
 		super(eventParam, databaseHandle);
 	}
 
-	public ClearDoneEvent(DatabaseHandle databaseHandle) {
+	public ClearDoneSuccessEvent(DatabaseHandle databaseHandle) {
 		this(null, databaseHandle);
 	}
 

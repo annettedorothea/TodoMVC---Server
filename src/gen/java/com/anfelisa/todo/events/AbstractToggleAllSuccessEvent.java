@@ -7,14 +7,14 @@ import com.anfelisa.ace.Event;
 
 import com.anfelisa.todo.data.ToggleAllData;
 
-public abstract class AbstractToggleAllEvent extends Event<ToggleAllData> {
+public abstract class AbstractToggleAllSuccessEvent extends Event<ToggleAllData> {
 
-	public AbstractToggleAllEvent(ToggleAllData eventParam, DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.ToggleAllEvent", eventParam, databaseHandle);
+	public AbstractToggleAllSuccessEvent(ToggleAllData eventParam, DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.ToggleAllSuccessEvent", eventParam, databaseHandle);
 	}
 	
-	public AbstractToggleAllEvent(DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.ToggleAllEvent", null, databaseHandle);
+	public AbstractToggleAllSuccessEvent(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.ToggleAllSuccessEvent", null, databaseHandle);
 	}
 	
 	public void initEventData(String json) {

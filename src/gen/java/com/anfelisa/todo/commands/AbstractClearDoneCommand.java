@@ -23,7 +23,7 @@ public abstract class AbstractClearDoneCommand extends Command<ClearDoneData> {
 	public void publishEvents() {
 		switch (this.commandData.getOutcome()) {
 		case success:
-			new com.anfelisa.todo.events.ClearDoneEvent(this.commandData, databaseHandle).publish();
+			new com.anfelisa.todo.events.ClearDoneSuccessEvent(this.commandData, databaseHandle).publish();
 			break;
 		default:
 			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());

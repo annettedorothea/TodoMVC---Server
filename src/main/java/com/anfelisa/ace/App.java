@@ -27,7 +27,7 @@ public class App extends Application<AppConfiguration> {
 	}
 
 	public static String getVersion() {
-		return "1.1.0";
+		return "2.0.0";
 	}
 
 	@Override

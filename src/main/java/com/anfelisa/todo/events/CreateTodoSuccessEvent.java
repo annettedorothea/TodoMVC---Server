@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.TodoData;
 
-public class CreateTodoEvent extends AbstractCreateTodoEvent {
+public class CreateTodoSuccessEvent extends AbstractCreateTodoSuccessEvent {
 
-	static final Logger LOG = LoggerFactory.getLogger(CreateTodoEvent.class);
+	static final Logger LOG = LoggerFactory.getLogger(CreateTodoSuccessEvent.class);
 
-	public CreateTodoEvent(TodoData eventParam, DatabaseHandle databaseHandle) {
+	public CreateTodoSuccessEvent(TodoData eventParam, DatabaseHandle databaseHandle) {
 		super(eventParam, databaseHandle);
 	}
 
-	public CreateTodoEvent(DatabaseHandle databaseHandle) {
+	public CreateTodoSuccessEvent(DatabaseHandle databaseHandle) {
 		this(null, databaseHandle);
 	}
 

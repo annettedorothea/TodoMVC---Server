@@ -23,7 +23,7 @@ public abstract class AbstractDeleteTodoCommand extends Command<TodoIdData> {
 	public void publishEvents() {
 		switch (this.commandData.getOutcome()) {
 		case success:
-			new com.anfelisa.todo.events.DeleteTodoEvent(this.commandData, databaseHandle).publish();
+			new com.anfelisa.todo.events.DeleteTodoSuccessEvent(this.commandData, databaseHandle).publish();
 			break;
 		default:
 			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());

@@ -7,14 +7,14 @@ import com.anfelisa.ace.Event;
 
 import com.anfelisa.todo.data.ClearDoneData;
 
-public abstract class AbstractClearDoneEvent extends Event<ClearDoneData> {
+public abstract class AbstractClearDoneSuccessEvent extends Event<ClearDoneData> {
 
-	public AbstractClearDoneEvent(ClearDoneData eventParam, DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.ClearDoneEvent", eventParam, databaseHandle);
+	public AbstractClearDoneSuccessEvent(ClearDoneData eventParam, DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.ClearDoneSuccessEvent", eventParam, databaseHandle);
 	}
 	
-	public AbstractClearDoneEvent(DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.ClearDoneEvent", null, databaseHandle);
+	public AbstractClearDoneSuccessEvent(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.ClearDoneSuccessEvent", null, databaseHandle);
 	}
 	
 	public void initEventData(String json) {

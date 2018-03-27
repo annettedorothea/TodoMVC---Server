@@ -7,14 +7,14 @@ import com.anfelisa.ace.Event;
 
 import com.anfelisa.todo.data.TodoData;
 
-public abstract class AbstractUpdateTodoEvent extends Event<TodoData> {
+public abstract class AbstractUpdateTodoSuccessEvent extends Event<TodoData> {
 
-	public AbstractUpdateTodoEvent(TodoData eventParam, DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.UpdateTodoEvent", eventParam, databaseHandle);
+	public AbstractUpdateTodoSuccessEvent(TodoData eventParam, DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.UpdateTodoSuccessEvent", eventParam, databaseHandle);
 	}
 	
-	public AbstractUpdateTodoEvent(DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.UpdateTodoEvent", null, databaseHandle);
+	public AbstractUpdateTodoSuccessEvent(DatabaseHandle databaseHandle) {
+		super("com.anfelisa.todo.events.UpdateTodoSuccessEvent", null, databaseHandle);
 	}
 	
 	public void initEventData(String json) {

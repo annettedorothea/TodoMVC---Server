@@ -23,7 +23,7 @@ public abstract class AbstractCreateTodoCommand extends Command<TodoData> {
 	public void publishEvents() {
 		switch (this.commandData.getOutcome()) {
 		case success:
-			new com.anfelisa.todo.events.CreateTodoEvent(this.commandData, databaseHandle).publish();
+			new com.anfelisa.todo.events.CreateTodoSuccessEvent(this.commandData, databaseHandle).publish();
 			break;
 		default:
 			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());

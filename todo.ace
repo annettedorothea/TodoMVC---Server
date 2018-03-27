@@ -2,6 +2,45 @@ com.anfelisa.todo
 
 target JAVA
 
+GET GetAllTodos uses TodoList
+POST CreateTodo uses Todo {
+	on success (Todo.create)
+} 
+PUT ToggleTodo uses TodoToggle {
+	on success (Todo.toggle)
+}
+PUT ToggleAll uses ToggleAll {
+	on success (Todo.toggleAll)
+}
+PUT UpdateTodo uses Todo {
+	on success (Todo.update)
+}
+DELETE DeleteTodo uses TodoId {
+	on success (Todo.delete)
+}
+DELETE ClearDone uses ClearDone {
+	on success (Todo.clearDone)
+}
+
+views {
+	Todo {
+		create(Todo)
+		toggle(TodoToggle)
+		toggleAll(ToggleAll)
+		delete(TodoId)
+		update(Todo)
+		clearDone(ClearDone)
+	}
+	TodoHistory {
+		create(Todo)
+		toggle(TodoToggle)
+		toggleAll(ToggleAll)
+		delete(TodoId)
+		update(Todo)
+		clearDone(ClearDone)
+	}
+}
+
 models {
 	schema public
 	
@@ -80,61 +119,3 @@ data {
 	TodoHistory : ( TodoHistory )
 }
 
-actions {
-	GET GetAllTodos uses TodoList
-	POST CreateTodo uses Todo executes CreateTodo
-	PUT ToggleTodo uses TodoToggle executes ToggleTodo
-	PUT ToggleAll uses ToggleAll executes ToggleAll
-	PUT UpdateTodo uses Todo executes UpdateTodo
-	DELETE DeleteTodo uses TodoId executes DeleteTodo
-	DELETE ClearDone uses ClearDone executes ClearDone
-}
-
-commands {
-	CreateTodo uses Todo {
-		on success publishes (CreateTodo)
-	}
-	ToggleTodo uses TodoToggle {
-		on success publishes (ToggleTodo)
-	}
-	ToggleAll uses ToggleAll {
-		on success publishes (ToggleAll)
-	}
-	UpdateTodo uses Todo {
-		on success publishes (UpdateTodo)
-	}
-	DeleteTodo uses TodoId {
-		on success publishes (DeleteTodo)
-	}
-	ClearDone uses ClearDone {
-		on success publishes (ClearDone)
-	}
-}
-
-events {
-	CreateTodo uses Todo listenedToBy ( Todo.create TodoHistory.create )
-	ToggleTodo uses TodoToggle listenedToBy ( Todo.toggle TodoHistory.toggle )
-	ToggleAll uses ToggleAll listenedToBy ( Todo.toggleAll TodoHistory.toggleAll )
-	UpdateTodo uses Todo listenedToBy ( Todo.update TodoHistory.update )
-	DeleteTodo uses TodoId listenedToBy ( TodoHistory.delete Todo.delete  )
-	ClearDone uses ClearDone listenedToBy ( TodoHistory.clearDone Todo.clearDone )
-}
-
-views {
-	Todo {
-		create(Todo)
-		toggle(TodoToggle)
-		toggleAll(ToggleAll)
-		delete(TodoId)
-		update(Todo)
-		clearDone(ClearDone)
-	}
-	external TodoHistory {
-		create(Todo)
-		toggle(TodoToggle)
-		toggleAll(ToggleAll)
-		delete(TodoId)
-		update(Todo)
-		clearDone(ClearDone)
-	}
-}

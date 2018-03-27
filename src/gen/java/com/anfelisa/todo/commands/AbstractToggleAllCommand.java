@@ -23,7 +23,7 @@ public abstract class AbstractToggleAllCommand extends Command<ToggleAllData> {
 	public void publishEvents() {
 		switch (this.commandData.getOutcome()) {
 		case success:
-			new com.anfelisa.todo.events.ToggleAllEvent(this.commandData, databaseHandle).publish();
+			new com.anfelisa.todo.events.ToggleAllSuccessEvent(this.commandData, databaseHandle).publish();
 			break;
 		default:
 			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());

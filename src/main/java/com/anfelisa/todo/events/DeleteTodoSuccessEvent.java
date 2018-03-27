@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.TodoIdData;
 
-public class DeleteTodoEvent extends AbstractDeleteTodoEvent {
+public class DeleteTodoSuccessEvent extends AbstractDeleteTodoSuccessEvent {
 
-	static final Logger LOG = LoggerFactory.getLogger(DeleteTodoEvent.class);
+	static final Logger LOG = LoggerFactory.getLogger(DeleteTodoSuccessEvent.class);
 
-	public DeleteTodoEvent(TodoIdData eventParam, DatabaseHandle databaseHandle) {
+	public DeleteTodoSuccessEvent(TodoIdData eventParam, DatabaseHandle databaseHandle) {
 		super(eventParam, databaseHandle);
 	}
 
-	public DeleteTodoEvent(DatabaseHandle databaseHandle) {
+	public DeleteTodoSuccessEvent(DatabaseHandle databaseHandle) {
 		this(null, databaseHandle);
 	}
 
