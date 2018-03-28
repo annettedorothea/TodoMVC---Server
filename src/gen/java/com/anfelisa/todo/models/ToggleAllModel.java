@@ -13,7 +13,6 @@ public class ToggleAllModel implements IToggleAllModel {
 	private org.joda.time.DateTime updatedDateTime;
 	
 
-
 	public ToggleAllModel(
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
@@ -39,7 +38,6 @@ public class ToggleAllModel implements IToggleAllModel {
 	}
 	
 
-		
 }
 
 /*       S.D.G.       */

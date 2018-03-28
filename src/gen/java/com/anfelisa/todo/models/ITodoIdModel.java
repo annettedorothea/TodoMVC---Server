@@ -7,7 +7,6 @@ public interface ITodoIdModel {
 
 	Integer getId();
 
-
 }
 
 /*       S.D.G.       */

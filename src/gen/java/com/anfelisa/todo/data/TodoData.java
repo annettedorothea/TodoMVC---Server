@@ -35,7 +35,6 @@ public class TodoData implements ITodoData {
 	private org.joda.time.DateTime updatedDateTime;
 	
 
-	
 	private org.joda.time.DateTime systemTime;
 	
 	public TodoData(
@@ -117,7 +116,6 @@ public class TodoData implements ITodoData {
 		this.updatedDateTime = updatedDateTime;
 		return this;
 	}
-	
 	
 
 	@JsonProperty

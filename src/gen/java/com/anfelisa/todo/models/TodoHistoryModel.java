@@ -25,7 +25,6 @@ public class TodoHistoryModel implements ITodoHistoryModel {
 	private String action;
 	
 
-
 	public TodoHistoryModel(
 		@JsonProperty("id") Integer id,
 		@JsonProperty("todoId") Integer todoId,
@@ -101,7 +100,6 @@ public class TodoHistoryModel implements ITodoHistoryModel {
 	}
 	
 
-		
 }
 
 /*       S.D.G.       */

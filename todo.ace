@@ -2,24 +2,26 @@ com.anfelisa.todo
 
 target JAVA
 
-GET GetAllTodos uses TodoList
-POST CreateTodo uses Todo {
-	on success (Todo.create)
-} 
-PUT ToggleTodo uses TodoToggle {
-	on success (Todo.toggle)
-}
-PUT ToggleAll uses ToggleAll {
-	on success (Todo.toggleAll)
-}
-PUT UpdateTodo uses Todo {
-	on success (Todo.update)
-}
-DELETE DeleteTodo uses TodoId {
-	on success (Todo.delete)
-}
-DELETE ClearDone uses ClearDone {
-	on success (Todo.clearDone)
+ACE {
+	GET GetAllTodos uses TodoList
+	POST CreateTodo uses Todo {
+		on success (Todo.create)
+	} 
+	PUT ToggleTodo uses TodoToggle {
+		on success (Todo.toggle)
+	}
+	PUT ToggleAll uses ToggleAll {
+		on success (Todo.toggleAll)
+	}
+	PUT UpdateTodo uses Todo {
+		on success (Todo.update)
+	}
+	DELETE DeleteTodo uses TodoId {
+		on success (Todo.delete)
+	}
+	DELETE ClearDone uses ClearDone {
+		on success (Todo.clearDone)
+	}
 }
 
 views {
@@ -45,66 +47,52 @@ models {
 	schema public
 	
 	persistent Todo {
-		primitiveAttributes {
-			Unique PrimaryKey NotNull Serial id
-			NotNull String description
-			NotNull Boolean done
-			DateTime createdDateTime
-			DateTime updatedDateTime
-		}
+		Unique PrimaryKey NotNull Serial id
+		NotNull String description
+		NotNull Boolean done
+		DateTime createdDateTime
+		DateTime updatedDateTime
 	}
 	
 	persistent TodoHistory {
-		primitiveAttributes {
-			Unique PrimaryKey NotNull Serial id
-			Integer todoId
-			String description
-			Boolean done
-			NotNull Boolean deleted
-			DateTime changedTime
-			NotNull String action
-		}
+		Unique PrimaryKey NotNull Serial id
+		Integer todoId
+		String description
+		Boolean done
+		NotNull Boolean deleted
+		DateTime changedTime
+		NotNull String action
 	}
 	
 	persistent Bug {
-		primitiveAttributes {
-			Unique PrimaryKey NotNull Serial id
-			NotNull String description
-			NotNull String timeline
-			NotNull String reporter
-			NotNull Boolean resolved
-			DateTime createdDateTime
-			DateTime updatedDateTime
-			NotNull String serverVersion
-			NotNull String clientVersion
-			NotNull String device
-		}
+		Unique PrimaryKey NotNull Serial id
+		NotNull String description
+		NotNull String timeline
+		NotNull String reporter
+		NotNull Boolean resolved
+		DateTime createdDateTime
+		DateTime updatedDateTime
+		NotNull String serverVersion
+		NotNull String clientVersion
+		NotNull String device
 	}
 	
 	TodoList {
-		complexAttributes {
-			List Todo todoList
-		}
+		List Todo todoList
 	}
 	
 	TodoId {
-		primitiveAttributes {
-			NotNull Serial id
-		}
+		NotNull Serial id
 	}
 
 	TodoToggle {
-		primitiveAttributes {
-			NotNull Serial id
-			DateTime updatedDateTime
-		}
+		NotNull Serial id
+		DateTime updatedDateTime
 	}
 
 	ToggleAll {
-		primitiveAttributes {
-			NotNull Boolean done
-			DateTime updatedDateTime
-		}
+		NotNull Boolean done
+		DateTime updatedDateTime
 	}
 	
 }

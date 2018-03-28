@@ -7,14 +7,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 @SuppressWarnings("all")
 public class TodoListModel implements ITodoListModel {
 
-
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
 	
 
 	public TodoListModel(
+		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList
 	) {
+		this.todoList = todoList;
 	}
-
 
 	@JsonProperty
 	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
@@ -24,7 +24,7 @@ public class TodoListModel implements ITodoListModel {
 		this.todoList = todoList;
 	}
 	
-		
+
 }
 
 /*       S.D.G.       */

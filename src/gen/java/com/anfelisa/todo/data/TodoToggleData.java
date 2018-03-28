@@ -27,7 +27,6 @@ public class TodoToggleData implements ITodoToggleData {
 	private org.joda.time.DateTime updatedDateTime;
 	
 
-	
 	private org.joda.time.DateTime systemTime;
 	
 	public TodoToggleData(
@@ -67,7 +66,6 @@ public class TodoToggleData implements ITodoToggleData {
 		this.updatedDateTime = updatedDateTime;
 		return this;
 	}
-	
 	
 
 	@JsonProperty

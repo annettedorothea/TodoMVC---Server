@@ -25,7 +25,6 @@ public class TodoIdData implements ITodoIdData {
 	private Integer id;
 	
 
-	
 	private org.joda.time.DateTime systemTime;
 	
 	public TodoIdData(
@@ -51,7 +50,6 @@ public class TodoIdData implements ITodoIdData {
 		this.id = id;
 		return this;
 	}
-	
 	
 
 	@JsonProperty

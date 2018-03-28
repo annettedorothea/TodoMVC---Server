@@ -8,7 +8,6 @@ public interface IToggleAllModel {
 	Boolean getDone();
 	org.joda.time.DateTime getUpdatedDateTime();
 
-
 }
 
 /*       S.D.G.       */

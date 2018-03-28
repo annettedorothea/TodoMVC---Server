@@ -13,7 +13,6 @@ public class TodoToggleModel implements ITodoToggleModel {
 	private org.joda.time.DateTime updatedDateTime;
 	
 
-
 	public TodoToggleModel(
 		@JsonProperty("id") Integer id,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
@@ -39,7 +38,6 @@ public class TodoToggleModel implements ITodoToggleModel {
 	}
 	
 
-		
 }
 
 /*       S.D.G.       */

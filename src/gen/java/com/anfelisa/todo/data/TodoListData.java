@@ -21,17 +21,22 @@ public class TodoListData implements ITodoListData {
 	
 	private String createdId;
 	
-
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
 	
+
 	private org.joda.time.DateTime systemTime;
 	
 	public TodoListData(
-		@JsonProperty("uuid") String uuid
+		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList
+,		@JsonProperty("uuid") String uuid
 	) {
+		this.todoList = todoList;
 		this.uuid = uuid;
 	}
 
+	public TodoListData( String uuid ) {
+		this.uuid = uuid;
+	}
 
 	@JsonProperty
 	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
@@ -39,6 +44,10 @@ public class TodoListData implements ITodoListData {
 	}
 	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
 		this.todoList = todoList;
+	}
+	public TodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
+		this.todoList = todoList;
+		return this;
 	}
 	
 

@@ -21,7 +21,6 @@ public class TodoModel implements ITodoModel {
 	private org.joda.time.DateTime updatedDateTime;
 	
 
-
 	public TodoModel(
 		@JsonProperty("id") Integer id,
 		@JsonProperty("description") String description,
@@ -77,7 +76,6 @@ public class TodoModel implements ITodoModel {
 	}
 	
 
-		
 }
 
 /*       S.D.G.       */

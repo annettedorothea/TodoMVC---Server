@@ -13,6 +13,7 @@ public class TodoListMapper implements ResultSetMapper<ITodoListModel> {
 	
 	public ITodoListModel map(int index, ResultSet r, StatementContext ctx) throws SQLException {
 		return new TodoListModel(
+			null
 		);
 	}
 }

@@ -8,7 +8,6 @@ public interface ITodoToggleModel {
 	Integer getId();
 	org.joda.time.DateTime getUpdatedDateTime();
 
-
 }
 
 /*       S.D.G.       */

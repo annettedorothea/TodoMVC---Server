@@ -39,7 +39,6 @@ public class TodoHistoryData implements ITodoHistoryData {
 	private String action;
 	
 
-	
 	private org.joda.time.DateTime systemTime;
 	
 	public TodoHistoryData(
@@ -149,7 +148,6 @@ public class TodoHistoryData implements ITodoHistoryData {
 		this.action = action;
 		return this;
 	}
-	
 	
 
 	@JsonProperty

@@ -13,7 +13,6 @@ public interface ITodoHistoryModel {
 	org.joda.time.DateTime getChangedTime();
 	String getAction();
 
-
 }
 
 /*       S.D.G.       */

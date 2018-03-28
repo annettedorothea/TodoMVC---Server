@@ -11,7 +11,6 @@ public interface ITodoModel {
 	org.joda.time.DateTime getCreatedDateTime();
 	org.joda.time.DateTime getUpdatedDateTime();
 
-
 }
 
 /*       S.D.G.       */

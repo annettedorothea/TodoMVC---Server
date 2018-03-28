@@ -11,7 +11,6 @@ public class TodoIdModel implements ITodoIdModel {
 	private Integer id;
 	
 
-
 	public TodoIdModel(
 		@JsonProperty("id") Integer id
 	) {
@@ -27,7 +26,6 @@ public class TodoIdModel implements ITodoIdModel {
 	}
 	
 
-		
 }
 
 /*       S.D.G.       */

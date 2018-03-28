@@ -36,7 +36,6 @@ public class BugModel implements IBugModel {
 	private String device;
 	
 
-
 	public BugModel(
 		@JsonProperty("id") Integer id,
 		@JsonProperty("description") String description,
@@ -142,7 +141,6 @@ public class BugModel implements IBugModel {
 	}
 	
 
-		
 }
 
 /*       S.D.G.       */

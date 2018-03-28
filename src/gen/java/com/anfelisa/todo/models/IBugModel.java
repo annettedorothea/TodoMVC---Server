@@ -16,7 +16,6 @@ public interface IBugModel {
 	String getClientVersion();
 	String getDevice();
 
-
 }
 
 /*       S.D.G.       */
