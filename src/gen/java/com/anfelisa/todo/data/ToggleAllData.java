@@ -21,6 +21,8 @@ public class ToggleAllData implements IToggleAllData {
 	
 	private String createdId;
 	
+	private String[] notifiedListeners;
+	
 	@NotNull
 	private Boolean done;
 	
@@ -37,6 +39,7 @@ public class ToggleAllData implements IToggleAllData {
 		this.done = done;
 		this.updatedDateTime = updatedDateTime;
 		this.uuid = uuid;
+		
 	}
 
 	public ToggleAllData( String uuid ) {
@@ -100,6 +103,26 @@ public class ToggleAllData implements IToggleAllData {
 	@JsonProperty
 	public void setOutcome(String outcome) {
 		this.outcome = outcome;
+	}
+
+	@Override
+	@JsonProperty
+	public String[] getNotifiedListeners() {
+		return notifiedListeners;
+	}
+
+	@Override
+	@JsonProperty
+	public void setNotifiedListeners(String[] listeners) {
+		this.notifiedListeners = listeners;
+	}
+
+	@Override
+	public Object toPresentationalData() {
+		return new ToggleAllPresentationalData(
+			this.done,
+			this.updatedDateTime
+		);
 	}
 
 }

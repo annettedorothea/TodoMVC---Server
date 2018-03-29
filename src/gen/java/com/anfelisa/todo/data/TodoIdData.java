@@ -21,6 +21,8 @@ public class TodoIdData implements ITodoIdData {
 	
 	private String createdId;
 	
+	private String[] notifiedListeners;
+	
 	@NotNull
 	private Integer id;
 	
@@ -33,6 +35,7 @@ public class TodoIdData implements ITodoIdData {
 	) {
 		this.id = id;
 		this.uuid = uuid;
+		
 	}
 
 	public TodoIdData( String uuid ) {
@@ -84,6 +87,25 @@ public class TodoIdData implements ITodoIdData {
 	@JsonProperty
 	public void setOutcome(String outcome) {
 		this.outcome = outcome;
+	}
+
+	@Override
+	@JsonProperty
+	public String[] getNotifiedListeners() {
+		return notifiedListeners;
+	}
+
+	@Override
+	@JsonProperty
+	public void setNotifiedListeners(String[] listeners) {
+		this.notifiedListeners = listeners;
+	}
+
+	@Override
+	public Object toPresentationalData() {
+		return new TodoIdPresentationalData(
+			this.id
+		);
 	}
 
 }

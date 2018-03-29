@@ -25,6 +25,11 @@ public abstract class AbstractClearDoneSuccessEvent extends Event<ClearDoneData>
 		}
 	}
 	
+	protected String[] getNotifiedListeners() {
+		return new String[] { "com.anfelisa.todo.views.TodoView.clearDone" };
+	}
+	
+	
 
 }
 

@@ -21,6 +21,8 @@ public class TodoListData implements ITodoListData {
 	
 	private String createdId;
 	
+	private String[] notifiedListeners;
+	
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
 	
 
@@ -32,6 +34,7 @@ public class TodoListData implements ITodoListData {
 	) {
 		this.todoList = todoList;
 		this.uuid = uuid;
+		
 	}
 
 	public TodoListData( String uuid ) {
@@ -83,6 +86,25 @@ public class TodoListData implements ITodoListData {
 	@JsonProperty
 	public void setOutcome(String outcome) {
 		this.outcome = outcome;
+	}
+
+	@Override
+	@JsonProperty
+	public String[] getNotifiedListeners() {
+		return notifiedListeners;
+	}
+
+	@Override
+	@JsonProperty
+	public void setNotifiedListeners(String[] listeners) {
+		this.notifiedListeners = listeners;
+	}
+
+	@Override
+	public Object toPresentationalData() {
+		return new TodoListPresentationalData(
+			this.todoList
+		);
 	}
 
 }

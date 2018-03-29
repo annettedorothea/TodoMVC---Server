@@ -25,6 +25,11 @@ public abstract class AbstractCreateTodoSuccessEvent extends Event<TodoData> {
 		}
 	}
 	
+	protected String[] getNotifiedListeners() {
+		return new String[] { "com.anfelisa.todo.views.TodoView.create" };
+	}
+	
+	
 
 }
 

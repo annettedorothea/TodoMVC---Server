@@ -20,6 +20,8 @@ public class ClearDoneData implements IClearDoneData {
 	
 	private String createdId;
 	
+	private String[] notifiedListeners;
+	
 
 	private org.joda.time.DateTime systemTime;
 	
@@ -27,6 +29,7 @@ public class ClearDoneData implements IClearDoneData {
 		@JsonProperty("uuid") String uuid
 	) {
 		this.uuid = uuid;
+		
 	}
 
 
@@ -63,6 +66,24 @@ public class ClearDoneData implements IClearDoneData {
 	@JsonProperty
 	public void setOutcome(String outcome) {
 		this.outcome = outcome;
+	}
+
+	@Override
+	@JsonProperty
+	public String[] getNotifiedListeners() {
+		return notifiedListeners;
+	}
+
+	@Override
+	@JsonProperty
+	public void setNotifiedListeners(String[] listeners) {
+		this.notifiedListeners = listeners;
+	}
+
+	@Override
+	public Object toPresentationalData() {
+		return new ClearDonePresentationalData(
+		);
 	}
 
 }

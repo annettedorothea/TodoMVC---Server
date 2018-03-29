@@ -13,15 +13,7 @@ import com.anfelisa.ace.IDataContainer;
 import com.anfelisa.todo.models.ITodoModel;
 
 @SuppressWarnings("all")
-public class TodoData implements ITodoData {
-	
-	private String uuid;
-	
-	private String outcome;
-	
-	private String createdId;
-	
-	private String[] notifiedListeners;
+public class TodoPresentationalData implements ITodoPresentationalData {
 	
 	@NotNull
 	private Integer id;
@@ -36,28 +28,20 @@ public class TodoData implements ITodoData {
 	
 	private org.joda.time.DateTime updatedDateTime;
 	
-
-	private org.joda.time.DateTime systemTime;
 	
-	public TodoData(
+	public TodoPresentationalData(
 		@JsonProperty("id") Integer id,
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("createdDateTime") org.joda.time.DateTime createdDateTime,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
-,		@JsonProperty("uuid") String uuid
 	) {
 		this.id = id;
 		this.description = description;
 		this.done = done;
 		this.createdDateTime = createdDateTime;
 		this.updatedDateTime = updatedDateTime;
-		this.uuid = uuid;
 		
-	}
-
-	public TodoData( String uuid ) {
-		this.uuid = uuid;
 	}
 
 	@JsonProperty
@@ -67,7 +51,7 @@ public class TodoData implements ITodoData {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public TodoData withId(Integer id) {
+	public TodoPresentationalData withId(Integer id) {
 		this.id = id;
 		return this;
 	}
@@ -79,7 +63,7 @@ public class TodoData implements ITodoData {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public TodoData withDescription(String description) {
+	public TodoPresentationalData withDescription(String description) {
 		this.description = description;
 		return this;
 	}
@@ -91,7 +75,7 @@ public class TodoData implements ITodoData {
 	public void setDone(Boolean done) {
 		this.done = done;
 	}
-	public TodoData withDone(Boolean done) {
+	public TodoPresentationalData withDone(Boolean done) {
 		this.done = done;
 		return this;
 	}
@@ -103,7 +87,7 @@ public class TodoData implements ITodoData {
 	public void setCreatedDateTime(org.joda.time.DateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
 	}
-	public TodoData withCreatedDateTime(org.joda.time.DateTime createdDateTime) {
+	public TodoPresentationalData withCreatedDateTime(org.joda.time.DateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
 		return this;
 	}
@@ -115,69 +99,11 @@ public class TodoData implements ITodoData {
 	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}
-	public TodoData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
+	public TodoPresentationalData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 		return this;
 	}
 	
-
-	@JsonProperty
-	public String getUuid() {
-		return this.uuid;
-	}
-
-	@JsonIgnore
-	public String getCreatedId() {
-		return createdId;
-	}
-
-	public void setCreatedId(String createdId) {
-		this.createdId = createdId;
-	}
-
-	@JsonProperty
-	public org.joda.time.DateTime getSystemTime() {
-		return systemTime;
-	}
-
-	@JsonProperty
-	public void setSystemTime(org.joda.time.DateTime systemTime) {
-		this.systemTime = systemTime;
-	}
-
-	@JsonProperty
-	public String getOutcome() {
-		return outcome;
-	}
-
-	@JsonProperty
-	public void setOutcome(String outcome) {
-		this.outcome = outcome;
-	}
-
-	@Override
-	@JsonProperty
-	public String[] getNotifiedListeners() {
-		return notifiedListeners;
-	}
-
-	@Override
-	@JsonProperty
-	public void setNotifiedListeners(String[] listeners) {
-		this.notifiedListeners = listeners;
-	}
-
-	@Override
-	public Object toPresentationalData() {
-		return new TodoPresentationalData(
-			this.id,
-			this.description,
-			this.done,
-			this.createdDateTime,
-			this.updatedDateTime
-		);
-	}
-
 }
 
 /*       S.D.G.       */

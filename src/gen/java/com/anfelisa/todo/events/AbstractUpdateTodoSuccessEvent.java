@@ -25,6 +25,11 @@ public abstract class AbstractUpdateTodoSuccessEvent extends Event<TodoData> {
 		}
 	}
 	
+	protected String[] getNotifiedListeners() {
+		return new String[] { "com.anfelisa.todo.views.TodoView.update" };
+	}
+	
+	
 
 }
 

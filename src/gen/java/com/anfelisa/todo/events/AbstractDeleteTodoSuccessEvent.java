@@ -25,6 +25,11 @@ public abstract class AbstractDeleteTodoSuccessEvent extends Event<TodoIdData> {
 		}
 	}
 	
+	protected String[] getNotifiedListeners() {
+		return new String[] { "com.anfelisa.todo.views.TodoView.delete" };
+	}
+	
+	
 
 }
 

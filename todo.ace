@@ -33,14 +33,6 @@ views {
 		update(Todo)
 		clearDone(ClearDone)
 	}
-	TodoHistory {
-		create(Todo)
-		toggle(TodoToggle)
-		toggleAll(ToggleAll)
-		delete(TodoId)
-		update(Todo)
-		clearDone(ClearDone)
-	}
 }
 
 models {
@@ -52,29 +44,6 @@ models {
 		NotNull Boolean done
 		DateTime createdDateTime
 		DateTime updatedDateTime
-	}
-	
-	persistent TodoHistory {
-		Unique PrimaryKey NotNull Serial id
-		Integer todoId
-		String description
-		Boolean done
-		NotNull Boolean deleted
-		DateTime changedTime
-		NotNull String action
-	}
-	
-	persistent Bug {
-		Unique PrimaryKey NotNull Serial id
-		NotNull String description
-		NotNull String timeline
-		NotNull String reporter
-		NotNull Boolean resolved
-		DateTime createdDateTime
-		DateTime updatedDateTime
-		NotNull String serverVersion
-		NotNull String clientVersion
-		NotNull String device
 	}
 	
 	TodoList {
@@ -104,6 +73,5 @@ data {
 	TodoToggle : ( TodoToggle )
 	ToggleAll : ( ToggleAll )
 	ClearDone : (  )
-	TodoHistory : ( TodoHistory )
 }
 

@@ -21,6 +21,8 @@ public class TodoToggleData implements ITodoToggleData {
 	
 	private String createdId;
 	
+	private String[] notifiedListeners;
+	
 	@NotNull
 	private Integer id;
 	
@@ -37,6 +39,7 @@ public class TodoToggleData implements ITodoToggleData {
 		this.id = id;
 		this.updatedDateTime = updatedDateTime;
 		this.uuid = uuid;
+		
 	}
 
 	public TodoToggleData( String uuid ) {
@@ -100,6 +103,26 @@ public class TodoToggleData implements ITodoToggleData {
 	@JsonProperty
 	public void setOutcome(String outcome) {
 		this.outcome = outcome;
+	}
+
+	@Override
+	@JsonProperty
+	public String[] getNotifiedListeners() {
+		return notifiedListeners;
+	}
+
+	@Override
+	@JsonProperty
+	public void setNotifiedListeners(String[] listeners) {
+		this.notifiedListeners = listeners;
+	}
+
+	@Override
+	public Object toPresentationalData() {
+		return new TodoTogglePresentationalData(
+			this.id,
+			this.updatedDateTime
+		);
 	}
 
 }

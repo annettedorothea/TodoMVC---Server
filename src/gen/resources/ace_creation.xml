@@ -46,3 +46,6 @@
 	</column>
 </createTable>
 
+<addUniqueConstraint columnNames="type, uuid" tableName="timeline" />
+<addUniqueConstraint columnNames="type, uuid" tableName="errortimeline" />
+

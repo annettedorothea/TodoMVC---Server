@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
@@ -228,4 +229,27 @@
 			</column>
 		</createTable>
 	</changeSet>
+
+	<changeSet author="annette" id="005">
+		<addUniqueConstraint columnNames="type, uuid"
+			deferrable="true" tableName="timeline" />
+		<addUniqueConstraint columnNames="type, uuid"
+			deferrable="true" tableName="errortimeline" />
+		<dropTable tableName="todohistory" />
+		<dropTable tableName="scenarioresult" />
+		<dropTable tableName="scenario" />
+	</changeSet>
+
+	<changeSet author="annette" id="006">
+		<dropUniqueConstraint
+			constraintName="timeline_type_uuid_key" tableName="timeline" />
+		<dropUniqueConstraint
+			constraintName="errortimeline_type_uuid_key"
+			tableName="errortimeline" />
+		<addUniqueConstraint columnNames="type, uuid"
+			tableName="timeline" />
+		<addUniqueConstraint columnNames="type, uuid"
+			tableName="errortimeline" />
+	</changeSet>
+
 </databaseChangeLog>

@@ -25,6 +25,11 @@ public abstract class AbstractToggleTodoSuccessEvent extends Event<TodoToggleDat
 		}
 	}
 	
+	protected String[] getNotifiedListeners() {
+		return new String[] { "com.anfelisa.todo.views.TodoView.toggle" };
+	}
+	
+	
 
 }
 

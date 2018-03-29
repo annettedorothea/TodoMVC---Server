@@ -58,8 +58,11 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 		return databaseHandle;
 	}
 
+	protected abstract String[] getNotifiedListeners();
+
 	public void publish() {
 		this.prepareDataForView();
+		this.eventData.setNotifiedListeners(this.getNotifiedListeners());
 		AceController.addEventToTimeline(this);
 		this.notifyListeners();
 	}
