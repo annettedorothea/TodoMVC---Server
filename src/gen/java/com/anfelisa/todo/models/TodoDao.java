@@ -15,19 +15,20 @@ import com.anfelisa.ace.encryption.EncryptionService;
 @JsonIgnoreType
 public class TodoDao {
 	
-	public Integer insert(Handle handle, ITodoModel todoModel) {
-		Query<Map<String, Object>> statement = handle.createQuery("INSERT INTO public.todo (description, done, createddatetime, updateddatetime) VALUES (:description, :done, :createddatetime, :updateddatetime) RETURNING id");
+	public void insert(Handle handle, ITodoModel todoModel) {
+		Update statement = handle.createStatement("INSERT INTO public.todo (id, description, done, createddatetime, updateddatetime) VALUES (:id, :description, :done, :createddatetime, :updateddatetime)");
+		statement.bind("id",  todoModel.getId() );
 		statement.bind("description",  todoModel.getDescription() );
 		statement.bind("done",  todoModel.getDone() );
 		statement.bind("createddatetime",  todoModel.getCreatedDateTime() );
 		statement.bind("updateddatetime",  todoModel.getUpdatedDateTime() );
-		Map<String, Object> first = statement.first();
-		return (Integer) first.get("id");
+		statement.execute();
 	}
 	
 	
 	public void updateById(Handle handle, ITodoModel todoModel) {
-		Update statement = handle.createStatement("UPDATE public.todo SET description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
+		Update statement = handle.createStatement("UPDATE public.todo SET id = :id, description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
+		statement.bind("id",  todoModel.getId() );
 		statement.bind("description",  todoModel.getDescription() );
 		statement.bind("done",  todoModel.getDone() );
 		statement.bind("createddatetime",  todoModel.getCreatedDateTime() );
@@ -36,13 +37,13 @@ public class TodoDao {
 		statement.execute();
 	}
 
-	public void deleteById(Handle handle, Integer id) {
+	public void deleteById(Handle handle, String id) {
 		Update statement = handle.createStatement("DELETE FROM public.todo WHERE id = :id");
 		statement.bind("id", id);
 		statement.execute();
 	}
 
-	public ITodoModel selectById(Handle handle, Integer id) {
+	public ITodoModel selectById(Handle handle, String id) {
 		return handle.createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM public.todo WHERE id = :id")
 			.bind("id", id)
 			.map(new TodoMapper())
@@ -57,8 +58,6 @@ public class TodoDao {
 
 	public void truncate(Handle handle) {
 		Update statement = handle.createStatement("TRUNCATE public.todo CASCADE");
-		statement.execute();
-		statement = handle.createStatement("ALTER SEQUENCE public.todo_id_seq RESTART");
 		statement.execute();
 	}
 

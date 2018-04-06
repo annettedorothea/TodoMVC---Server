@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(as=TodoModel.class)
 public interface ITodoModel {
 
-	Integer getId();
+	String getId();
 	String getDescription();
 	Boolean getDone();
 	org.joda.time.DateTime getCreatedDateTime();

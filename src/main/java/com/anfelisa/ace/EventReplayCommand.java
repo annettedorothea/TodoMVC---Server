@@ -1,6 +1,7 @@
 package com.anfelisa.ace;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
@@ -36,36 +37,45 @@ public class EventReplayCommand extends EnvironmentCommand<AppConfiguration> {
 
 		final DBIFactory factory = new DBIFactory();
 
-		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
+		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
 
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
 		LOG.info("START EVENT REPLAY");
 		try {
 			databaseHandle.beginTransaction();
-
 			Handle handle = databaseHandle.getHandle();
-
 			AppUtils.truncateAllViews(handle);
 
+			List<ITimelineItem> timeline = aceDao.selectTimeline(handle);
+			E2E.timeline = timeline;
+
 			int eventCount = 0;
-			ITimelineItem nextAction = aceDao.selectNextAction(handle, null);
+			ITimelineItem nextAction = E2E.selectNextAction(null);
 			while (nextAction != null) {
 				if (!nextAction.getMethod().equalsIgnoreCase("GET")) {
-					ITimelineItem nextEvent = aceDao.selectEvent(handle, nextAction.getUuid());
-					LOG.info("PUBLISH EVENT " + nextEvent);
-					Class<?> cl = Class.forName(nextEvent.getName());
-					Constructor<?> con = cl.getConstructor(DatabaseHandle.class);
-					IEvent event = (IEvent) con.newInstance(databaseHandle);
-					event.initEventData(nextEvent.getData());
-					event.notifyListeners();
-					eventCount++;
+					ITimelineItem nextEvent = E2E.selectEvent(nextAction.getUuid());
+					if (nextEvent != null) {
+						try {
+							Class<?> cl = Class.forName(nextEvent.getName());
+							Constructor<?> con = cl.getConstructor(DatabaseHandle.class);
+							IEvent event = (IEvent) con.newInstance(databaseHandle);
+							event.initEventData(nextEvent.getData());
+							event.notifyListeners();
+							eventCount++;
+							LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
+						} catch (Exception e) {
+							LOG.error("failed to replay event " + nextEvent.getUuid() + " - " + nextEvent.getName());
+							LOG.error(e.getMessage());
+						}
+					}
 				}
-				nextAction = aceDao.selectNextAction(handle, nextAction.getUuid());
+				nextAction = E2E.selectNextAction(nextAction.getUuid());
 			}
 
 			databaseHandle.commitTransaction();
 
-			LOG.info("EVENT REPLAY FINISHED: successfully replayed " +  eventCount + " events");
+			LOG.info("EVENT REPLAY FINISHED: successfully replayed " + eventCount + " events");
+			
 		} catch (Exception e) {
 			databaseHandle.rollbackTransaction();
 			LOG.info("EVENT REPLAY ABORTED " + e.getMessage());

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(as=TodoIdModel.class)
 public interface ITodoIdModel {
 
-	Integer getId();
+	String getId();
 
 }
 

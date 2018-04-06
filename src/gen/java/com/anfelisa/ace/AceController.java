@@ -32,11 +32,6 @@ public class AceController {
 	}
 
 	public static void addActionToTimeline(IAction action) {
-		String uuid = action.getActionData().getUuid();
-		ITimelineItem item = aceDao.selectTimelineItem(action.getDatabaseHandle().getHandle(), uuid);
-		if (item != null) {
-			throw new WebApplicationException("duplicate uuid " + uuid);
-		}
 		try {
 			String json = mapper.writeValueAsString(action.getActionData());
 			addItemToTimeline("action", action.getHttpMethod().name(), action.getActionName(), json,

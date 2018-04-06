@@ -8,20 +8,20 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class TodoIdModel implements ITodoIdModel {
 
 	@NotNull
-	private Integer id;
+	private String id;
 	
 
 	public TodoIdModel(
-		@JsonProperty("id") Integer id
+		@JsonProperty("id") String id
 	) {
 		this.id = id;
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

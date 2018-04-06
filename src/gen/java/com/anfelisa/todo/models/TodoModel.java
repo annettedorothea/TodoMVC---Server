@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class TodoModel implements ITodoModel {
 
 	@NotNull
-	private Integer id;
+	private String id;
 	
 	@NotNull
 	private String description;
@@ -22,7 +22,7 @@ public class TodoModel implements ITodoModel {
 	
 
 	public TodoModel(
-		@JsonProperty("id") Integer id,
+		@JsonProperty("id") String id,
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("createdDateTime") org.joda.time.DateTime createdDateTime,
@@ -36,10 +36,10 @@ public class TodoModel implements ITodoModel {
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

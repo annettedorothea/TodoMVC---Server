@@ -10,10 +10,6 @@ public interface IDataContainer {
 
 	void setOutcome(String outcome);
 	
-	String getCreatedId();
-	
-	void setCreatedId(String createdId);
-	
 	DateTime getSystemTime();
 	
 	void setSystemTime(DateTime systemTime);

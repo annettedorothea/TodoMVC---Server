@@ -17,7 +17,6 @@ public class TimelineItemMapper implements ResultSetMapper<ITimelineItem> {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 		DateTime time = DateTime.parse(r.getString("time"), fmt);
 		return new TimelineItem(
-			r.getInt("id"),
 			r.getString("type"),
 			r.getString("method"),
 			r.getString("name"),

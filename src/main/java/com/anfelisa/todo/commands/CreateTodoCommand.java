@@ -24,6 +24,7 @@ public class CreateTodoCommand extends AbstractCreateTodoCommand {
 		this.commandData.setDone(false);
 		this.commandData.setCreatedDateTime(this.commandData.getSystemTime());
 		this.commandData.setDescription(this.commandData.getDescription());
+		this.commandData.setId(this.commandData.getUuid());
 		this.commandData.setOutcome(success);
 	}
 

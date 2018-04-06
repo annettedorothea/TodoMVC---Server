@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TimelineItem implements ITimelineItem {
 
-	private Integer id;
-	
 	private String type;
 	
 	private String method;
@@ -21,7 +19,6 @@ public class TimelineItem implements ITimelineItem {
 
 	
 	public TimelineItem(
-		@JsonProperty("id") Integer id, 
 		@JsonProperty("type") String type, 
 		@JsonProperty("method") String method, 
 		@JsonProperty("name") String name, 
@@ -30,18 +27,12 @@ public class TimelineItem implements ITimelineItem {
 		@JsonProperty("uuid") String uuid
 	) {
 		super();
-		this.id = id;
 		this.type = type;
 		this.method = method;
 		this.name = name;
 		this.timestamp = timestamp;
 		this.data = data;
 		this.uuid = uuid;
-	}
-
-	@JsonProperty
-	public Integer getId() {
-		return id;
 	}
 
 	@JsonProperty
@@ -76,7 +67,7 @@ public class TimelineItem implements ITimelineItem {
 	
 	@Override
 	public String toString() {
-		return "TimelineItem [id=" + id + ", type=" + type + ", method=" + method + ", name=" + name + ", timestamp="
+		return "TimelineItem [type=" + type + ", method=" + method + ", name=" + name + ", timestamp="
 				+ timestamp + ", uuid=" + uuid + "]";
 	}
 

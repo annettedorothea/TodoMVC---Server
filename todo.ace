@@ -39,7 +39,7 @@ models {
 	schema public
 	
 	persistent Todo {
-		Unique PrimaryKey NotNull Serial id
+		Unique PrimaryKey NotNull String id
 		NotNull String description
 		NotNull Boolean done
 		DateTime createdDateTime
@@ -51,11 +51,11 @@ models {
 	}
 	
 	TodoId {
-		NotNull Serial id
+		NotNull String id
 	}
 
 	TodoToggle {
-		NotNull Serial id
+		NotNull String id
 		DateTime updatedDateTime
 	}
 

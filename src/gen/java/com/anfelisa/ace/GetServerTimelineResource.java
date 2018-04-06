@@ -39,7 +39,7 @@ public class GetServerTimelineResource {
 	public Response get() {
 		Handle timelineHandle = jdbi.open();
 		try {
-			List<ITimelineItem> serverTimeline = aceDao.selectServerTimeline(timelineHandle);
+			List<ITimelineItem> serverTimeline = aceDao.selectTimeline(timelineHandle);
 			return Response.ok(serverTimeline).build();
 		} catch (Exception e) {
 			throw new WebApplicationException(e);

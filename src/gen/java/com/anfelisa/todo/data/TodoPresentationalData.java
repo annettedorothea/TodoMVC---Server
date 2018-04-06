@@ -16,7 +16,7 @@ import com.anfelisa.todo.models.ITodoModel;
 public class TodoPresentationalData implements ITodoPresentationalData {
 	
 	@NotNull
-	private Integer id;
+	private String id;
 	
 	@NotNull
 	private String description;
@@ -30,7 +30,7 @@ public class TodoPresentationalData implements ITodoPresentationalData {
 	
 	
 	public TodoPresentationalData(
-		@JsonProperty("id") Integer id,
+		@JsonProperty("id") String id,
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("createdDateTime") org.joda.time.DateTime createdDateTime,
@@ -45,13 +45,13 @@ public class TodoPresentationalData implements ITodoPresentationalData {
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoPresentationalData withId(Integer id) {
+	public TodoPresentationalData withId(String id) {
 		this.id = id;
 		return this;
 	}

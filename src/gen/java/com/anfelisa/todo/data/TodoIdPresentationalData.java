@@ -16,24 +16,24 @@ import com.anfelisa.todo.models.ITodoIdModel;
 public class TodoIdPresentationalData implements ITodoIdPresentationalData {
 	
 	@NotNull
-	private Integer id;
+	private String id;
 	
 	
 	public TodoIdPresentationalData(
-		@JsonProperty("id") Integer id
+		@JsonProperty("id") String id
 	) {
 		this.id = id;
 		
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoIdPresentationalData withId(Integer id) {
+	public TodoIdPresentationalData withId(String id) {
 		this.id = id;
 		return this;
 	}

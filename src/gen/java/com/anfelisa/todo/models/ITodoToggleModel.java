@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(as=TodoToggleModel.class)
 public interface ITodoToggleModel {
 
-	Integer getId();
+	String getId();
 	org.joda.time.DateTime getUpdatedDateTime();
 
 }

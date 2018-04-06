@@ -1,7 +1,4 @@
 <createTable tableName="timeline">
-	<column name="id" type="serial">
-		<constraints primaryKey="true" nullable="false" />
-	</column>
 	<column name="type" type="character varying">
 		<constraints nullable="false" />
 	</column>
@@ -23,9 +20,6 @@
 </createTable>
 
 <createTable tableName="errortimeline">
-	<column name="id" type="serial">
-		<constraints primaryKey="true" nullable="false" />
-	</column>
 	<column name="type" type="character varying">
 		<constraints nullable="false" />
 	</column>

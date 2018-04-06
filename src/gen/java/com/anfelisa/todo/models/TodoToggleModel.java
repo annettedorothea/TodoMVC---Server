@@ -8,13 +8,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class TodoToggleModel implements ITodoToggleModel {
 
 	@NotNull
-	private Integer id;
+	private String id;
 	
 	private org.joda.time.DateTime updatedDateTime;
 	
 
 	public TodoToggleModel(
-		@JsonProperty("id") Integer id,
+		@JsonProperty("id") String id,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
 	) {
 		this.id = id;
@@ -22,10 +22,10 @@ public class TodoToggleModel implements ITodoToggleModel {
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

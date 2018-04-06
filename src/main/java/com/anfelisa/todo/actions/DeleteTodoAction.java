@@ -33,7 +33,7 @@ public class DeleteTodoAction extends AbstractDeleteTodoAction {
 	@Timed
 	@Path("/delete")
 	@PermitAll
-	public Response delete(@NotNull @QueryParam("uuid") String uuid, @NotNull @QueryParam("id") int id)
+	public Response delete(@NotNull @QueryParam("uuid") String uuid, @NotNull @QueryParam("id") String id)
 			throws JsonProcessingException {
 		this.actionData = new TodoIdData(uuid).withId(id);
 		return this.apply();

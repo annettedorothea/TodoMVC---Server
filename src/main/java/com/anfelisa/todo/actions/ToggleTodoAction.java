@@ -33,7 +33,7 @@ public class ToggleTodoAction extends AbstractToggleTodoAction {
 	@Timed
 	@Path("/toggle")
 	@PermitAll
-	public Response put(@NotNull @QueryParam("uuid") String uuid, @NotNull @QueryParam("id") int id)
+	public Response put(@NotNull @QueryParam("uuid") String uuid, @NotNull @QueryParam("id") String id)
 			throws JsonProcessingException {
 		this.actionData = new TodoToggleData(uuid).withId(id);
 		return this.apply();

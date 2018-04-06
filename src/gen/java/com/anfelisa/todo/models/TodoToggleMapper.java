@@ -13,7 +13,7 @@ public class TodoToggleMapper implements ResultSetMapper<ITodoToggleModel> {
 	
 	public ITodoToggleModel map(int index, ResultSet r, StatementContext ctx) throws SQLException {
 		return new TodoToggleModel(
-			r.getInt("id"),
+			r.getString("id"),
 			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")) : null
 		);
 	}

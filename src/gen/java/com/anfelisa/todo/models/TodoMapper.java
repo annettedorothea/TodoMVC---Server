@@ -13,7 +13,7 @@ public class TodoMapper implements ResultSetMapper<ITodoModel> {
 	
 	public ITodoModel map(int index, ResultSet r, StatementContext ctx) throws SQLException {
 		return new TodoModel(
-			r.getInt("id"),
+			r.getString("id"),
 			r.getString("description"),
 			r.getBoolean("done"),
 			r.getTimestamp("createdDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("createdDateTime")) : null,

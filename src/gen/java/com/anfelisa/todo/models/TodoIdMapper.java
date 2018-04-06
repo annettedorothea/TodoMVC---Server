@@ -13,7 +13,7 @@ public class TodoIdMapper implements ResultSetMapper<ITodoIdModel> {
 	
 	public ITodoIdModel map(int index, ResultSet r, StatementContext ctx) throws SQLException {
 		return new TodoIdModel(
-			r.getInt("id")
+			r.getString("id")
 		);
 	}
 }

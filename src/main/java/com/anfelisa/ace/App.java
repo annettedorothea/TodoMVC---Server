@@ -27,7 +27,7 @@ public class App extends Application<AppConfiguration> {
 	}
 
 	public static String getVersion() {
-		return "2.0.0";
+		return "2.1.0";
 	}
 
 	@Override
@@ -63,6 +63,7 @@ public class App extends Application<AppConfiguration> {
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
 		} else {
 			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
+			environment.jersey().register(new GetServerTimelineResource(jdbi));  // do not register GetServerTimelineResource in a 'real' live environment
 		}
 
 		environment.jersey().register(new GetServerInfoResource());

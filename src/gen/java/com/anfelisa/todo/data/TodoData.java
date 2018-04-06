@@ -19,12 +19,10 @@ public class TodoData implements ITodoData {
 	
 	private String outcome;
 	
-	private String createdId;
-	
 	private String[] notifiedListeners;
 	
 	@NotNull
-	private Integer id;
+	private String id;
 	
 	@NotNull
 	private String description;
@@ -40,7 +38,7 @@ public class TodoData implements ITodoData {
 	private org.joda.time.DateTime systemTime;
 	
 	public TodoData(
-		@JsonProperty("id") Integer id,
+		@JsonProperty("id") String id,
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("createdDateTime") org.joda.time.DateTime createdDateTime,
@@ -61,13 +59,13 @@ public class TodoData implements ITodoData {
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoData withId(Integer id) {
+	public TodoData withId(String id) {
 		this.id = id;
 		return this;
 	}
@@ -124,15 +122,6 @@ public class TodoData implements ITodoData {
 	@JsonProperty
 	public String getUuid() {
 		return this.uuid;
-	}
-
-	@JsonIgnore
-	public String getCreatedId() {
-		return createdId;
-	}
-
-	public void setCreatedId(String createdId) {
-		this.createdId = createdId;
 	}
 
 	@JsonProperty

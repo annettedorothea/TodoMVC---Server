@@ -16,13 +16,13 @@ import com.anfelisa.todo.models.ITodoToggleModel;
 public class TodoTogglePresentationalData implements ITodoTogglePresentationalData {
 	
 	@NotNull
-	private Integer id;
+	private String id;
 	
 	private org.joda.time.DateTime updatedDateTime;
 	
 	
 	public TodoTogglePresentationalData(
-		@JsonProperty("id") Integer id,
+		@JsonProperty("id") String id,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
 	) {
 		this.id = id;
@@ -31,13 +31,13 @@ public class TodoTogglePresentationalData implements ITodoTogglePresentationalDa
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoTogglePresentationalData withId(Integer id) {
+	public TodoTogglePresentationalData withId(String id) {
 		this.id = id;
 		return this;
 	}

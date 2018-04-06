@@ -19,12 +19,10 @@ public class TodoToggleData implements ITodoToggleData {
 	
 	private String outcome;
 	
-	private String createdId;
-	
 	private String[] notifiedListeners;
 	
 	@NotNull
-	private Integer id;
+	private String id;
 	
 	private org.joda.time.DateTime updatedDateTime;
 	
@@ -32,7 +30,7 @@ public class TodoToggleData implements ITodoToggleData {
 	private org.joda.time.DateTime systemTime;
 	
 	public TodoToggleData(
-		@JsonProperty("id") Integer id,
+		@JsonProperty("id") String id,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
 ,		@JsonProperty("uuid") String uuid
 	) {
@@ -47,13 +45,13 @@ public class TodoToggleData implements ITodoToggleData {
 	}
 
 	@JsonProperty
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoToggleData withId(Integer id) {
+	public TodoToggleData withId(String id) {
 		this.id = id;
 		return this;
 	}
@@ -74,15 +72,6 @@ public class TodoToggleData implements ITodoToggleData {
 	@JsonProperty
 	public String getUuid() {
 		return this.uuid;
-	}
-
-	@JsonIgnore
-	public String getCreatedId() {
-		return createdId;
-	}
-
-	public void setCreatedId(String createdId) {
-		this.createdId = createdId;
 	}
 
 	@JsonProperty
