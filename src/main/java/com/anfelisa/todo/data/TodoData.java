@@ -1,25 +1,11 @@
 package com.anfelisa.todo.data;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import java.util.List;
 
-import com.anfelisa.ace.IDataContainer;
+import com.anfelisa.ace.AbstractData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.anfelisa.todo.models.ITodoModel;
-
-@SuppressWarnings("all")
-public class TodoData implements ITodoData {
-	
-	private String uuid;
-	
-	private String outcome;
-	
-	private String[] notifiedListeners;
+public class TodoData extends AbstractData implements ITodoData {
 	
 	@NotNull
 	private String id;
@@ -28,15 +14,13 @@ public class TodoData implements ITodoData {
 	private String description;
 	
 	@NotNull
-	private Boolean done;
+	private Boolean done = false;
 	
 	private org.joda.time.DateTime createdDateTime;
 	
 	private org.joda.time.DateTime updatedDateTime;
 	
 
-	private org.joda.time.DateTime systemTime;
-	
 	public TodoData(
 		@JsonProperty("id") String id,
 		@JsonProperty("description") String description,
@@ -45,17 +29,16 @@ public class TodoData implements ITodoData {
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
 ,		@JsonProperty("uuid") String uuid
 	) {
+		super(uuid);
 		this.id = id;
 		this.description = description;
 		this.done = done;
 		this.createdDateTime = createdDateTime;
 		this.updatedDateTime = updatedDateTime;
-		this.uuid = uuid;
-		
 	}
 
 	public TodoData( String uuid ) {
-		this.uuid = uuid;
+		super(uuid);
 	}
 
 	@JsonProperty
@@ -118,43 +101,6 @@ public class TodoData implements ITodoData {
 		return this;
 	}
 	
-
-	@JsonProperty
-	public String getUuid() {
-		return this.uuid;
-	}
-
-	@JsonProperty
-	public org.joda.time.DateTime getSystemTime() {
-		return systemTime;
-	}
-
-	@JsonProperty
-	public void setSystemTime(org.joda.time.DateTime systemTime) {
-		this.systemTime = systemTime;
-	}
-
-	@JsonProperty
-	public String getOutcome() {
-		return outcome;
-	}
-
-	@JsonProperty
-	public void setOutcome(String outcome) {
-		this.outcome = outcome;
-	}
-
-	@Override
-	@JsonProperty
-	public String[] getNotifiedListeners() {
-		return notifiedListeners;
-	}
-
-	@Override
-	@JsonProperty
-	public void setNotifiedListeners(String[] listeners) {
-		this.notifiedListeners = listeners;
-	}
 
 	@Override
 	public Object toPresentationalData() {

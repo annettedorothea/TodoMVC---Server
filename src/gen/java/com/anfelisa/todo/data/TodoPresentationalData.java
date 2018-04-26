@@ -22,7 +22,7 @@ public class TodoPresentationalData implements ITodoPresentationalData {
 	private String description;
 	
 	@NotNull
-	private Boolean done;
+	private Boolean done = false;
 	
 	private org.joda.time.DateTime createdDateTime;
 	

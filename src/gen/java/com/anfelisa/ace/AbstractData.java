@@ -1,36 +1,30 @@
-package com.anfelisa.todo.data;
+package com.anfelisa.ace;
+
+import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import java.util.List;
+public abstract class AbstractData implements IDataContainer {
 
-import com.anfelisa.ace.IDataContainer;
-
-
-@SuppressWarnings("all")
-public class ClearDoneData implements IClearDoneData {
-	
 	private String uuid;
 	
 	private String outcome;
 	
 	private String[] notifiedListeners;
-	
 
 	private org.joda.time.DateTime systemTime;
 	
-	public ClearDoneData(
-		@JsonProperty("uuid") String uuid
-	) {
+	public AbstractData(String uuid, String outcome, String[] notifiedListeners, DateTime systemTime) {
+		super();
 		this.uuid = uuid;
-		
+		this.outcome = outcome;
+		this.notifiedListeners = notifiedListeners;
+		this.systemTime = systemTime;
 	}
 
-
+	public AbstractData( String uuid ) {
+		this.uuid = uuid;
+	}
 
 	@JsonProperty
 	public String getUuid() {
@@ -67,12 +61,6 @@ public class ClearDoneData implements IClearDoneData {
 	@JsonProperty
 	public void setNotifiedListeners(String[] listeners) {
 		this.notifiedListeners = listeners;
-	}
-
-	@Override
-	public Object toPresentationalData() {
-		return new ClearDonePresentationalData(
-		);
 	}
 
 }

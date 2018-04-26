@@ -16,7 +16,7 @@ import com.anfelisa.todo.models.IToggleAllModel;
 public class ToggleAllPresentationalData implements IToggleAllPresentationalData {
 	
 	@NotNull
-	private Boolean done;
+	private Boolean done = false;
 	
 	private org.joda.time.DateTime updatedDateTime;
 	
