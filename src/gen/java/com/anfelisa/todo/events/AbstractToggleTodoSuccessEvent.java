@@ -4,17 +4,19 @@ import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.Event;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 
 import com.anfelisa.todo.data.TodoToggleData;
 
 public abstract class AbstractToggleTodoSuccessEvent extends Event<TodoToggleData> {
 
-	public AbstractToggleTodoSuccessEvent(TodoToggleData eventParam, DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.ToggleTodoSuccessEvent", eventParam, databaseHandle);
+	public AbstractToggleTodoSuccessEvent(TodoToggleData eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.events.ToggleTodoSuccessEvent", eventParam, databaseHandle, daoProvider, viewProvider);
 	}
 	
-	public AbstractToggleTodoSuccessEvent(DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.ToggleTodoSuccessEvent", null, databaseHandle);
+	public AbstractToggleTodoSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.events.ToggleTodoSuccessEvent", null, databaseHandle, daoProvider, viewProvider);
 	}
 	
 	public void initEventData(String json) {

@@ -1,6 +1,8 @@
 package com.anfelisa.todo.events;
 
 import com.anfelisa.ace.DatabaseHandle;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,12 @@ public class ToggleAllSuccessEvent extends AbstractToggleAllSuccessEvent {
 
 	static final Logger LOG = LoggerFactory.getLogger(ToggleAllSuccessEvent.class);
 
-	public ToggleAllSuccessEvent(ToggleAllData eventParam, DatabaseHandle databaseHandle) {
-		super(eventParam, databaseHandle);
+	public ToggleAllSuccessEvent(ToggleAllData eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(eventParam, databaseHandle, daoProvider, viewProvider);
 	}
 
-	public ToggleAllSuccessEvent(DatabaseHandle databaseHandle) {
-		this(null, databaseHandle);
+	public ToggleAllSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		this(null, databaseHandle, daoProvider, viewProvider);
 	}
 
 	@Override

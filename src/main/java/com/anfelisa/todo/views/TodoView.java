@@ -4,37 +4,40 @@ import java.util.function.BiConsumer;
 
 import org.skife.jdbi.v2.Handle;
 
+import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.todo.data.ClearDoneData;
 import com.anfelisa.todo.data.TodoData;
 import com.anfelisa.todo.data.TodoIdData;
 import com.anfelisa.todo.data.TodoToggleData;
 import com.anfelisa.todo.data.ToggleAllData;
-import com.anfelisa.todo.models.CustomTodoDao;
-import com.anfelisa.todo.models.TodoDao;
 
 @SuppressWarnings("all")
 public class TodoView {
 
-	private static TodoDao todoDao = new TodoDao();
-	private static CustomTodoDao customTodoDao = new CustomTodoDao();
+	private IDaoProvider daoProvider;
 
-	public static BiConsumer<TodoData, Handle> create = (dataContainer, handle) -> {
-		todoDao.insert(handle, dataContainer);
+	public TodoView(IDaoProvider daoProvider) {
+		super();
+		this.daoProvider = daoProvider;
+	}
+
+	public BiConsumer<TodoData, Handle> create = (dataContainer, handle) -> {
+		daoProvider.getTodoDao().insert(handle, dataContainer);
 	};
-	public static BiConsumer<TodoData, Handle> update = (dataContainer, handle) -> {
-		customTodoDao.updateById(handle, dataContainer);
+	public BiConsumer<TodoData, Handle> update = (dataContainer, handle) -> {
+		daoProvider.getCustomTodoDao().updateById(handle, dataContainer);
 	};
-	public static BiConsumer<TodoToggleData, Handle> toggle = (dataContainer, handle) -> {
-		customTodoDao.toggleTodo(handle, dataContainer);
+	public BiConsumer<TodoToggleData, Handle> toggle = (dataContainer, handle) -> {
+		daoProvider.getCustomTodoDao().toggleTodo(handle, dataContainer);
 	};
-	public static BiConsumer<ToggleAllData, Handle> toggleAll = (dataContainer, handle) -> {
-		customTodoDao.toggleAll(handle, dataContainer);
+	public BiConsumer<ToggleAllData, Handle> toggleAll = (dataContainer, handle) -> {
+		daoProvider.getCustomTodoDao().toggleAll(handle, dataContainer);
 	};
-	public static BiConsumer<TodoIdData, Handle> delete = (dataContainer, handle) -> {
-		todoDao.deleteById(handle, dataContainer.getId());
+	public BiConsumer<TodoIdData, Handle> delete = (dataContainer, handle) -> {
+		daoProvider.getTodoDao().deleteById(handle, dataContainer.getId());
 	};
-	public static BiConsumer<ClearDoneData, Handle> clearDone = (dataContainer, handle) -> {
-		customTodoDao.deleteDone(handle);
+	public BiConsumer<ClearDoneData, Handle> clearDone = (dataContainer, handle) -> {
+		daoProvider.getCustomTodoDao().deleteDone(handle);
 	};
 
 }

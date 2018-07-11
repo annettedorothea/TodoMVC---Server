@@ -1,6 +1,8 @@
 package com.anfelisa.todo.commands;
 
 import com.anfelisa.ace.DatabaseHandle;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,8 @@ public class UpdateTodoCommand extends AbstractUpdateTodoCommand {
 
 	static final Logger LOG = LoggerFactory.getLogger(UpdateTodoCommand.class);
 
-	public UpdateTodoCommand(TodoData commandParam, DatabaseHandle databaseHandle) {
-		super(commandParam, databaseHandle);
-	}
-
-	public UpdateTodoCommand(DatabaseHandle databaseHandle) {
-		super(null, databaseHandle);
+	public UpdateTodoCommand(TodoData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(commandData, databaseHandle, daoProvider, viewProvider);
 	}
 	
 	@Override

@@ -1,6 +1,8 @@
 package com.anfelisa.todo.commands;
 
 import com.anfelisa.ace.DatabaseHandle;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,8 @@ public class DeleteTodoCommand extends AbstractDeleteTodoCommand {
 
 	static final Logger LOG = LoggerFactory.getLogger(DeleteTodoCommand.class);
 
-	public DeleteTodoCommand(TodoIdData commandParam, DatabaseHandle databaseHandle) {
-		super(commandParam, databaseHandle);
-	}
-
-	public DeleteTodoCommand(DatabaseHandle databaseHandle) {
-		super(null, databaseHandle);
+	public DeleteTodoCommand(TodoIdData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(commandData, databaseHandle, daoProvider, viewProvider);
 	}
 	
 	@Override

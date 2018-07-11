@@ -13,7 +13,7 @@ import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class App extends Application<AppConfiguration> {
+public class App extends Application<CustomAppConfiguration> {
 
 	static final Logger LOG = LoggerFactory.getLogger(App.class);
 
@@ -27,11 +27,11 @@ public class App extends Application<AppConfiguration> {
 	}
 
 	public static String getVersion() {
-		return "2.1.0";
+		return "3.0.0";
 	}
 
 	@Override
-	public void initialize(Bootstrap<AppConfiguration> bootstrap) {
+	public void initialize(Bootstrap<CustomAppConfiguration> bootstrap) {
 		bootstrap.addBundle(new MigrationsBundle<AppConfiguration>() {
 			@Override
 			public DataSourceFactory getDataSourceFactory(AppConfiguration configuration) {
@@ -39,12 +39,15 @@ public class App extends Application<AppConfiguration> {
 			}
 		});
 		
-		bootstrap.addCommand(new EventReplayCommand(this));
+		bootstrap.addCommand(new EventReplayCommand(this, new DaoProvider()));
 	}
 
 	@Override
-	public void run(AppConfiguration configuration, Environment environment) throws ClassNotFoundException {
+	public void run(CustomAppConfiguration configuration, Environment environment) throws ClassNotFoundException {
 		LOG.info("running version {}", getVersion());
+
+		DaoProvider daoProvider = new DaoProvider();
+		ViewProvider viewProvider = new ViewProvider(daoProvider);
 
 		AceDao.setSchemaName(null);
 
@@ -52,18 +55,14 @@ public class App extends Application<AppConfiguration> {
 
 		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
 
-		if (ServerConfiguration.REPLAY.equals(configuration.getServerConfiguration().getMode())) {
-			AceController.setAceExecutionMode(AceExecutionMode.REPLAY);
-			environment.jersey().register(new PrepareE2EResource(jdbi));
-			environment.jersey().register(new StartE2ESessionResource(jdbi));
+		String mode = configuration.getServerConfiguration().getMode();
+		if (ServerConfiguration.REPLAY.equals(mode)) {
+			environment.jersey().register(new PrepareE2EResource(jdbi, daoProvider, viewProvider));
+			environment.jersey().register(new StartE2ESessionResource(jdbi, daoProvider));
 			environment.jersey().register(new StopE2ESessionResource());
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
-		} else if (ServerConfiguration.DEV.equals(configuration.getServerConfiguration().getMode())) {
-			AceController.setAceExecutionMode(AceExecutionMode.DEV);
+		} else if (ServerConfiguration.DEV.equals(mode)) {
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
-		} else {
-			AceController.setAceExecutionMode(AceExecutionMode.LIVE);
-			environment.jersey().register(new GetServerTimelineResource(jdbi));  // do not register GetServerTimelineResource in a 'real' live environment
 		}
 
 		environment.jersey().register(new GetServerInfoResource());
@@ -73,8 +72,8 @@ public class App extends Application<AppConfiguration> {
 
 		environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-		com.anfelisa.todo.AppRegistration.registerResources(environment, jdbi);
-		com.anfelisa.todo.AppRegistration.registerConsumers();
+		new com.anfelisa.todo.AppRegistration().registerResources(environment, jdbi, configuration, daoProvider, viewProvider);
+		new com.anfelisa.todo.AppRegistration().registerConsumers(viewProvider, mode);
 
 	}
 

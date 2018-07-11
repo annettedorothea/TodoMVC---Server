@@ -14,13 +14,17 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 	@JsonIgnore
 	protected DatabaseHandle databaseHandle;
 	protected JodaObjectMapper mapper;
+	protected IDaoProvider daoProvider;
+	protected ViewProvider viewProvider;
 
-	public Command(String commandName, T commandData, DatabaseHandle databaseHandle) {
+	public Command(String commandName, T commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super();
 		this.commandData = commandData;
 		this.commandName = commandName;
 		this.databaseHandle = databaseHandle;
 		mapper = new JodaObjectMapper();
+		this.daoProvider = daoProvider;
+		this.viewProvider = viewProvider;
 	}
 
 	protected void executeCommand() {
@@ -28,7 +32,7 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 
 	public void execute() {
 		this.executeCommand();
-		AceController.addCommandToTimeline(this);
+		daoProvider.addCommandToTimeline(this);
 		this.publishEvents();
 	}
 

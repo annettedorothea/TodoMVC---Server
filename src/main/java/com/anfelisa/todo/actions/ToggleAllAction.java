@@ -14,6 +14,9 @@ import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anfelisa.ace.CustomAppConfiguration;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.todo.data.ToggleAllData;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,8 +28,8 @@ public class ToggleAllAction extends AbstractToggleAllAction {
 
 	static final Logger LOG = LoggerFactory.getLogger(ToggleAllAction.class);
 
-	public ToggleAllAction(DBI jdbi) {
-		super(jdbi);
+	public ToggleAllAction(DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(jdbi, appConfiguration, daoProvider, viewProvider);
 	}
 
 	@PUT

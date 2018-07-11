@@ -19,13 +19,17 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 	@JsonIgnore
 	protected DatabaseHandle databaseHandle;
 	protected JodaObjectMapper mapper;
+	protected IDaoProvider daoProvider;
+	private ViewProvider viewProvider;
 
-	public Event(String eventName, T eventParam, DatabaseHandle databaseHandle) {
+	public Event(String eventName, T eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super();
 		this.eventParam = eventParam;
 		this.eventName = eventName;
 		this.databaseHandle = databaseHandle;
+		this.daoProvider = daoProvider;
 		mapper = new JodaObjectMapper();
+		this.viewProvider = viewProvider;
 	}
 
 	protected void prepareDataForView() {
@@ -33,7 +37,7 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 
 	@SuppressWarnings("unchecked")
 	public void notifyListeners() {
-		List<BiConsumer<? extends IDataContainer, Handle>> consumerList = AceController.getConsumerForEvent(eventName);
+		List<BiConsumer<? extends IDataContainer, Handle>> consumerList = viewProvider.getConsumerForEvent(eventName);
 		if (consumerList != null) {
 			for (BiConsumer<? extends IDataContainer, Handle> consumer : consumerList) {
 				((BiConsumer<T, Handle>)consumer).accept(this.eventData, databaseHandle.getHandle());
@@ -63,7 +67,7 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 	public void publish() {
 		this.prepareDataForView();
 		this.eventData.setNotifiedListeners(this.getNotifiedListeners());
-		AceController.addEventToTimeline(this);
+		daoProvider.addEventToTimeline(this);
 		this.notifyListeners();
 	}
 

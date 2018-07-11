@@ -16,6 +16,9 @@ import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anfelisa.ace.CustomAppConfiguration;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.todo.data.TodoListData;
 import com.anfelisa.todo.models.CustomTodoDao;
 import com.anfelisa.todo.models.ITodoModel;
@@ -31,8 +34,8 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 
 	private CustomTodoDao todoDao = new CustomTodoDao();
 
-	public GetAllTodosAction(DBI jdbi) {
-		super(jdbi);
+	public GetAllTodosAction(DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(jdbi, appConfiguration, daoProvider, viewProvider);
 	}
 
 	@GET

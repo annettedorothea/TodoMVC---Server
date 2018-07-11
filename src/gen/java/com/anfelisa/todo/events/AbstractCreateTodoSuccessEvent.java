@@ -4,17 +4,19 @@ import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.Event;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 
 import com.anfelisa.todo.data.TodoData;
 
 public abstract class AbstractCreateTodoSuccessEvent extends Event<TodoData> {
 
-	public AbstractCreateTodoSuccessEvent(TodoData eventParam, DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.CreateTodoSuccessEvent", eventParam, databaseHandle);
+	public AbstractCreateTodoSuccessEvent(TodoData eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.events.CreateTodoSuccessEvent", eventParam, databaseHandle, daoProvider, viewProvider);
 	}
 	
-	public AbstractCreateTodoSuccessEvent(DatabaseHandle databaseHandle) {
-		super("com.anfelisa.todo.events.CreateTodoSuccessEvent", null, databaseHandle);
+	public AbstractCreateTodoSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.events.CreateTodoSuccessEvent", null, databaseHandle, daoProvider, viewProvider);
 	}
 	
 	public void initEventData(String json) {

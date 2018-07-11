@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.ace.DatabaseHandle;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.todo.data.ToggleAllData;
 import com.anfelisa.todo.models.ITodoModel;
 import com.anfelisa.todo.models.TodoDao;
@@ -16,12 +18,8 @@ public class ToggleAllCommand extends AbstractToggleAllCommand {
 
 	private TodoDao todoDao = new TodoDao();
 
-	public ToggleAllCommand(ToggleAllData commandParam, DatabaseHandle databaseHandle) {
-		super(commandParam, databaseHandle);
-	}
-
-	public ToggleAllCommand(DatabaseHandle databaseHandle) {
-		super(null, databaseHandle);
+	public ToggleAllCommand(ToggleAllData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(commandData, databaseHandle, daoProvider, viewProvider);
 	}
 	
 	@Override

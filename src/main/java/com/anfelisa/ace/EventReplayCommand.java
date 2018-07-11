@@ -14,39 +14,44 @@ import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Environment;
 import net.sourceforge.argparse4j.inf.Namespace;
 
-public class EventReplayCommand extends EnvironmentCommand<AppConfiguration> {
+public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguration> {
 
 	static final Logger LOG = LoggerFactory.getLogger(EventReplayCommand.class);
 
-	private AceDao aceDao = new AceDao();
-
-	protected EventReplayCommand(Application<AppConfiguration> application) {
+	private IDaoProvider daoProvider;
+	
+	protected EventReplayCommand(Application<CustomAppConfiguration> application, IDaoProvider daoProvider) {
 		super(application, "replay", "truncates views and replays events");
+		this.daoProvider = daoProvider;
 	}
 
 	@Override
-	protected void run(Environment environment, Namespace namespace, AppConfiguration configuration) throws Exception {
-		if (AceController.getAceExecutionMode() == AceExecutionMode.LIVE) {	
+	protected void run(Environment environment, Namespace namespace, CustomAppConfiguration configuration) throws Exception {
+		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {	
 			throw new RuntimeException("we won't truncate all views and replay events in a live environment");
 		}
-		if (AceController.getAceExecutionMode() == AceExecutionMode.REPLAY) {	
+		if (ServerConfiguration.REPLAY.equals(configuration.getServerConfiguration().getMode())) {	
 			throw new RuntimeException("replay events in a replay environment doesn't make sense");
 		}
 		
-		AceDao.setSchemaName(null);
-
 		final DBIFactory factory = new DBIFactory();
 
 		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
 
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
+		
+		ViewProvider viewProvider = new ViewProvider(daoProvider);
+		
+		String mode = configuration.getServerConfiguration().getMode();
+		new com.anfelisa.todo.AppRegistration().registerConsumers(viewProvider, mode);
+
 		LOG.info("START EVENT REPLAY");
 		try {
 			databaseHandle.beginTransaction();
 			Handle handle = databaseHandle.getHandle();
-			AppUtils.truncateAllViews(handle);
+			daoProvider.truncateAllViews(handle);
 
-			List<ITimelineItem> timeline = aceDao.selectTimeline(handle);
+			List<ITimelineItem> timeline = daoProvider.getAceDao().selectTimeline(handle);
 			E2E.timeline = timeline;
 
 			int eventCount = 0;
@@ -57,8 +62,8 @@ public class EventReplayCommand extends EnvironmentCommand<AppConfiguration> {
 					if (nextEvent != null) {
 						try {
 							Class<?> cl = Class.forName(nextEvent.getName());
-							Constructor<?> con = cl.getConstructor(DatabaseHandle.class);
-							IEvent event = (IEvent) con.newInstance(databaseHandle);
+							Constructor<?> con = cl.getConstructor(DatabaseHandle.class, IDaoProvider.class, ViewProvider.class);
+							IEvent event = (IEvent) con.newInstance(databaseHandle, daoProvider, viewProvider);
 							event.initEventData(nextEvent.getData());
 							event.notifyListeners();
 							eventCount++;

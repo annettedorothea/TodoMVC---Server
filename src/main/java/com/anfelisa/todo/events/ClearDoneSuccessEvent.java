@@ -1,6 +1,8 @@
 package com.anfelisa.todo.events;
 
 import com.anfelisa.ace.DatabaseHandle;
+import com.anfelisa.ace.IDaoProvider;
+import com.anfelisa.ace.ViewProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,12 @@ public class ClearDoneSuccessEvent extends AbstractClearDoneSuccessEvent {
 
 	static final Logger LOG = LoggerFactory.getLogger(ClearDoneSuccessEvent.class);
 
-	public ClearDoneSuccessEvent(ClearDoneData eventParam, DatabaseHandle databaseHandle) {
-		super(eventParam, databaseHandle);
+	public ClearDoneSuccessEvent(ClearDoneData eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(eventParam, databaseHandle, daoProvider, viewProvider);
 	}
 
-	public ClearDoneSuccessEvent(DatabaseHandle databaseHandle) {
-		this(null, databaseHandle);
+	public ClearDoneSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		this(null, databaseHandle, daoProvider, viewProvider);
 	}
 
 	@Override
