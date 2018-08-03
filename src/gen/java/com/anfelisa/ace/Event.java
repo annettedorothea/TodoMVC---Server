@@ -13,7 +13,6 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 
 	static final Logger LOG = LoggerFactory.getLogger(Event.class);
 
-	protected T eventParam;
 	protected T eventData;
 	private String eventName;
 	@JsonIgnore
@@ -22,17 +21,14 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 	protected IDaoProvider daoProvider;
 	private ViewProvider viewProvider;
 
-	public Event(String eventName, T eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public Event(String eventName, T eventData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super();
-		this.eventParam = eventParam;
+		this.eventData = eventData;
 		this.eventName = eventName;
 		this.databaseHandle = databaseHandle;
 		this.daoProvider = daoProvider;
 		mapper = new JodaObjectMapper();
 		this.viewProvider = viewProvider;
-	}
-
-	protected void prepareDataForView() {
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,10 +39,6 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 				((BiConsumer<T, Handle>)consumer).accept(this.eventData, databaseHandle.getHandle());
 			}
 		}
-	}
-
-	public IDataContainer getEventParam() {
-		return eventParam;
 	}
 
 	public IDataContainer getEventData() {
@@ -62,11 +54,7 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 		return databaseHandle;
 	}
 
-	protected abstract String[] getNotifiedListeners();
-
 	public void publish() {
-		this.prepareDataForView();
-		this.eventData.setNotifiedListeners(this.getNotifiedListeners());
 		daoProvider.addEventToTimeline(this);
 		this.notifyListeners();
 	}

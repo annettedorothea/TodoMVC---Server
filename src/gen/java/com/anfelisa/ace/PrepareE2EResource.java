@@ -42,8 +42,11 @@ public class PrepareE2EResource {
 	@Path("/prepare")
 	public Response put(@NotNull @QueryParam("uuid") String uuid) {
 		ITimelineItem actionToBePrepared = E2E.selectAction(uuid);
+		if (actionToBePrepared == null) {
+			return Response.ok("prepared action " + uuid + " by doing nothing - action was not found").build();
+		}
 
-		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
+		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null, jdbi.open());
 		LOG.info("PREPARE ACTION " + actionToBePrepared);
 		try {
 			databaseHandle.beginTransaction();

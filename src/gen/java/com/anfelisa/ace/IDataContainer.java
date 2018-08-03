@@ -14,10 +14,6 @@ public interface IDataContainer {
 	
 	void setSystemTime(DateTime systemTime);
 
-	String[] getNotifiedListeners();
-
-	void setNotifiedListeners(String[] listeners);
-	
 	Object toPresentationalData();
 
 }

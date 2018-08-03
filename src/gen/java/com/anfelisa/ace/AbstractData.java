@@ -10,15 +10,12 @@ public abstract class AbstractData implements IDataContainer {
 	
 	private String outcome;
 	
-	private String[] notifiedListeners;
-
 	private org.joda.time.DateTime systemTime;
 	
-	public AbstractData(String uuid, String outcome, String[] notifiedListeners, DateTime systemTime) {
+	public AbstractData(String uuid, String outcome, DateTime systemTime) {
 		super();
 		this.uuid = uuid;
 		this.outcome = outcome;
-		this.notifiedListeners = notifiedListeners;
 		this.systemTime = systemTime;
 	}
 
@@ -49,18 +46,6 @@ public abstract class AbstractData implements IDataContainer {
 	@JsonProperty
 	public void setOutcome(String outcome) {
 		this.outcome = outcome;
-	}
-
-	@Override
-	@JsonProperty
-	public String[] getNotifiedListeners() {
-		return notifiedListeners;
-	}
-
-	@Override
-	@JsonProperty
-	public void setNotifiedListeners(String[] listeners) {
-		this.notifiedListeners = listeners;
 	}
 
 }

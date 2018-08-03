@@ -42,9 +42,9 @@ public class StartE2ESessionResource {
 	@Timed
 	@Path("/start")
 	public Response put(@NotNull List<ITimelineItem> timeline) throws JsonProcessingException {
-		if (E2E.sessionIsRunning && E2E.sessionStartedAt.plusMinutes(1).isAfterNow()) {
-			throw new WebApplicationException("session is already running", Response.Status.SERVICE_UNAVAILABLE);
-		}
+		//if (E2E.sessionIsRunning && E2E.sessionStartedAt.plusMinutes(1).isAfterNow()) {
+		//	throw new WebApplicationException("session is already running", Response.Status.SERVICE_UNAVAILABLE);
+		//}
 		E2E.sessionIsRunning = true;
 		E2E.sessionStartedAt = new DateTime(System.currentTimeMillis());
 		E2E.timeline = timeline;

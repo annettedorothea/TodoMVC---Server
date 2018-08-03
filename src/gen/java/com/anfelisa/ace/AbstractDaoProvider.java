@@ -42,7 +42,7 @@ public abstract class AbstractDaoProvider implements IDaoProvider {
 	public void addEventToTimeline(IEvent event) {
 		try {
 			addItemToTimeline("event", null, event.getEventName(), mapper.writeValueAsString(event.getEventData()),
-					event.getEventParam().getUuid(), event.getDatabaseHandle());
+					event.getEventData().getUuid(), event.getDatabaseHandle());
 		} catch (JsonProcessingException e) {
 			throw new WebApplicationException(e);
 		}
@@ -69,7 +69,7 @@ public abstract class AbstractDaoProvider implements IDaoProvider {
 		if (databaseHandle == null) {
 			throw new WebApplicationException("no database handle");
 		}
-		aceDao.insertIntoTimeline(databaseHandle.getHandle(), type, method, name, EncryptionService.encrypt(json),
+		aceDao.insertIntoTimeline(databaseHandle.getTimelineHandle(), type, method, name, EncryptionService.encrypt(json),
 				uuid);
 		aceDao.insertIntoErrorTimeline(databaseHandle.getErrorHandle(), type, method, name,
 				EncryptionService.encrypt(json), uuid);

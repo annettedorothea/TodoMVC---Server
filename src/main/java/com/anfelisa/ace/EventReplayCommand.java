@@ -38,13 +38,10 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 
 		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
 
-		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
+		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null, null);
 		
 		ViewProvider viewProvider = new ViewProvider(daoProvider);
 		
-		String mode = configuration.getServerConfiguration().getMode();
-		new com.anfelisa.todo.AppRegistration().registerConsumers(viewProvider, mode);
-
 		LOG.info("START EVENT REPLAY");
 		try {
 			databaseHandle.beginTransaction();

@@ -9,13 +9,13 @@ import com.anfelisa.ace.ViewProvider;
 
 import com.anfelisa.todo.data.TodoData;
 
-public abstract class AbstractUpdateTodoSuccessEvent extends Event<TodoData> {
+public class UpdateTodoSuccessEvent extends Event<TodoData> {
 
-	public AbstractUpdateTodoSuccessEvent(TodoData eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.events.UpdateTodoSuccessEvent", eventParam, databaseHandle, daoProvider, viewProvider);
+	public UpdateTodoSuccessEvent(TodoData eventData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.events.UpdateTodoSuccessEvent", eventData, databaseHandle, daoProvider, viewProvider);
 	}
 	
-	public AbstractUpdateTodoSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public UpdateTodoSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.events.UpdateTodoSuccessEvent", null, databaseHandle, daoProvider, viewProvider);
 	}
 	
@@ -26,12 +26,6 @@ public abstract class AbstractUpdateTodoSuccessEvent extends Event<TodoData> {
 			throw new WebApplicationException(e);
 		}
 	}
-	
-	protected String[] getNotifiedListeners() {
-		return new String[] { "com.anfelisa.todo.views.TodoView.update" };
-	}
-	
-	
 
 }
 

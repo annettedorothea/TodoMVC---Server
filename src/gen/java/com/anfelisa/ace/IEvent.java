@@ -6,8 +6,6 @@ public interface IEvent {
 
 	String getEventName();
 	
-	IDataContainer getEventParam();
-	
 	IDataContainer getEventData();
 	
 	@JsonIgnore

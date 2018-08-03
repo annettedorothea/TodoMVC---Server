@@ -9,13 +9,13 @@ import com.anfelisa.ace.ViewProvider;
 
 import com.anfelisa.todo.data.ToggleAllData;
 
-public abstract class AbstractToggleAllSuccessEvent extends Event<ToggleAllData> {
+public class ToggleAllSuccessEvent extends Event<ToggleAllData> {
 
-	public AbstractToggleAllSuccessEvent(ToggleAllData eventParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.events.ToggleAllSuccessEvent", eventParam, databaseHandle, daoProvider, viewProvider);
+	public ToggleAllSuccessEvent(ToggleAllData eventData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.events.ToggleAllSuccessEvent", eventData, databaseHandle, daoProvider, viewProvider);
 	}
 	
-	public AbstractToggleAllSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public ToggleAllSuccessEvent(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.events.ToggleAllSuccessEvent", null, databaseHandle, daoProvider, viewProvider);
 	}
 	
@@ -26,12 +26,6 @@ public abstract class AbstractToggleAllSuccessEvent extends Event<ToggleAllData>
 			throw new WebApplicationException(e);
 		}
 	}
-	
-	protected String[] getNotifiedListeners() {
-		return new String[] { "com.anfelisa.todo.views.TodoView.toggleAll" };
-	}
-	
-	
 
 }
 
