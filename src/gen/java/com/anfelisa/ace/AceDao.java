@@ -22,20 +22,8 @@ public class AceDao {
 		}
 	}
 
-	private String errorTimelineTable() {
-		if (StringUtils.isBlank(AceDao.schemaName)) {
-			return "public.errorTimeline";
-		} else {
-			return AceDao.schemaName + ".errorTimeline";
-		}
-	}
-
 	public void truncateTimelineTable(Handle handle) {
 		handle.execute("TRUNCATE " + timelineTable());
-	}
-
-	public void truncateErrorTimelineTable(Handle handle) {
-		handle.execute("TRUNCATE " + errorTimelineTable());
 	}
 
 	public void insertIntoTimeline(Handle handle, String type, String method, String name, String data, String uuid) {
@@ -51,28 +39,6 @@ public class AceDao {
 		statement.bind("data", data);
 		statement.bind("uuid", uuid);
 		statement.execute();
-	}
-
-	public void insertIntoErrorTimeline(Handle handle, String type, String method, String name, String data,
-			String uuid) {
-		if (handle != null) {
-			Update statement = handle.createStatement("INSERT INTO " + errorTimelineTable()
-					+ " (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
-			statement.bind("type", type);
-			if (method != null) {
-				statement.bind("method", method);
-			} else {
-				statement.bind("method", "---");
-			}
-			statement.bind("name", name);
-			if (data != null) {
-				statement.bind("data", data);
-			} else {
-				statement.bind("data", "unknown exception");
-			}
-			statement.bind("uuid", uuid);
-			statement.execute();
-		}
 	}
 
 	public ITimelineItem selectLastAction(Handle handle) {

@@ -38,7 +38,7 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 
 		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
 
-		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null, null);
+		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
 		
 		ViewProvider viewProvider = new ViewProvider(daoProvider);
 		

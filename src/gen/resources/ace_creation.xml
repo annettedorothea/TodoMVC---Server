@@ -19,27 +19,5 @@
 	</column>
 </createTable>
 
-<createTable tableName="errortimeline">
-	<column name="type" type="character varying">
-		<constraints nullable="false" />
-	</column>
-	<column name="method" type="character varying">
-		<constraints nullable="false" />
-	</column>
-	<column name="name" type="character varying">
-		<constraints nullable="false" />
-	</column>
-	<column name="time" type="timestamp">
-		<constraints nullable="false" />
-	</column>
-	<column name="data" type="character varying">
-		<constraints nullable="false" />
-	</column>
-	<column name="uuid" type="character varying">
-		<constraints nullable="false" />
-	</column>
-</createTable>
-
 <addUniqueConstraint columnNames="type, uuid" tableName="timeline" />
-<addUniqueConstraint columnNames="type, uuid" tableName="errortimeline" />
 

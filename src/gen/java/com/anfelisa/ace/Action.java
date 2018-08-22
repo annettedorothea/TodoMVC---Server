@@ -21,7 +21,7 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	protected DatabaseHandle databaseHandle;
 	private DBI jdbi;
 	protected JodaObjectMapper mapper;
-	private CustomAppConfiguration appConfiguration;
+	protected CustomAppConfiguration appConfiguration;
 	protected IDaoProvider daoProvider;
 	protected ViewProvider viewProvider;
 
@@ -51,7 +51,7 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	protected abstract void loadDataForGetRequest();
 
 	public Response apply() {
-		this.databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open(), jdbi.open());
+		this.databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		Handle timelineHandle = null;
 		databaseHandle.beginTransaction();
 		try {

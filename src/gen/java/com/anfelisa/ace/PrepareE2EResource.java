@@ -46,7 +46,7 @@ public class PrepareE2EResource {
 			return Response.ok("prepared action " + uuid + " by doing nothing - action was not found").build();
 		}
 
-		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null, jdbi.open());
+		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		LOG.info("PREPARE ACTION " + actionToBePrepared);
 		try {
 			databaseHandle.beginTransaction();

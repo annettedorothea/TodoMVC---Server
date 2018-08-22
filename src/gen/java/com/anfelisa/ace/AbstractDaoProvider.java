@@ -60,7 +60,7 @@ public abstract class AbstractDaoProvider implements IDaoProvider {
 
 	@Override
 	public void addExceptionToTimeline(String uuid, Throwable x, DatabaseHandle databaseHandle) {
-		aceDao.insertIntoErrorTimeline(databaseHandle.getErrorHandle(), "exception", null, x.getClass().getName(),
+		aceDao.insertIntoTimeline(databaseHandle.getTimelineHandle(), "exception", null, x.getClass().getName(),
 				x.getMessage(), uuid);
 	}
 
@@ -71,8 +71,6 @@ public abstract class AbstractDaoProvider implements IDaoProvider {
 		}
 		aceDao.insertIntoTimeline(databaseHandle.getTimelineHandle(), type, method, name, EncryptionService.encrypt(json),
 				uuid);
-		aceDao.insertIntoErrorTimeline(databaseHandle.getErrorHandle(), type, method, name,
-				EncryptionService.encrypt(json), uuid);
 	}
 
 }

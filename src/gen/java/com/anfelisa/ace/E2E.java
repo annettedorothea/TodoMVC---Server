@@ -23,13 +23,23 @@ public class E2E {
 	
 	public static ITimelineItem selectEvent(String uuid) {
 		for (ITimelineItem timelineItem : timeline) {
-			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("event")) {
+			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("event") && !E2E.hasException(uuid)) {
 				return timelineItem;
 			}
+			
 		}
 		return null;
 	}
-
+	
+	private static boolean hasException(String uuid) {
+		for (ITimelineItem timelineItem : timeline) {
+			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("exception")) {
+				return true;
+			}
+			
+		}
+		return false;
+	}
 	
 	public static ITimelineItem selectNextAction(String uuid) {
 		if (uuid != null) {

@@ -9,19 +9,14 @@ public class DatabaseHandle {
 	static final Logger LOG = LoggerFactory.getLogger(DatabaseHandle.class);
 
 	private Handle handle;
-	private Handle errorHandle;
 	private Handle timelineHandle;
 
-	public DatabaseHandle(Handle handle, Handle errorHandle,  Handle timelineHandle) {
+	public DatabaseHandle(Handle handle, Handle timelineHandle) {
 		super();
 		try {
 			if (handle != null) {
 				this.handle = handle;
 				this.handle.getConnection().setAutoCommit(false);
-			}
-			if (errorHandle != null) {
-				this.errorHandle = errorHandle;
-				this.errorHandle.getConnection().setAutoCommit(false);
 			}
 			if (timelineHandle != null) {
 				this.timelineHandle = timelineHandle;
@@ -36,9 +31,6 @@ public class DatabaseHandle {
 		if (handle != null) {
 			handle.begin();
 		}
-		if (errorHandle != null) {
-			errorHandle.begin();
-		}
 		if (timelineHandle != null) {
 			timelineHandle.begin();
 		}
@@ -51,17 +43,11 @@ public class DatabaseHandle {
 		if (timelineHandle != null) {
 			timelineHandle.commit();
 		}
-		if (errorHandle != null) {
-			errorHandle.rollback();
-		}
 	}
 
 	public void rollbackTransaction() {
 		if (handle != null) {
 			handle.rollback();
-		}
-		if (errorHandle != null) {
-			errorHandle.commit();
 		}
 		if (timelineHandle != null) {
 			timelineHandle.commit();
@@ -72,9 +58,6 @@ public class DatabaseHandle {
 		if (handle != null) {
 			handle.close();
 		}
-		if (errorHandle != null) {
-			errorHandle.close();
-		}
 		if (timelineHandle != null) {
 			timelineHandle.close();
 		}
@@ -82,10 +65,6 @@ public class DatabaseHandle {
 
 	public Handle getHandle() {
 		return handle;
-	}
-
-	public Handle getErrorHandle() {
-		return errorHandle;
 	}
 
 	public Handle getTimelineHandle() {

@@ -12,7 +12,7 @@ public class Resource {
 	}
 
 	public DatabaseHandle createDatabaseHandle() {
-		return new DatabaseHandle(jdbi.open(), jdbi.open(), jdbi.open());
+		return new DatabaseHandle(jdbi.open(), jdbi.open());
 	}
 
 	public DBI getJdbi() {
