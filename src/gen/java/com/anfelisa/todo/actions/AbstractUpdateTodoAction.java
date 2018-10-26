@@ -1,6 +1,7 @@
 package com.anfelisa.todo.actions;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
+
 import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.ace.Action;
@@ -15,7 +16,7 @@ import com.anfelisa.todo.commands.UpdateTodoCommand;
 
 public abstract class AbstractUpdateTodoAction extends Action<TodoData> {
 
-	public AbstractUpdateTodoAction(DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractUpdateTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.UpdateTodoAction", HttpMethod.PUT, jdbi, appConfiguration, daoProvider, viewProvider);
 	}
 

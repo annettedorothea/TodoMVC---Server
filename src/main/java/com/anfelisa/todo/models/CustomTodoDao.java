@@ -1,19 +1,14 @@
 package com.anfelisa.todo.models;
 
-import org.joda.time.DateTime;
-import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.PreparedBatch;
-import org.skife.jdbi.v2.Query;
-import org.skife.jdbi.v2.Update;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.statement.PreparedBatch;
+import org.jdbi.v3.core.statement.Update;
+import org.joda.time.DateTime;
 
-import com.anfelisa.ace.encryption.EncryptionService;
 import com.anfelisa.todo.data.ToggleAllData;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @SuppressWarnings("all")
 @JsonIgnoreType
@@ -21,14 +16,14 @@ public class CustomTodoDao {
 
 	public void toggleTodo(Handle handle, ITodoToggleModel model) {
 		Update statement = handle
-				.createStatement("UPDATE public.todo SET done = ((SELECT done from public.todo WHERE id = :id) = false), updateddatetime = :updateddatetime WHERE id = :id");
+				.createUpdate("UPDATE public.todo SET done = ((SELECT done from public.todo WHERE id = :id) = false), updateddatetime = :updateddatetime WHERE id = :id");
 		statement.bind("id", model.getId());
 		statement.bind("updateddatetime", model.getUpdatedDateTime());
 		statement.execute();
 	}
 
 	public void updateById(Handle handle, ITodoModel todoModel) {
-		Update statement = handle.createStatement(
+		Update statement = handle.createUpdate(
 				"UPDATE public.todo SET description = :description, updateddatetime = :updateddatetime WHERE id = :id");
 		statement.bind("id", todoModel.getId());
 		statement.bind("description", todoModel.getDescription());
@@ -43,7 +38,7 @@ public class CustomTodoDao {
 	}
 
 	public void deleteDone(Handle handle) {
-		Update statement = handle.createStatement("DELETE FROM public.todo WHERE done = true");
+		Update statement = handle.createUpdate("DELETE FROM public.todo WHERE done = true");
 		statement.execute();
 	}
 
@@ -60,7 +55,7 @@ public class CustomTodoDao {
 	}
 
 	public void toggleAll(Handle handle, ToggleAllData dataContainer) {
-		Update statement = handle.createStatement(
+		Update statement = handle.createUpdate(
 				"UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime");
 		statement.bind("done", dataContainer.getDone());
 		statement.bind("updateddatetime", dataContainer.getUpdatedDateTime());

@@ -1,6 +1,7 @@
 package com.anfelisa.todo.actions;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
+
 import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.ace.Action;
@@ -14,7 +15,7 @@ import com.anfelisa.todo.data.TodoListData;
 
 public abstract class AbstractGetAllTodosAction extends Action<TodoListData> {
 
-	public AbstractGetAllTodosAction(DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractGetAllTodosAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.GetAllTodosAction", HttpMethod.GET, jdbi, appConfiguration, daoProvider, viewProvider);
 	}
 

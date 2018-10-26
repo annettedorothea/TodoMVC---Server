@@ -6,8 +6,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Jdbi;
+
+import org.jdbi.v3.core.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,13 +20,13 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	private String actionName;
 	private HttpMethod httpMethod;
 	protected DatabaseHandle databaseHandle;
-	private DBI jdbi;
+	private Jdbi jdbi;
 	protected JodaObjectMapper mapper;
 	protected CustomAppConfiguration appConfiguration;
 	protected IDaoProvider daoProvider;
 	protected ViewProvider viewProvider;
 
-	public Action(String actionName, HttpMethod httpMethod, DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public Action(String actionName, HttpMethod httpMethod, Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super();
 		this.actionName = actionName;
 		this.httpMethod = httpMethod;
@@ -51,8 +52,7 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	protected abstract void loadDataForGetRequest();
 
 	public Response apply() {
-		this.databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
-		Handle timelineHandle = null;
+		databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		databaseHandle.beginTransaction();
 		try {
 			if (!ServerConfiguration.REPLAY.equals(appConfiguration.getServerConfiguration().getMode())) {
@@ -61,7 +61,7 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 				ITimelineItem timelineItem = E2E.selectAction(this.actionData.getUuid());
 				if (timelineItem != null) {
 					Class<?> cl = Class.forName(timelineItem.getName());
-					Constructor<?> con = cl.getConstructor(DBI.class, CustomAppConfiguration.class, IDaoProvider.class, ViewProvider.class);
+					Constructor<?> con = cl.getConstructor(Jdbi.class, CustomAppConfiguration.class, IDaoProvider.class, ViewProvider.class);
 					IAction action = (IAction) con.newInstance(jdbi, appConfiguration, daoProvider, viewProvider);
 					action.initActionData(timelineItem.getData());
 					this.actionData.setSystemTime(action.getActionData().getSystemTime());
@@ -102,9 +102,6 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 			return Response.status(500).entity(x.getMessage()).build();
 		} finally {
 			databaseHandle.close();
-			if (timelineHandle != null) {
-				timelineHandle.close();
-			}
 		}
 	}
 

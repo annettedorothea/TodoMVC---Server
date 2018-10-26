@@ -1,6 +1,6 @@
 package com.anfelisa.ace;
 
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 
 import com.anfelisa.todo.models.CustomTodoDao;
 import com.anfelisa.todo.models.TodoDao;
@@ -24,5 +24,6 @@ public class DaoProvider extends AbstractDaoProvider {
 	public void truncateAllViews(Handle handle) {
 		todoDao.truncate(handle);
 	}
+
 }
 

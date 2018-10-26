@@ -1,6 +1,7 @@
 package com.anfelisa.todo.actions;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
+
 import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.ace.Action;
@@ -15,7 +16,7 @@ import com.anfelisa.todo.commands.ClearDoneCommand;
 
 public abstract class AbstractClearDoneAction extends Action<ClearDoneData> {
 
-	public AbstractClearDoneAction(DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractClearDoneAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.ClearDoneAction", HttpMethod.DELETE, jdbi, appConfiguration, daoProvider, viewProvider);
 	}
 

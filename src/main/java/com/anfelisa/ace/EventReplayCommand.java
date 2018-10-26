@@ -3,14 +3,14 @@ package com.anfelisa.ace;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.dropwizard.Application;
 import io.dropwizard.cli.EnvironmentCommand;
-import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Environment;
 import net.sourceforge.argparse4j.inf.Namespace;
 
@@ -34,9 +34,9 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 			throw new RuntimeException("replay events in a replay environment doesn't make sense");
 		}
 		
-		final DBIFactory factory = new DBIFactory();
+		final JdbiFactory factory = new JdbiFactory();
 
-		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
+		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
 
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
 		
@@ -50,6 +50,9 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 
 			List<ITimelineItem> timeline = daoProvider.getAceDao().selectTimeline(handle);
 			E2E.timeline = timeline;
+			
+			String mode = configuration.getServerConfiguration().getMode();
+			new com.anfelisa.todo.AppRegistration().registerConsumers(viewProvider, mode);
 
 			int eventCount = 0;
 			ITimelineItem nextAction = E2E.selectNextAction(null);

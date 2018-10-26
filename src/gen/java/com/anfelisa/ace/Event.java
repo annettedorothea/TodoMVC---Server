@@ -3,7 +3,7 @@ package com.anfelisa.ace;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,7 +2,7 @@ package com.anfelisa.todo.views;
 
 import java.util.function.BiConsumer;
 
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.todo.data.ClearDoneData;

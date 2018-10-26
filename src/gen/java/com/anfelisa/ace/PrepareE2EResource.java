@@ -12,7 +12,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,14 +24,14 @@ import com.codahale.metrics.annotation.Timed;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PrepareE2EResource {
 
-	private DBI jdbi;
+	private Jdbi jdbi;
 
 	static final Logger LOG = LoggerFactory.getLogger(PrepareE2EResource.class);
 
 	private IDaoProvider daoProvider;
 	private ViewProvider viewProvider;
 
-	public PrepareE2EResource(DBI jdbi, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public PrepareE2EResource(Jdbi jdbi, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super();
 		this.jdbi = jdbi;
 		this.daoProvider = daoProvider;

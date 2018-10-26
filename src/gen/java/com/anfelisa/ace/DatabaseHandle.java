@@ -1,6 +1,6 @@
 package com.anfelisa.ace;
 
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +16,9 @@ public class DatabaseHandle {
 		try {
 			if (handle != null) {
 				this.handle = handle;
-				this.handle.getConnection().setAutoCommit(false);
 			}
 			if (timelineHandle != null) {
 				this.timelineHandle = timelineHandle;
-				this.timelineHandle.getConnection().setAutoCommit(false);
 			}
 		} catch (Exception e) {
 			LOG.error("failed to set auto commit off", e);

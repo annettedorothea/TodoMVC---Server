@@ -1,14 +1,14 @@
 package com.anfelisa.ace;
 
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.jdbi.DBIFactory;
-import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
+import io.dropwizard.jdbi3.JdbiFactory;
+import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -51,9 +51,9 @@ public class App extends Application<CustomAppConfiguration> {
 
 		AceDao.setSchemaName(null);
 
-		final DBIFactory factory = new DBIFactory();
+		final JdbiFactory factory = new JdbiFactory();
 
-		DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
+		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
 
 		String mode = configuration.getServerConfiguration().getMode();
 		if (ServerConfiguration.REPLAY.equals(mode)) {
@@ -67,7 +67,7 @@ public class App extends Application<CustomAppConfiguration> {
 
 		environment.jersey().register(new GetServerInfoResource());
 
-		DBIExceptionsBundle dbiExceptionsBundle = new DBIExceptionsBundle();
+		JdbiExceptionsBundle dbiExceptionsBundle = new JdbiExceptionsBundle();
 		environment.jersey().register(dbiExceptionsBundle);
 
 		environment.jersey().register(RolesAllowedDynamicFeature.class);

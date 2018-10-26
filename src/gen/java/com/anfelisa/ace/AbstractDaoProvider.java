@@ -2,7 +2,6 @@ package com.anfelisa.ace;
 
 import javax.ws.rs.WebApplicationException;
 
-import com.anfelisa.ace.encryption.EncryptionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public abstract class AbstractDaoProvider implements IDaoProvider {
@@ -69,8 +68,7 @@ public abstract class AbstractDaoProvider implements IDaoProvider {
 		if (databaseHandle == null) {
 			throw new WebApplicationException("no database handle");
 		}
-		aceDao.insertIntoTimeline(databaseHandle.getTimelineHandle(), type, method, name, EncryptionService.encrypt(json),
-				uuid);
+		aceDao.insertIntoTimeline(databaseHandle.getTimelineHandle(), type, method, name, json, uuid);
 	}
 
 }

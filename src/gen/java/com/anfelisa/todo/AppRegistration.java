@@ -7,7 +7,8 @@ import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.ace.ServerConfiguration;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
+
 
 import com.anfelisa.todo.views.TodoView;
 import com.anfelisa.todo.actions.*;
@@ -15,7 +16,7 @@ import com.anfelisa.todo.actions.*;
 @SuppressWarnings("all")
 public class AppRegistration {
 
-	public void registerResources(Environment environment, DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public void registerResources(Environment environment, Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		environment.jersey().register(new GetAllTodosAction(jdbi, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new CreateTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new ToggleTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));

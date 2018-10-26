@@ -3,7 +3,7 @@ package com.anfelisa.ace;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

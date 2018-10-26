@@ -1,12 +1,13 @@
 package com.anfelisa.ace;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
+
 
 public class Resource {
 
-	private DBI jdbi;
+	private Jdbi jdbi;
 
-	public Resource( DBI jdbi) {
+	public Resource( Jdbi jdbi) {
 		super();
 		this.jdbi = jdbi;
 	}
@@ -15,7 +16,7 @@ public class Resource {
 		return new DatabaseHandle(jdbi.open(), jdbi.open());
 	}
 
-	public DBI getJdbi() {
+	public Jdbi getJdbi() {
 		return jdbi;
 	}
 	

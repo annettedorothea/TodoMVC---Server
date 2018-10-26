@@ -10,8 +10,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Jdbi;
+
+import org.jdbi.v3.core.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,13 +23,13 @@ import com.codahale.metrics.annotation.Timed;
 @Consumes(MediaType.APPLICATION_JSON)
 public class GetServerTimelineResource {
 
-	private DBI jdbi;
+	private Jdbi jdbi;
 
 	static final Logger LOG = LoggerFactory.getLogger(GetServerTimelineResource.class);
 
 	private AceDao aceDao = new AceDao();
 
-	public GetServerTimelineResource(DBI jdbi) {
+	public GetServerTimelineResource(Jdbi jdbi) {
 		super();
 		this.jdbi = jdbi;
 	}

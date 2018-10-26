@@ -1,6 +1,7 @@
 package com.anfelisa.todo.actions;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
+
 import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.ace.Action;
@@ -15,7 +16,7 @@ import com.anfelisa.todo.commands.DeleteTodoCommand;
 
 public abstract class AbstractDeleteTodoAction extends Action<TodoIdData> {
 
-	public AbstractDeleteTodoAction(DBI jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractDeleteTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.DeleteTodoAction", HttpMethod.DELETE, jdbi, appConfiguration, daoProvider, viewProvider);
 	}
 
