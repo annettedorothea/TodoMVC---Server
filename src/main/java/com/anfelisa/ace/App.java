@@ -17,6 +17,8 @@ public class App extends Application<CustomAppConfiguration> {
 
 	static final Logger LOG = LoggerFactory.getLogger(App.class);
 
+	static EmailService EMAIL_SERVICE;
+
 	public static void main(String[] args) throws Exception {
 		new App().run(args);
 	}
@@ -27,7 +29,7 @@ public class App extends Application<CustomAppConfiguration> {
 	}
 
 	public static String getVersion() {
-		return "3.0.2";
+		return "4.0.0";
 	}
 
 	@Override
@@ -45,6 +47,8 @@ public class App extends Application<CustomAppConfiguration> {
 	@Override
 	public void run(CustomAppConfiguration configuration, Environment environment) throws ClassNotFoundException {
 		LOG.info("running version {}", getVersion());
+
+		EMAIL_SERVICE = new EmailService(configuration.getEmail());
 
 		DaoProvider daoProvider = new DaoProvider();
 		ViewProvider viewProvider = new ViewProvider(daoProvider);
@@ -75,6 +79,16 @@ public class App extends Application<CustomAppConfiguration> {
 		new com.anfelisa.todo.AppRegistration().registerResources(environment, jdbi, configuration, daoProvider, viewProvider);
 		new com.anfelisa.todo.AppRegistration().registerConsumers(viewProvider, mode);
 
+	}
+
+	public static void reportException(Exception x) {
+		if (EMAIL_SERVICE != null) {
+			try {
+				EMAIL_SERVICE.sendEmail("!!! Todo exception !!!", x.getMessage());
+			} catch (Exception e) {
+				LOG.error("failed to notify about exception", x.getMessage());
+			}
+		}
 	}
 
 }
