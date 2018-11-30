@@ -10,14 +10,18 @@ public class ToggleAllModel implements IToggleAllModel {
 	@NotNull
 	private Boolean done = false;
 	
+	private java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled;
+	
 	private org.joda.time.DateTime updatedDateTime;
 	
 
 	public ToggleAllModel(
 		@JsonProperty("done") Boolean done,
+		@JsonProperty("todosToBeToggled") java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
 	) {
 		this.done = done;
+		this.todosToBeToggled = todosToBeToggled;
 		this.updatedDateTime = updatedDateTime;
 	}
 
@@ -27,6 +31,14 @@ public class ToggleAllModel implements IToggleAllModel {
 	}
 	public void setDone(Boolean done) {
 		this.done = done;
+	}
+	
+	@JsonProperty
+	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodosToBeToggled() {
+		return this.todosToBeToggled;
+	}
+	public void setTodosToBeToggled(java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled) {
+		this.todosToBeToggled = todosToBeToggled;
 	}
 	
 	@JsonProperty

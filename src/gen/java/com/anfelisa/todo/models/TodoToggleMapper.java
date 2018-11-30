@@ -12,6 +12,8 @@ public class TodoToggleMapper implements RowMapper<ITodoToggleModel> {
 	public ITodoToggleModel map(ResultSet r, StatementContext ctx) throws SQLException {
 		return new TodoToggleModel(
 			r.getString("id"),
+			r.getBoolean("done"),
+			null,
 			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")) : null
 		);
 	}

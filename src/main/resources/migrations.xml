@@ -52,4 +52,20 @@
 
 	</changeSet>
 
+	<changeSet id="002" author="annette">
+
+		<createTable tableName="tododonehistory">
+			<column name="id" type="character varying">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="description" type="character varying">
+				<constraints nullable="false" />
+			</column>
+			<column name="donedatetime" type="timestamp with time zone">
+				<constraints />
+			</column>
+		</createTable>
+
+	</changeSet>
+
 </databaseChangeLog>

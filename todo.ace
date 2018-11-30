@@ -8,10 +8,10 @@ ACE {
 		on success (Todo.create)
 	} 
 	PUT ToggleTodo uses TodoToggle {
-		on success (Todo.toggle)
+		on success ( Todo.toggle TodoDoneHistory.toggle )
 	}
 	PUT ToggleAll uses ToggleAll {
-		on success (Todo.toggleAll)
+		on success ( Todo.toggleAll TodoDoneHistory.toggleAll )
 	}
 	PUT UpdateTodo uses Todo {
 		on success (Todo.update)
@@ -33,10 +33,20 @@ views {
 		update(Todo)
 		clearDone(ClearDone)
 	}
+	TodoDoneHistory {
+		toggle(TodoToggle)
+		toggleAll(ToggleAll)
+	}
 }
 
 models {
 	schema public
+	
+	persistent TodoDoneHistory {
+		Unique PrimaryKey NotNull String id
+		NotNull String description
+		DateTime doneDateTime
+	}
 	
 	persistent Todo {
 		Unique PrimaryKey NotNull String id
@@ -56,11 +66,14 @@ models {
 
 	TodoToggle {
 		NotNull String id
+		NotNull Boolean done
+		Todo todoToBeToggled
 		DateTime updatedDateTime
 	}
 
 	ToggleAll {
 		NotNull Boolean done
+		List Todo todosToBeToggled
 		DateTime updatedDateTime
 	}
 	

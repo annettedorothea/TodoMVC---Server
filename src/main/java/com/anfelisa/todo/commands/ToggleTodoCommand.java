@@ -7,6 +7,7 @@ import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.todo.data.TodoToggleData;
+import com.anfelisa.todo.models.ITodoModel;
 
 public class ToggleTodoCommand extends AbstractToggleTodoCommand {
 
@@ -19,6 +20,9 @@ public class ToggleTodoCommand extends AbstractToggleTodoCommand {
 	@Override
 	protected void executeCommand() {
 		this.commandData.setUpdatedDateTime(this.commandData.getSystemTime());
+		ITodoModel todo = daoProvider.getTodoDao().selectById(getHandle(), commandData.getId());
+		this.commandData.setTodoToBeToggled(todo);
+		this.commandData.setDone(!todo.getDone());
 		this.commandData.setOutcome(success);
 	}
 

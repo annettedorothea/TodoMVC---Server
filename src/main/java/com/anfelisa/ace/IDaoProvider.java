@@ -4,6 +4,7 @@ import org.jdbi.v3.core.Handle;
 
 import com.anfelisa.todo.models.CustomTodoDao;
 import com.anfelisa.todo.models.TodoDao;
+import com.anfelisa.todo.models.TodoDoneHistoryDao;
 
 public interface IDaoProvider {
 	
@@ -25,5 +26,7 @@ public interface IDaoProvider {
 
 	CustomTodoDao getCustomTodoDao();
 	
+	TodoDoneHistoryDao getTodoDoneHistoryDao();
+
 }
 

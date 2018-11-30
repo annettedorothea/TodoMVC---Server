@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 
 import org.jdbi.v3.core.Handle;
 
+import com.anfelisa.todo.views.TodoDoneHistoryView;
 import com.anfelisa.todo.views.TodoView;
 
 public class ViewProvider {
@@ -15,9 +16,11 @@ public class ViewProvider {
 	private final Map<String, List<BiConsumer<? extends IDataContainer, Handle>>> consumerMap;
 
 	public TodoView todoView;
+	public TodoDoneHistoryView todoDoneHistoryView;
 
 	public ViewProvider(IDaoProvider daoProvider) {
 		todoView = new TodoView(daoProvider);
+		todoDoneHistoryView = new TodoDoneHistoryView(daoProvider);
 		
 		consumerMap = new HashMap<String, List<BiConsumer<? extends IDataContainer, Handle>>>();
 	}

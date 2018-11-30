@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public interface ITodoToggleModel {
 
 	String getId();
+	Boolean getDone();
+	com.anfelisa.todo.models.ITodoModel getTodoToBeToggled();
 	org.joda.time.DateTime getUpdatedDateTime();
 
 }

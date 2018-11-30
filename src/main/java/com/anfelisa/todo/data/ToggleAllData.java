@@ -10,16 +10,20 @@ public class ToggleAllData extends AbstractData implements IToggleAllData {
 	@NotNull
 	private Boolean done = false;
 	
+	private java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled;
+	
 	private org.joda.time.DateTime updatedDateTime;
 	
 
 	public ToggleAllData(
 		@JsonProperty("done") Boolean done,
+		@JsonProperty("todosToBeToggled") java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
 ,		@JsonProperty("uuid") String uuid
 	) {
 		super(uuid);
 		this.done = done;
+		this.todosToBeToggled = todosToBeToggled;
 		this.updatedDateTime = updatedDateTime;
 	}
 
@@ -40,6 +44,18 @@ public class ToggleAllData extends AbstractData implements IToggleAllData {
 	}
 	
 	@JsonProperty
+	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodosToBeToggled() {
+		return this.todosToBeToggled;
+	}
+	public void setTodosToBeToggled(java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled) {
+		this.todosToBeToggled = todosToBeToggled;
+	}
+	public ToggleAllData withTodosToBeToggled(java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled) {
+		this.todosToBeToggled = todosToBeToggled;
+		return this;
+	}
+	
+	@JsonProperty
 	public org.joda.time.DateTime getUpdatedDateTime() {
 		return this.updatedDateTime;
 	}
@@ -56,6 +72,7 @@ public class ToggleAllData extends AbstractData implements IToggleAllData {
 	public Object toPresentationalData() {
 		return new ToggleAllPresentationalData(
 			this.done,
+			this.todosToBeToggled,
 			this.updatedDateTime
 		);
 	}

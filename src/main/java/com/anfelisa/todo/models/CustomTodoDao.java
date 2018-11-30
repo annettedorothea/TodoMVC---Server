@@ -1,6 +1,7 @@
 package com.anfelisa.todo.models;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.PreparedBatch;
@@ -16,8 +17,9 @@ public class CustomTodoDao {
 
 	public void toggleTodo(Handle handle, ITodoToggleModel model) {
 		Update statement = handle
-				.createUpdate("UPDATE public.todo SET done = ((SELECT done from public.todo WHERE id = :id) = false), updateddatetime = :updateddatetime WHERE id = :id");
+				.createUpdate("UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime WHERE id = :id");
 		statement.bind("id", model.getId());
+		statement.bind("done", model.getDone());
 		statement.bind("updateddatetime", model.getUpdatedDateTime());
 		statement.execute();
 	}
@@ -55,9 +57,12 @@ public class CustomTodoDao {
 	}
 
 	public void toggleAll(Handle handle, ToggleAllData dataContainer) {
+		List<ITodoModel> todos = dataContainer.getTodosToBeToggled();
+		List<String> idList = todos.stream().map(ITodoModel::getId).collect(Collectors.toList());
 		Update statement = handle.createUpdate(
-				"UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime");
+				"UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime where id in (<idlist>)");
 		statement.bind("done", dataContainer.getDone());
+		statement.bindList("idlist", idList);
 		statement.bind("updateddatetime", dataContainer.getUpdatedDateTime());
 		statement.execute();
 	}

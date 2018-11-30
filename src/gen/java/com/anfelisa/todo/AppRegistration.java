@@ -11,6 +11,7 @@ import org.jdbi.v3.core.Jdbi;
 
 
 import com.anfelisa.todo.views.TodoView;
+import com.anfelisa.todo.views.TodoDoneHistoryView;
 import com.anfelisa.todo.actions.*;
 
 @SuppressWarnings("all")
@@ -29,7 +30,9 @@ public class AppRegistration {
 	public void registerConsumers(ViewProvider viewProvider, String mode) {
 				viewProvider.addConsumer("com.anfelisa.todo.events.CreateTodoSuccessEvent", viewProvider.todoView.create);
 				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleTodoSuccessEvent", viewProvider.todoView.toggle);
+				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleTodoSuccessEvent", viewProvider.todoDoneHistoryView.toggle);
 				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleAllSuccessEvent", viewProvider.todoView.toggleAll);
+				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleAllSuccessEvent", viewProvider.todoDoneHistoryView.toggleAll);
 				viewProvider.addConsumer("com.anfelisa.todo.events.UpdateTodoSuccessEvent", viewProvider.todoView.update);
 				viewProvider.addConsumer("com.anfelisa.todo.events.DeleteTodoSuccessEvent", viewProvider.todoView.delete);
 				viewProvider.addConsumer("com.anfelisa.todo.events.ClearDoneSuccessEvent", viewProvider.todoView.clearDone);

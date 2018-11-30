@@ -18,14 +18,23 @@ public class TodoTogglePresentationalData implements ITodoTogglePresentationalDa
 	@NotNull
 	private String id;
 	
+	@NotNull
+	private Boolean done = false;
+	
+	private com.anfelisa.todo.models.ITodoModel todoToBeToggled;
+	
 	private org.joda.time.DateTime updatedDateTime;
 	
 	
 	public TodoTogglePresentationalData(
 		@JsonProperty("id") String id,
+		@JsonProperty("done") Boolean done,
+		@JsonProperty("todoToBeToggled") com.anfelisa.todo.models.ITodoModel todoToBeToggled,
 		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
 	) {
 		this.id = id;
+		this.done = done;
+		this.todoToBeToggled = todoToBeToggled;
 		this.updatedDateTime = updatedDateTime;
 		
 	}
@@ -39,6 +48,30 @@ public class TodoTogglePresentationalData implements ITodoTogglePresentationalDa
 	}
 	public TodoTogglePresentationalData withId(String id) {
 		this.id = id;
+		return this;
+	}
+	
+	@JsonProperty
+	public Boolean getDone() {
+		return this.done;
+	}
+	public void setDone(Boolean done) {
+		this.done = done;
+	}
+	public TodoTogglePresentationalData withDone(Boolean done) {
+		this.done = done;
+		return this;
+	}
+	
+	@JsonProperty
+	public com.anfelisa.todo.models.ITodoModel getTodoToBeToggled() {
+		return this.todoToBeToggled;
+	}
+	public void setTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled) {
+		this.todoToBeToggled = todoToBeToggled;
+	}
+	public TodoTogglePresentationalData withTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled) {
+		this.todoToBeToggled = todoToBeToggled;
 		return this;
 	}
 	
