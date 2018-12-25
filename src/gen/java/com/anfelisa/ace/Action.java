@@ -144,18 +144,18 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	}
 
 	protected void throwInternalServerError(Exception x) {
-		String message = x.getMessage();
-		StackTraceElement[] stackTrace = x.getStackTrace();
-		int i = 1;
-		for (StackTraceElement stackTraceElement : stackTrace) {
-			message += "\n" + stackTraceElement.toString();
-			if (i > 3) {
-				message += "\n" + (stackTrace.length - 4) + " more...";
-				break;
-			}
-			i++;
+	String message = x.getMessage();
+	StackTraceElement[] stackTrace = x.getStackTrace();
+	int i = 1;
+	for (StackTraceElement stackTraceElement : stackTrace) {
+		message += "\n" + stackTraceElement.toString();
+		if (i > 3) {
+			message += "\n" + (stackTrace.length - 4) + " more...";
+			break;
 		}
-		throw new WebApplicationException(message, Response.Status.INTERNAL_SERVER_ERROR);
+		i++;
+	}
+	throw new WebApplicationException(message, Response.Status.INTERNAL_SERVER_ERROR);
 	}
 
 }

@@ -33,12 +33,12 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 
 	@SuppressWarnings("unchecked")
 	public void notifyListeners() {
-		List<BiConsumer<? extends IDataContainer, Handle>> consumerList = viewProvider.getConsumerForEvent(eventName);
-		if (consumerList != null) {
-			for (BiConsumer<? extends IDataContainer, Handle> consumer : consumerList) {
-				((BiConsumer<T, Handle>)consumer).accept(this.eventData, databaseHandle.getHandle());
-			}
+	List<BiConsumer<? extends IDataContainer, Handle>> consumerList = viewProvider.getConsumerForEvent(eventName);
+	if (consumerList != null) {
+		for (BiConsumer<? extends IDataContainer, Handle> consumer : consumerList) {
+			((BiConsumer<T, Handle>)consumer).accept(this.eventData, databaseHandle.getHandle());
 		}
+	}
 	}
 
 	public IDataContainer getEventData() {

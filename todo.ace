@@ -1,25 +1,25 @@
+JAVA
+
 com.anfelisa.todo
 
-target JAVA
-
 ACE {
-	GET GetAllTodos uses TodoList
-	POST CreateTodo uses Todo {
+	GET "/todos/all" GetAllTodos uses TodoList
+	POST "/todos/create" payload { Todo } CreateTodo uses Todo {
 		on success (Todo.create)
 	} 
-	PUT ToggleTodo uses TodoToggle {
+	PUT "/todos/toggle" queryParams { Todo.id } ToggleTodo uses TodoToggle {
 		on success ( Todo.toggle TodoDoneHistory.toggle )
 	}
-	PUT ToggleAll uses ToggleAll {
+	PUT "/todos/toggle-all" ToggleAll uses ToggleAll {
 		on success ( Todo.toggleAll TodoDoneHistory.toggleAll )
 	}
-	PUT UpdateTodo uses Todo {
+	PUT "/todos/update" payload { Todo } UpdateTodo uses Todo {
 		on success (Todo.update)
 	}
-	DELETE DeleteTodo uses TodoId {
+	DELETE "/todos/delete" queryParams { Todo.id } DeleteTodo uses TodoId {
 		on success (Todo.delete)
 	}
-	DELETE ClearDone uses ClearDone {
+	DELETE "/todos/clear-done" ClearDone uses ClearDone {
 		on success (Todo.clearDone)
 	}
 }
