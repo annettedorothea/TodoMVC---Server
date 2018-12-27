@@ -13,13 +13,6 @@ public class ClearDoneData extends AbstractData implements IClearDoneData {
 	}
 
 
-
-	@Override
-	public Object toPresentationalData() {
-		return new ClearDonePresentationalData(
-		);
-	}
-
 }
 
 /*       S.D.G.       */

@@ -27,19 +27,7 @@ public class TodoListData extends AbstractData implements ITodoListData {
 	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
 		this.todoList = todoList;
 	}
-	public TodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
-		this.todoList = todoList;
-		return this;
-	}
 	
-
-	@Override
-	public Object toPresentationalData() {
-		return new TodoListPresentationalData(
-			this.todoList
-		);
-	}
-
 }
 
 /*       S.D.G.       */

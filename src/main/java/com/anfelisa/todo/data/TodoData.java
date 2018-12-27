@@ -48,10 +48,6 @@ public class TodoData extends AbstractData implements ITodoData {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoData withId(String id) {
-		this.id = id;
-		return this;
-	}
 	
 	@JsonProperty
 	public String getDescription() {
@@ -59,10 +55,6 @@ public class TodoData extends AbstractData implements ITodoData {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public TodoData withDescription(String description) {
-		this.description = description;
-		return this;
 	}
 	
 	@JsonProperty
@@ -72,10 +64,6 @@ public class TodoData extends AbstractData implements ITodoData {
 	public void setDone(Boolean done) {
 		this.done = done;
 	}
-	public TodoData withDone(Boolean done) {
-		this.done = done;
-		return this;
-	}
 	
 	@JsonProperty
 	public org.joda.time.DateTime getCreatedDateTime() {
@@ -83,10 +71,6 @@ public class TodoData extends AbstractData implements ITodoData {
 	}
 	public void setCreatedDateTime(org.joda.time.DateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
-	}
-	public TodoData withCreatedDateTime(org.joda.time.DateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
-		return this;
 	}
 	
 	@JsonProperty
@@ -96,23 +80,7 @@ public class TodoData extends AbstractData implements ITodoData {
 	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}
-	public TodoData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
-		this.updatedDateTime = updatedDateTime;
-		return this;
-	}
 	
-
-	@Override
-	public Object toPresentationalData() {
-		return new TodoPresentationalData(
-			this.id,
-			this.description,
-			this.done,
-			this.createdDateTime,
-			this.updatedDateTime
-		);
-	}
-
 }
 
 /*       S.D.G.       */

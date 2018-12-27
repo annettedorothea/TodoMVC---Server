@@ -10,16 +10,20 @@ import java.util.List;
 
 import com.anfelisa.ace.IDataContainer;
 
-
 @SuppressWarnings("all")
-public class ClearDonePresentationalData implements IClearDonePresentationalData {
+public class GetAllTodosResponse implements IGetAllTodosResponse {
 	
+	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
 	
-	public ClearDonePresentationalData(
-	) {
-		
+	public GetAllTodosResponse(com.anfelisa.todo.models.ITodoListModel data) {
+		todoList = data.getTodoList();
 	}
-
+	
+	@JsonProperty
+	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+		return this.todoList;
+	}
+	
 }
 
 /*       S.D.G.       */

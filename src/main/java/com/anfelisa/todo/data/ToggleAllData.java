@@ -38,10 +38,6 @@ public class ToggleAllData extends AbstractData implements IToggleAllData {
 	public void setDone(Boolean done) {
 		this.done = done;
 	}
-	public ToggleAllData withDone(Boolean done) {
-		this.done = done;
-		return this;
-	}
 	
 	@JsonProperty
 	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodosToBeToggled() {
@@ -49,10 +45,6 @@ public class ToggleAllData extends AbstractData implements IToggleAllData {
 	}
 	public void setTodosToBeToggled(java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled) {
 		this.todosToBeToggled = todosToBeToggled;
-	}
-	public ToggleAllData withTodosToBeToggled(java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled) {
-		this.todosToBeToggled = todosToBeToggled;
-		return this;
 	}
 	
 	@JsonProperty
@@ -62,21 +54,7 @@ public class ToggleAllData extends AbstractData implements IToggleAllData {
 	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}
-	public ToggleAllData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
-		this.updatedDateTime = updatedDateTime;
-		return this;
-	}
 	
-
-	@Override
-	public Object toPresentationalData() {
-		return new ToggleAllPresentationalData(
-			this.done,
-			this.todosToBeToggled,
-			this.updatedDateTime
-		);
-	}
-
 }
 
 /*       S.D.G.       */

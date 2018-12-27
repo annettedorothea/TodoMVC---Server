@@ -43,10 +43,6 @@ public class TodoToggleData extends AbstractData implements ITodoToggleData {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoToggleData withId(String id) {
-		this.id = id;
-		return this;
-	}
 	
 	@JsonProperty
 	public Boolean getDone() {
@@ -54,10 +50,6 @@ public class TodoToggleData extends AbstractData implements ITodoToggleData {
 	}
 	public void setDone(Boolean done) {
 		this.done = done;
-	}
-	public TodoToggleData withDone(Boolean done) {
-		this.done = done;
-		return this;
 	}
 	
 	@JsonProperty
@@ -67,10 +59,6 @@ public class TodoToggleData extends AbstractData implements ITodoToggleData {
 	public void setTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled) {
 		this.todoToBeToggled = todoToBeToggled;
 	}
-	public TodoToggleData withTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled) {
-		this.todoToBeToggled = todoToBeToggled;
-		return this;
-	}
 	
 	@JsonProperty
 	public org.joda.time.DateTime getUpdatedDateTime() {
@@ -79,22 +67,7 @@ public class TodoToggleData extends AbstractData implements ITodoToggleData {
 	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}
-	public TodoToggleData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
-		this.updatedDateTime = updatedDateTime;
-		return this;
-	}
 	
-
-	@Override
-	public Object toPresentationalData() {
-		return new TodoTogglePresentationalData(
-			this.id,
-			this.done,
-			this.todoToBeToggled,
-			this.updatedDateTime
-		);
-	}
-
 }
 
 /*       S.D.G.       */

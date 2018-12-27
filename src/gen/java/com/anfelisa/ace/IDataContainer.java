@@ -14,7 +14,5 @@ public interface IDataContainer {
 	
 	void setSystemTime(DateTime systemTime);
 
-	Object toPresentationalData();
-
 }
 

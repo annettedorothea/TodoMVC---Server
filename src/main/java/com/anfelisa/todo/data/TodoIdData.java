@@ -30,19 +30,7 @@ public class TodoIdData extends AbstractData implements ITodoIdData {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public TodoIdData withId(String id) {
-		this.id = id;
-		return this;
-	}
 	
-
-	@Override
-	public Object toPresentationalData() {
-		return new TodoIdPresentationalData(
-			this.id
-		);
-	}
-
 }
 
 /*       S.D.G.       */

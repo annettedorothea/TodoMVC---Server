@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.PathParam;
+import io.dropwizard.auth.Auth;
 
 import com.anfelisa.ace.CustomAppConfiguration;
 import com.anfelisa.ace.ViewProvider;
@@ -32,6 +33,8 @@ import com.anfelisa.ace.Action;
 import com.anfelisa.ace.HttpMethod;
 import com.anfelisa.ace.ICommand;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 
 import com.anfelisa.todo.data.TodoData;
 
@@ -66,11 +69,13 @@ public abstract class AbstractUpdateTodoAction extends Action<TodoData> {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateTodoResource(
-			TodoData Todo, 
-			@NotNull @QueryParam("uuid") String uuid) throws JsonProcessingException {
-		this.actionData = Todo;
+			@NotNull TodoData payload)
+			throws JsonProcessingException {
+		this.actionData = new TodoData(payload.getUuid());
+		this.actionData.setDescription(payload.getDescription());
 		return this.apply();
 	}
+
 }
 
 /*       S.D.G.       */

@@ -82,7 +82,7 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 			}
 			databaseHandle.commitTransaction();
 			if (httpMethod == HttpMethod.GET) {
-				return Response.ok(this.getActionData().toPresentationalData()).build();
+				return Response.ok(this.createReponse()).build();
 			} else if (httpMethod == HttpMethod.POST) {
 				return Response.ok(this.getActionData().getUuid()).build();
 			} else {
@@ -156,6 +156,10 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 		i++;
 	}
 	throw new WebApplicationException(message, Response.Status.INTERNAL_SERVER_ERROR);
+	}
+
+	protected Object createReponse() {
+		return null;
 	}
 
 }

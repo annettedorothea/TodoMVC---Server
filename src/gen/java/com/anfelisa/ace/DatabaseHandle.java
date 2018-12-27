@@ -13,15 +13,11 @@ public class DatabaseHandle {
 
 	public DatabaseHandle(Handle handle, Handle timelineHandle) {
 		super();
-		try {
-			if (handle != null) {
-				this.handle = handle;
-			}
-			if (timelineHandle != null) {
-				this.timelineHandle = timelineHandle;
-			}
-		} catch (Exception e) {
-			LOG.error("failed to set auto commit off", e);
+		if (handle != null) {
+			this.handle = handle;
+		}
+		if (timelineHandle != null) {
+			this.timelineHandle = timelineHandle;
 		}
 	}
 

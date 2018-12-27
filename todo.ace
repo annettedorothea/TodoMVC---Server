@@ -2,29 +2,40 @@ JAVA
 
 com.anfelisa.todo
 
-ACE {
-	GET "/todos/all" GetAllTodos uses TodoList
-	POST "/todos/create" payload { Todo } CreateTodo uses Todo {
+ACE 
+	GetAllTodos<TodoList> 
+		GET "/todos/all"
+		response todoList
+	
+	CreateTodo<Todo>
+		POST "/todos/create"
+		payload description
 		on success (Todo.create)
-	} 
-	PUT "/todos/toggle" queryParams { Todo.id } ToggleTodo uses TodoToggle {
+	
+	ToggleTodo<TodoToggle> 
+		PUT "/todos/toggle" 
+		queryParams id 
 		on success ( Todo.toggle TodoDoneHistory.toggle )
-	}
-	PUT "/todos/toggle-all" ToggleAll uses ToggleAll {
+	
+	ToggleAll<ToggleAll>
+		PUT "/todos/toggle-all" 
 		on success ( Todo.toggleAll TodoDoneHistory.toggleAll )
-	}
-	PUT "/todos/update" payload { Todo } UpdateTodo uses Todo {
+	
+	UpdateTodo<Todo>
+		PUT "/todos/update" 
+		payload description  
 		on success (Todo.update)
-	}
-	DELETE "/todos/delete" queryParams { Todo.id } DeleteTodo uses TodoId {
+	
+	DeleteTodo<TodoId> 
+		DELETE "/todos/delete" 
+		queryParams id 
 		on success (Todo.delete)
-	}
-	DELETE "/todos/clear-done" ClearDone uses ClearDone {
+	
+	ClearDone<ClearDone> 
+		DELETE "/todos/clear-done" 
 		on success (Todo.clearDone)
-	}
-}
-
-views {
+		
+views 
 	Todo {
 		create(Todo)
 		toggle(TodoToggle)
@@ -37,9 +48,8 @@ views {
 		toggle(TodoToggle)
 		toggleAll(ToggleAll)
 	}
-}
 
-models {
+models 
 	schema public
 	
 	persistent TodoDoneHistory {
@@ -77,14 +87,7 @@ models {
 		DateTime updatedDateTime
 	}
 	
-}
+	ClearDone {}
+	
 
-data {
-	TodoList : ( TodoList )
-	Todo : ( Todo )
-	TodoId : ( TodoId )
-	TodoToggle : ( TodoToggle )
-	ToggleAll : ( ToggleAll )
-	ClearDone : (  )
-}
 
