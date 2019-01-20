@@ -10,6 +10,8 @@ public interface IAction {
 	
 	IDataContainer getActionData();
 	
+	void setActionData(IDataContainer data);
+	
 	ICommand getCommand();
 	
     DatabaseHandle getDatabaseHandle();
@@ -17,8 +19,6 @@ public interface IAction {
     void setDatabaseHandle(DatabaseHandle databaseHandle);
 
     Response apply();
-	
-	void initActionData(String json);
-	
+
 }
 

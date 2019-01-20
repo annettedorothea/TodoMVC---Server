@@ -1,33 +1,39 @@
 package com.anfelisa.todo.data;
 
-import com.anfelisa.ace.AbstractData;
+import com.anfelisa.ace.IDataContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TodoListData extends AbstractData implements ITodoListData {
+public class TodoListData extends AbstractTodoListData implements ITodoListData {
 	
-	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
-	
-
 	public TodoListData(
-		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList
-,		@JsonProperty("uuid") String uuid
+		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList, 
+		@JsonProperty("uuid") String uuid
 	) {
-		super(uuid);
-		this.todoList = todoList;
+		super(
+			todoList,
+			uuid
+		);
 	}
 
 	public TodoListData( String uuid ) {
 		super(uuid);
 	}
 
-	@JsonProperty
-	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
-		return this.todoList;
+
+	public void migrateLegacyData(String json) {
 	}
-	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
-		this.todoList = todoList;
+
+	public void overwriteNotReplayableData(IDataContainer dataContainer) {
+		/*if (dataContainer != null) {
+			try {
+				ITodoListData original = (ITodoListData)dataContainer;
+				//overwrite values
+			} catch (ClassCastException x) {
+				LOG.error("cannot cast data to ITodoListData for overwriting not replayable attributes", x);
+			}
+		}*/
 	}
-	
+
 }
 
 /*       S.D.G.       */

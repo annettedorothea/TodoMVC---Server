@@ -27,10 +27,9 @@ public class StopE2ESessionResource {
 	@Timed
 	@Path("/stop")
 	public Response put() {
-		E2E.sessionIsRunning = false;
-		E2E.sessionStartedAt = null;
-		E2E.timeline = null;
+		E2E.reset();
 		return Response.ok().build();
 	}
 
 }
+

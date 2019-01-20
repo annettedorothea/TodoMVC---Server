@@ -8,7 +8,6 @@ import com.anfelisa.todo.models.ITodoDoneHistoryModel;
 
 @JsonDeserialize(as=TodoDoneHistoryData.class)
 public interface ITodoDoneHistoryData extends ITodoDoneHistoryModel, IDataContainer {
-
 }
 
 /*       S.D.G.       */

@@ -5,13 +5,10 @@ import javax.ws.rs.core.Response;
 
 import org.jdbi.v3.core.Handle;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public abstract class Command<T extends IDataContainer> implements ICommand {
 
 	protected T commandData;
 	private String commandName;
-	@JsonIgnore
 	protected DatabaseHandle databaseHandle;
 	protected JodaObjectMapper mapper;
 	protected IDaoProvider daoProvider;
@@ -33,7 +30,6 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 	public void execute() {
 		this.executeCommand();
 		daoProvider.addCommandToTimeline(this);
-		this.publishEvents();
 	}
 
 	public IDataContainer getCommandData() {
@@ -44,12 +40,10 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 		return commandName;
 	}
 
-	@JsonIgnore
 	public DatabaseHandle getDatabaseHandle() {
 		return databaseHandle;
 	}
 
-	@JsonIgnore
 	protected Handle getHandle() {
 		if (databaseHandle != null) {
 			return databaseHandle.getHandle();

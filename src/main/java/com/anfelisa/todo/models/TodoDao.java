@@ -9,12 +9,8 @@ import org.jdbi.v3.core.statement.Update;
 import org.joda.time.DateTime;
 
 import com.anfelisa.todo.data.ToggleAllData;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
-@SuppressWarnings("all")
-@JsonIgnoreType
-public class CustomTodoDao {
-
+public class TodoDao extends AbstractTodoDao {
 	public void toggleTodo(Handle handle, ITodoToggleModel model) {
 		Update statement = handle
 				.createUpdate("UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime WHERE id = :id");
@@ -89,4 +85,4 @@ public class CustomTodoDao {
 
 }
 
-/* S.D.G. */
+/*       S.D.G.       */

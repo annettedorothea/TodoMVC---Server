@@ -11,7 +11,7 @@
 	<column name="time" type="timestamp">
 		<constraints nullable="false" />
 	</column>
-	<column name="data" type="character varying">
+	<column name="data" type="text">
 		<constraints nullable="false" />
 	</column>
 	<column name="uuid" type="character varying">

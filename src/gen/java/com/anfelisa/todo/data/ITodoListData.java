@@ -8,7 +8,6 @@ import com.anfelisa.todo.models.ITodoListModel;
 
 @JsonDeserialize(as=TodoListData.class)
 public interface ITodoListData extends ITodoListModel, IDataContainer {
-
 }
 
 /*       S.D.G.       */

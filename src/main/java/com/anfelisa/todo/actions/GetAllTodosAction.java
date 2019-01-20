@@ -21,7 +21,7 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 
 
 	protected final void loadDataForGetRequest() {
-		List<ITodoModel> todos = daoProvider.getCustomTodoDao().selectAllOrderedByCreatedDate(getHandle());
+		List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(getHandle());
 		this.actionData.setTodoList(todos);
 	}
 

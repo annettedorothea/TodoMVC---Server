@@ -8,7 +8,6 @@ import com.anfelisa.todo.models.IToggleAllModel;
 
 @JsonDeserialize(as=ToggleAllData.class)
 public interface IToggleAllData extends IToggleAllModel, IDataContainer {
-
 }
 
 /*       S.D.G.       */

@@ -27,6 +27,16 @@ public class AceDao {
 		handle.execute("TRUNCATE " + timelineTable());
 	}
 
+	public boolean contains(Handle handle, String uuid) {
+		Optional<Integer> optional = handle
+				.createQuery("SELECT count(uuid) " + "FROM " + timelineTable() + " "
+						+ "where uuid = :uuid")
+				.bind("uuid", uuid)
+				.mapTo((Integer.class)).findFirst();
+		Integer count = optional.isPresent() ? optional.get() : 0;
+		return count > 0;
+	}
+
 	public void insertIntoTimeline(Handle handle, String type, String method, String name, String data, String uuid) {
 		Update statement = handle.createUpdate("INSERT INTO " + timelineTable()
 				+ " (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
@@ -45,7 +55,7 @@ public class AceDao {
 	public ITimelineItem selectLastAction(Handle handle) {
 		Optional<ITimelineItem> optional = handle
 				.createQuery("SELECT type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
-						+ "where type = 'action' " + "order by time desc " + "limit 1")
+						+ "order by time desc " + "limit 1")
 				.map(new TimelineItemMapper())
 				.findFirst();
 		return optional.isPresent() ? optional.get() : null;
@@ -57,5 +67,13 @@ public class AceDao {
 						+ "order by time asc ")
 				.map(new TimelineItemMapper()).list();
 	}
+	
+	public List<ITimelineItem> selectReplayTimeline(Handle handle) {
+		return handle
+				.createQuery("SELECT type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
+						+ "where type = 'event' order by time asc ")
+				.map(new TimelineItemMapper()).list();
+	}
+	
 
 }

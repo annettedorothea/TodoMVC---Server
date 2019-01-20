@@ -1,7 +1,5 @@
 package com.anfelisa.ace;
 
-import java.lang.reflect.Constructor;
-
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -55,18 +53,22 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 		databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		databaseHandle.beginTransaction();
 		try {
+			IDataContainer originalData = null;
 			if (!ServerConfiguration.REPLAY.equals(appConfiguration.getServerConfiguration().getMode())) {
+				if (daoProvider.getAceDao().contains(databaseHandle.getHandle(), this.actionData.getUuid())) {
+					databaseHandle.commitTransaction();
+					return Response.status(500).entity("uuid already exists - please choose another one").build();
+				}
 				this.actionData.setSystemTime(new DateTime());
 			} else {
 				ITimelineItem timelineItem = E2E.selectAction(this.actionData.getUuid());
 				if (timelineItem != null) {
-					Class<?> cl = Class.forName(timelineItem.getName());
-					Constructor<?> con = cl.getConstructor(Jdbi.class, CustomAppConfiguration.class, IDaoProvider.class, ViewProvider.class);
-					IAction action = (IAction) con.newInstance(jdbi, appConfiguration, daoProvider, viewProvider);
-					action.initActionData(timelineItem.getData());
-					this.actionData.setSystemTime(action.getActionData().getSystemTime());
-				} else {
-					this.actionData.setSystemTime(new DateTime());
+					IAction action = ActionFactory.createAction(timelineItem.getName(), timelineItem.getData(), jdbi, appConfiguration, daoProvider, viewProvider);
+					if (action != null) {
+						originalData = action.getActionData();
+						this.actionData.setSystemTime(originalData.getSystemTime());
+						this.actionData.overwriteNotReplayableData(originalData);
+					}
 				}
 			}
 			daoProvider.addActionToTimeline(this);
@@ -74,33 +76,38 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 				ICommand command = this.getCommand();
 				if (command != null) {
 					command.execute();
+					if (ServerConfiguration.REPLAY.equals(appConfiguration.getServerConfiguration().getMode())) {
+						command.getCommandData().overwriteNotReplayableData(originalData);
+					}
+					command.publishEvents();
 				} else {
 					throw new WebApplicationException(actionName + " returns no command");
 				}
 			} else {
 				this.loadDataForGetRequest();
 			}
+			Response response = Response.ok(this.createReponse()).build();
 			databaseHandle.commitTransaction();
-			if (httpMethod == HttpMethod.GET) {
-				return Response.ok(this.createReponse()).build();
-			} else if (httpMethod == HttpMethod.POST) {
-				return Response.ok(this.getActionData().getUuid()).build();
-			} else {
-				return Response.ok().build();
-			}
+			return response;
 		} catch (WebApplicationException x) {
-			daoProvider.addExceptionToTimeline(this.actionData.getUuid(), x, databaseHandle);
-			databaseHandle.rollbackTransaction();
 			LOG.error(actionName + " failed " + x.getMessage());
-			x.printStackTrace();
-			App.reportException(x);
+			try {
+				databaseHandle.rollbackTransaction();
+				daoProvider.addExceptionToTimeline(this.actionData.getUuid(), x, databaseHandle);
+				App.reportException(x);
+			} catch (Exception ex) {
+				LOG.error("failed to rollback or to save or report exception " + ex.getMessage());
+			}
 			return Response.status(x.getResponse().getStatusInfo()).entity(x.getMessage()).build();
 		} catch (Exception x) {
-			daoProvider.addExceptionToTimeline(this.actionData.getUuid(), x, databaseHandle);
-			databaseHandle.rollbackTransaction();
 			LOG.error(actionName + " failed " + x.getMessage());
-			x.printStackTrace();
-			App.reportException(x);
+			try {
+				databaseHandle.rollbackTransaction();
+				daoProvider.addExceptionToTimeline(this.actionData.getUuid(), x, databaseHandle);
+				App.reportException(x);
+			} catch (Exception ex) {
+				LOG.error("failed to rollback or to save or report exception " + ex.getMessage());
+			}
 			return Response.status(500).entity(x.getMessage()).build();
 		} finally {
 			databaseHandle.close();
@@ -159,7 +166,7 @@ public abstract class Action<T extends IDataContainer> implements IAction {
 	}
 
 	protected Object createReponse() {
-		return null;
+		return this.actionData.getUuid();
 	}
 
 }

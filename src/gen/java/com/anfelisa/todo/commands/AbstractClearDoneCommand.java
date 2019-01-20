@@ -32,14 +32,6 @@ public abstract class AbstractClearDoneCommand extends Command<ClearDoneData> {
 		}
 	}
 	
-	public void initCommandData(String json) {
-		try {
-			this.commandData = mapper.readValue(json, ClearDoneData.class);
-		} catch (Exception e) {
-			throw new WebApplicationException(e);
-		}
-	}
-
 }
 
 /*       S.D.G.       */

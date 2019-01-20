@@ -32,14 +32,6 @@ public abstract class AbstractToggleTodoCommand extends Command<TodoToggleData> 
 		}
 	}
 	
-	public void initCommandData(String json) {
-		try {
-			this.commandData = mapper.readValue(json, TodoToggleData.class);
-		} catch (Exception e) {
-			throw new WebApplicationException(e);
-		}
-	}
-
 }
 
 /*       S.D.G.       */

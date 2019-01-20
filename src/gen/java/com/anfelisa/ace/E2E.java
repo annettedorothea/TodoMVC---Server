@@ -1,66 +1,73 @@
 package com.anfelisa.ace;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 
 public class E2E {
-	
+
 	public static boolean sessionIsRunning;
-	
+
 	public static DateTime sessionStartedAt;
-	
-	public static List<ITimelineItem> timeline;
-	
-	public static ITimelineItem selectAction(String uuid) {
-		for (ITimelineItem timelineItem : timeline) {
-			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("action")) {
-				return timelineItem;
+
+	private static Map<String, AceOperation> timeline;
+
+	private static List<String> uuidList;
+
+	private static int index;
+
+	public static void reset() {
+		E2E.sessionIsRunning = false;
+		E2E.sessionStartedAt = null;
+		E2E.timeline = null;
+		E2E.index = 0;
+	}
+
+	public static void init(List<ITimelineItem> initialTimeline) {
+		timeline = new HashMap<>();
+		uuidList = new ArrayList<>();
+		for (ITimelineItem timelineItem : initialTimeline) {
+			String uuid = timelineItem.getUuid();
+			if (!uuidList.contains(uuid)) {
+				uuidList.add(uuid);
+			}
+			AceOperation aceOperation = timeline.get(uuid);
+			if (aceOperation == null) {
+				aceOperation = new AceOperation(uuid);
+				timeline.put(uuid, aceOperation);
+			}
+			if ("action".equals(timelineItem.getType())) {
+				aceOperation.setAction(timelineItem);
+			} else if ("command".equals(timelineItem.getType())) {
+				aceOperation.setCommand(timelineItem);
+			} else if ("event".equals(timelineItem.getType())) {
+				aceOperation.setEvent(timelineItem);
 			}
 		}
-		return null;
+		E2E.sessionIsRunning = true;
+		E2E.sessionStartedAt = new DateTime(System.currentTimeMillis());
+		E2E.index = 0;
 	}
-	
-	public static ITimelineItem selectEvent(String uuid) {
-		for (ITimelineItem timelineItem : timeline) {
-			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("event") && !E2E.hasException(uuid)) {
-				return timelineItem;
-			}
-			
-		}
-		return null;
-	}
-	
-	private static boolean hasException(String uuid) {
-		for (ITimelineItem timelineItem : timeline) {
-			if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("exception")) {
-				return true;
-			}
-			
-		}
-		return false;
-	}
-	
-	public static ITimelineItem selectNextAction(String uuid) {
-		if (uuid != null) {
-			boolean returnNextAction = false;
-			for (ITimelineItem timelineItem : timeline) {
-				if (returnNextAction && timelineItem.getType().equals("action")) {
-					return timelineItem;
-				}
-				if (timelineItem.getUuid().equals(uuid) && timelineItem.getType().equals("action")) {
-					returnNextAction = true;
-				}
-			}
-		} else {
-			for (ITimelineItem timelineItem : timeline) {
-				if (timelineItem.getType().equals("action")) {
-					return timelineItem;
-				}
-			}
+
+	public static ITimelineItem selectNextAction() {
+		if (index < uuidList.size()) {
+			String uuid = uuidList.get(index);
+			index++;
+			return timeline.get(uuid).getAction();
 		}
 		return null;
 	}
 
+	public static ITimelineItem selectAction(String uuid) {
+		return timeline.get(uuid).getAction();
+	}
+
+	public static ITimelineItem selectEvent(String uuid) {
+		return timeline.get(uuid).getEvent();
+	}
 	
 }
+

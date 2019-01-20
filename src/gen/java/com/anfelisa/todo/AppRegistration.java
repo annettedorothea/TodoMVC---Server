@@ -10,14 +10,12 @@ import com.anfelisa.ace.ServerConfiguration;
 import org.jdbi.v3.core.Jdbi;
 
 
-import com.anfelisa.todo.views.TodoView;
-import com.anfelisa.todo.views.TodoDoneHistoryView;
 import com.anfelisa.todo.actions.*;
 
 @SuppressWarnings("all")
 public class AppRegistration {
 
-	public void registerResources(Environment environment, Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public static void registerResources(Environment environment, Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		environment.jersey().register(new GetAllTodosAction(jdbi, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new CreateTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new ToggleTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));
@@ -27,15 +25,39 @@ public class AppRegistration {
 		environment.jersey().register(new ClearDoneAction(jdbi, appConfiguration, daoProvider, viewProvider));
 	}
 
-	public void registerConsumers(ViewProvider viewProvider, String mode) {
-				viewProvider.addConsumer("com.anfelisa.todo.events.CreateTodoSuccessEvent", viewProvider.todoView.create);
-				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleTodoSuccessEvent", viewProvider.todoView.toggle);
-				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleTodoSuccessEvent", viewProvider.todoDoneHistoryView.toggle);
-				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleAllSuccessEvent", viewProvider.todoView.toggleAll);
-				viewProvider.addConsumer("com.anfelisa.todo.events.ToggleAllSuccessEvent", viewProvider.todoDoneHistoryView.toggleAll);
-				viewProvider.addConsumer("com.anfelisa.todo.events.UpdateTodoSuccessEvent", viewProvider.todoView.update);
-				viewProvider.addConsumer("com.anfelisa.todo.events.DeleteTodoSuccessEvent", viewProvider.todoView.delete);
-				viewProvider.addConsumer("com.anfelisa.todo.events.ClearDoneSuccessEvent", viewProvider.todoView.clearDone);
+	public static void registerConsumers(ViewProvider viewProvider, String mode) {
+		viewProvider.addConsumer("com.anfelisa.todo.events.CreateTodoSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoView.create((com.anfelisa.todo.data.TodoData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.ToggleTodoSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoView.toggle((com.anfelisa.todo.data.TodoToggleData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.ToggleTodoSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoDoneHistoryView.toggle((com.anfelisa.todo.data.TodoToggleData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.ToggleAllSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoView.toggleAll((com.anfelisa.todo.data.ToggleAllData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.ToggleAllSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoDoneHistoryView.toggleAll((com.anfelisa.todo.data.ToggleAllData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.UpdateTodoSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoView.update((com.anfelisa.todo.data.TodoData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.DeleteTodoSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoView.delete((com.anfelisa.todo.data.TodoIdData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.ClearDoneSuccessEvent", (dataContainer, handle) -> {
+			viewProvider.todoView.clearDone((com.anfelisa.todo.data.ClearDoneData) dataContainer, handle);
+		});
+		
     }
 }
 

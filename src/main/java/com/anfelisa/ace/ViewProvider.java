@@ -1,19 +1,9 @@
 package com.anfelisa.ace;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-
-import org.jdbi.v3.core.Handle;
-
 import com.anfelisa.todo.views.TodoDoneHistoryView;
 import com.anfelisa.todo.views.TodoView;
 
-public class ViewProvider {
-
-	private final Map<String, List<BiConsumer<? extends IDataContainer, Handle>>> consumerMap;
+public class ViewProvider extends AbstractViewProvider {
 
 	public TodoView todoView;
 	public TodoDoneHistoryView todoDoneHistoryView;
@@ -21,22 +11,5 @@ public class ViewProvider {
 	public ViewProvider(IDaoProvider daoProvider) {
 		todoView = new TodoView(daoProvider);
 		todoDoneHistoryView = new TodoDoneHistoryView(daoProvider);
-		
-		consumerMap = new HashMap<String, List<BiConsumer<? extends IDataContainer, Handle>>>();
 	}
-	
-	public void addConsumer(String eventName, BiConsumer<? extends IDataContainer, Handle> createUserTable) {
-		List<BiConsumer<? extends IDataContainer, Handle>> consumerForEvent = consumerMap.get(eventName);
-		if (consumerForEvent == null) {
-			consumerForEvent = new ArrayList<BiConsumer<? extends IDataContainer, Handle>>();
-			consumerMap.put(eventName, consumerForEvent);
-		}
-		consumerForEvent.add(createUserTable);
-	}
-
-	public List<BiConsumer<? extends IDataContainer, Handle>> getConsumerForEvent(String eventName) {
-		return consumerMap.get(eventName);
-	}
-
 }
-

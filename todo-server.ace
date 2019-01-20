@@ -23,7 +23,7 @@ ACE
 	
 	UpdateTodo<Todo>
 		PUT "/todos/update" 
-		payload description  
+		payload id description  
 		on success (Todo.update)
 	
 	DeleteTodo<TodoId> 
@@ -56,6 +56,7 @@ models
 		Unique PrimaryKey NotNull String id
 		NotNull String description
 		DateTime doneDateTime
+		
 	}
 	
 	persistent Todo {
@@ -69,6 +70,7 @@ models
 	TodoList {
 		List Todo todoList
 	}
+	
 	
 	TodoId {
 		NotNull String id

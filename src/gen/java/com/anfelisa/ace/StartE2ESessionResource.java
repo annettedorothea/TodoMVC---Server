@@ -11,11 +11,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jdbi.v3.core.Jdbi;
-
 import org.jdbi.v3.core.Handle;
-
-import org.joda.time.DateTime;
+import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +43,7 @@ public class StartE2ESessionResource {
 		if (E2E.sessionIsRunning && E2E.sessionStartedAt.plusMinutes(1).isAfterNow()) {
 			throw new WebApplicationException("session is already running", Response.Status.SERVICE_UNAVAILABLE);
 		}
-		E2E.sessionIsRunning = true;
-		E2E.sessionStartedAt = new DateTime(System.currentTimeMillis());
-		E2E.timeline = timeline;
+		E2E.init(timeline);
 		
 		Handle handle = jdbi.open();
 		try {
@@ -70,3 +65,4 @@ public class StartE2ESessionResource {
 	}
 
 }
+

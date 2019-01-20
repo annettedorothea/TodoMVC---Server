@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
-@SuppressWarnings("all")
 public class TodoDoneHistoryMapper implements RowMapper<ITodoDoneHistoryModel> {
 	
 	public ITodoDoneHistoryModel map(ResultSet r, StatementContext ctx) throws SQLException {

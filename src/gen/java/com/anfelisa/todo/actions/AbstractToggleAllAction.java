@@ -17,17 +17,11 @@ import io.dropwizard.auth.Auth;
 import com.anfelisa.ace.CustomAppConfiguration;
 import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.ace.IDaoProvider;
-import com.anfelisa.ace.DatabaseHandle;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.anfelisa.ace.IDataContainer;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.core.Jdbi;
-
-import javax.ws.rs.WebApplicationException;
 
 import com.anfelisa.ace.Action;
 import com.anfelisa.ace.HttpMethod;
@@ -52,16 +46,12 @@ public abstract class AbstractToggleAllAction extends Action<ToggleAllData> {
 	public ICommand getCommand() {
 		return new ToggleAllCommand(this.actionData, databaseHandle, daoProvider, viewProvider);
 	}
-
-	protected final void loadDataForGetRequest() {
+	
+	public void setActionData(IDataContainer data) {
+		this.actionData = (ToggleAllData)data;
 	}
 
-	public void initActionData(String json) {
-		try {
-			this.actionData = mapper.readValue(json, ToggleAllData.class);
-		} catch (Exception e) {
-			throw new WebApplicationException(e);
-		}
+	protected final void loadDataForGetRequest() {
 	}
 
 	@PUT

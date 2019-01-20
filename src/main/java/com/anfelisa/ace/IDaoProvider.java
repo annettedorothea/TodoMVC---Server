@@ -2,7 +2,6 @@ package com.anfelisa.ace;
 
 import org.jdbi.v3.core.Handle;
 
-import com.anfelisa.todo.models.CustomTodoDao;
 import com.anfelisa.todo.models.TodoDao;
 import com.anfelisa.todo.models.TodoDoneHistoryDao;
 
@@ -19,13 +18,11 @@ public interface IDaoProvider {
 	public void addEventToTimeline(IEvent event);
 	
 	public void addCommandToTimeline(ICommand command);
-	
-	void addActionToTimeline(IAction action);
 
+	public void addActionToTimeline(IAction command);
+	
 	TodoDao getTodoDao();
 
-	CustomTodoDao getCustomTodoDao();
-	
 	TodoDoneHistoryDao getTodoDoneHistoryDao();
 
 }

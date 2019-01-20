@@ -1,6 +1,5 @@
 package com.anfelisa.ace;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 
 import org.jdbi.v3.core.Handle;
@@ -19,68 +18,63 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 	static final Logger LOG = LoggerFactory.getLogger(EventReplayCommand.class);
 
 	private IDaoProvider daoProvider;
-	
+
 	protected EventReplayCommand(Application<CustomAppConfiguration> application, IDaoProvider daoProvider) {
 		super(application, "replay", "truncates views and replays events");
 		this.daoProvider = daoProvider;
 	}
 
 	@Override
-	protected void run(Environment environment, Namespace namespace, CustomAppConfiguration configuration) throws Exception {
-		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {	
+	protected void run(Environment environment, Namespace namespace, CustomAppConfiguration configuration)
+			throws Exception {
+		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
 			throw new RuntimeException("we won't truncate all views and replay events in a live environment");
 		}
-		if (ServerConfiguration.REPLAY.equals(configuration.getServerConfiguration().getMode())) {	
+		if (ServerConfiguration.REPLAY.equals(configuration.getServerConfiguration().getMode())) {
 			throw new RuntimeException("replay events in a replay environment doesn't make sense");
 		}
-		
+
 		final JdbiFactory factory = new JdbiFactory();
 
-		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
+		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
 
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
-		
+
 		ViewProvider viewProvider = new ViewProvider(daoProvider);
-		
+
+		AppRegistration.registerConsumers(viewProvider, ServerConfiguration.REPLAY);
+
 		LOG.info("START EVENT REPLAY");
 		try {
 			databaseHandle.beginTransaction();
 			Handle handle = databaseHandle.getHandle();
 			daoProvider.truncateAllViews(handle);
 
-			List<ITimelineItem> timeline = daoProvider.getAceDao().selectTimeline(handle);
-			E2E.timeline = timeline;
-			
-			String mode = configuration.getServerConfiguration().getMode();
-			new com.anfelisa.todo.AppRegistration().registerConsumers(viewProvider, mode);
+			List<ITimelineItem> timeline = daoProvider.getAceDao().selectReplayTimeline(handle);
 
-			int eventCount = 0;
-			ITimelineItem nextAction = E2E.selectNextAction(null);
-			while (nextAction != null) {
-				if (!nextAction.getMethod().equalsIgnoreCase("GET")) {
-					ITimelineItem nextEvent = E2E.selectEvent(nextAction.getUuid());
-					if (nextEvent != null) {
-						try {
-							Class<?> cl = Class.forName(nextEvent.getName());
-							Constructor<?> con = cl.getConstructor(DatabaseHandle.class, IDaoProvider.class, ViewProvider.class);
-							IEvent event = (IEvent) con.newInstance(databaseHandle, daoProvider, viewProvider);
-							event.initEventData(nextEvent.getData());
-							event.notifyListeners();
-							eventCount++;
-							LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
-						} catch (Exception e) {
-							LOG.error("failed to replay event " + nextEvent.getUuid() + " - " + nextEvent.getName());
-							LOG.error(e.getMessage());
-						}
+			int i = 0;
+			for (ITimelineItem nextEvent : timeline) {
+				try {
+					IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
+							daoProvider, viewProvider);
+					event.notifyListeners();
+					i++;
+					if (i%1000 == 0) {
+						LOG.info("published " + i + " events");
 					}
+					LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
+				} catch (Exception e) {
+					LOG.error("failed to replay event " + nextEvent.getUuid() + " - " + nextEvent.getName());
+					LOG.error("  --- " + nextEvent.getData());
+					LOG.error(e.getMessage());
+					e.printStackTrace();
 				}
-				nextAction = E2E.selectNextAction(nextAction.getUuid());
 			}
 
 			databaseHandle.commitTransaction();
 
-			LOG.info("EVENT REPLAY FINISHED: successfully replayed " + eventCount + " events");
-			
+			LOG.info("EVENT REPLAY FINISHED: successfully replayed " + i + " events");
+
 		} catch (Exception e) {
 			databaseHandle.rollbackTransaction();
 			LOG.info("EVENT REPLAY ABORTED " + e.getMessage());

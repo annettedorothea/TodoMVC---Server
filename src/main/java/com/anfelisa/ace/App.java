@@ -29,7 +29,7 @@ public class App extends Application<CustomAppConfiguration> {
 	}
 
 	public static String getVersion() {
-		return "4.0.1";
+		return "0.4.1";
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class App extends Application<CustomAppConfiguration> {
 				return configuration.getDataSourceFactory();
 			}
 		});
-		
+
 		bootstrap.addCommand(new EventReplayCommand(this, new DaoProvider()));
 	}
 
@@ -76,8 +76,8 @@ public class App extends Application<CustomAppConfiguration> {
 
 		environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-		new com.anfelisa.todo.AppRegistration().registerResources(environment, jdbi, configuration, daoProvider, viewProvider);
-		new com.anfelisa.todo.AppRegistration().registerConsumers(viewProvider, mode);
+		AppRegistration.registerResources(environment, jdbi, configuration, daoProvider, viewProvider);
+		AppRegistration.registerConsumers(viewProvider, mode);
 
 	}
 

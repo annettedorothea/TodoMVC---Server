@@ -9,10 +9,14 @@ public interface IDataContainer {
 	String getOutcome();
 
 	void setOutcome(String outcome);
-	
+
 	DateTime getSystemTime();
-	
+
 	void setSystemTime(DateTime systemTime);
+
+	void migrateLegacyData(String json);
+
+	void overwriteNotReplayableData(IDataContainer original);
 
 }
 

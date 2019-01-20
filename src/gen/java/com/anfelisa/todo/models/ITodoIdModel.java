@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public interface ITodoIdModel {
 
 	String getId();
+	void setId(String id);
+	
 
 }
 

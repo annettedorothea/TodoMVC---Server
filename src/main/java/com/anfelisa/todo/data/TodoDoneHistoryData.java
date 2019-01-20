@@ -1,61 +1,43 @@
 package com.anfelisa.todo.data;
 
-import javax.validation.constraints.NotNull;
-
-import com.anfelisa.ace.AbstractData;
+import com.anfelisa.ace.IDataContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TodoDoneHistoryData extends AbstractData implements ITodoDoneHistoryData {
+public class TodoDoneHistoryData extends AbstractTodoDoneHistoryData implements ITodoDoneHistoryData {
 	
-	@NotNull
-	private String id;
-	
-	@NotNull
-	private String description;
-	
-	private org.joda.time.DateTime doneDateTime;
-	
-
 	public TodoDoneHistoryData(
-		@JsonProperty("id") String id,
-		@JsonProperty("description") String description,
-		@JsonProperty("doneDateTime") org.joda.time.DateTime doneDateTime
-,		@JsonProperty("uuid") String uuid
+		@JsonProperty("id") String id, 
+		@JsonProperty("description") String description, 
+		@JsonProperty("doneDateTime") org.joda.time.DateTime doneDateTime, 
+		@JsonProperty("uuid") String uuid
 	) {
-		super(uuid);
-		this.id = id;
-		this.description = description;
-		this.doneDateTime = doneDateTime;
+		super(
+			id,
+			description,
+			doneDateTime,
+			uuid
+		);
 	}
 
 	public TodoDoneHistoryData( String uuid ) {
 		super(uuid);
 	}
 
-	@JsonProperty
-	public String getId() {
-		return this.id;
+
+	public void migrateLegacyData(String json) {
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public void overwriteNotReplayableData(IDataContainer dataContainer) {
+		/*if (dataContainer != null) {
+			try {
+				ITodoDoneHistoryData original = (ITodoDoneHistoryData)dataContainer;
+				//overwrite values
+			} catch (ClassCastException x) {
+				LOG.error("cannot cast data to ITodoDoneHistoryData for overwriting not replayable attributes", x);
+			}
+		}*/
 	}
-	
-	@JsonProperty
-	public String getDescription() {
-		return this.description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	@JsonProperty
-	public org.joda.time.DateTime getDoneDateTime() {
-		return this.doneDateTime;
-	}
-	public void setDoneDateTime(org.joda.time.DateTime doneDateTime) {
-		this.doneDateTime = doneDateTime;
-	}
-	
+
 }
 
 /*       S.D.G.       */

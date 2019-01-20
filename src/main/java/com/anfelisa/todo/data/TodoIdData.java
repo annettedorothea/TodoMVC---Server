@@ -1,36 +1,39 @@
 package com.anfelisa.todo.data;
 
-import javax.validation.constraints.NotNull;
-
-import com.anfelisa.ace.AbstractData;
+import com.anfelisa.ace.IDataContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TodoIdData extends AbstractData implements ITodoIdData {
+public class TodoIdData extends AbstractTodoIdData implements ITodoIdData {
 	
-	@NotNull
-	private String id;
-	
-
 	public TodoIdData(
-		@JsonProperty("id") String id
-,		@JsonProperty("uuid") String uuid
+		@JsonProperty("id") String id, 
+		@JsonProperty("uuid") String uuid
 	) {
-		super(uuid);
-		this.id = id;
+		super(
+			id,
+			uuid
+		);
 	}
 
 	public TodoIdData( String uuid ) {
 		super(uuid);
 	}
 
-	@JsonProperty
-	public String getId() {
-		return this.id;
+
+	public void migrateLegacyData(String json) {
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public void overwriteNotReplayableData(IDataContainer dataContainer) {
+		/*if (dataContainer != null) {
+			try {
+				ITodoIdData original = (ITodoIdData)dataContainer;
+				//overwrite values
+			} catch (ClassCastException x) {
+				LOG.error("cannot cast data to ITodoIdData for overwriting not replayable attributes", x);
+			}
+		}*/
 	}
-	
+
 }
 
 /*       S.D.G.       */
