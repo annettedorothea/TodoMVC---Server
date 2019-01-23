@@ -26,5 +26,9 @@ public class DaoProvider extends AbstractDaoProvider {
 		return todoDoneHistoryDao;
 	}
 
+	public static IDaoProvider create() {
+		return new DaoProvider();
+	}
+
 }
 

@@ -41,7 +41,7 @@ public class App extends Application<CustomAppConfiguration> {
 			}
 		});
 
-		bootstrap.addCommand(new EventReplayCommand(this, new DaoProvider()));
+		bootstrap.addCommand(new EventReplayCommand(this));
 	}
 
 	@Override

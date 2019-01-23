@@ -12,4 +12,8 @@ public class ViewProvider extends AbstractViewProvider {
 		todoView = new TodoView(daoProvider);
 		todoDoneHistoryView = new TodoDoneHistoryView(daoProvider);
 	}
+
+	public static ViewProvider create(IDaoProvider daoProvider, CustomAppConfiguration configuration) {
+		return new ViewProvider(daoProvider);
+	}
 }
