@@ -1,6 +1,11 @@
 package com.anfelisa.todo.integration;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import java.util.UUID;
+
+import javax.ws.rs.core.Response;
 
 import org.jdbi.v3.core.Jdbi;
 import org.joda.time.DateTime;
@@ -16,7 +21,9 @@ import com.anfelisa.ace.IEvent;
 import com.anfelisa.ace.ServerConfiguration;
 import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.todo.actions.GetAllTodosAction;
+import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.data.TodoData;
+import com.anfelisa.todo.models.ITodoModel;
 import com.codahale.metrics.MetricRegistry;
 
 import io.dropwizard.db.DataSourceFactory;
@@ -60,6 +67,7 @@ public class DatabaseTest {
 
 		AppRegistration.registerConsumers(viewProvider, ServerConfiguration.REPLAY);
 		
+		daoProvider.getAceDao().truncateTimelineTable(databaseHandle.getHandle());
 		daoProvider.truncateAllViews(databaseHandle.getHandle());
 		
 		UUID uuid = UUID.randomUUID();
@@ -76,7 +84,18 @@ public class DatabaseTest {
 
 
 		UUID uuid2 = UUID.randomUUID();
-		action.getAllTodosResource(uuid2.toString());
+		Response response = action.getAllTodosResource(uuid2.toString());
+		
+		GetAllTodosResponse entity = (GetAllTodosResponse) response.getEntity();
+		assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
+		assertThat(entity.getTodoList().size(), is(1));
+		
+		ITodoModel todoItem = entity.getTodoList().get(0);
+		assertThat(todoItem.getCreatedDateTime(), is(todoData.getCreatedDateTime()));
+		assertThat(todoItem.getDescription(), is(todoData.getDescription()));
+		assertThat(todoItem.getDone(), is(todoData.getDone()));
+		assertThat(todoItem.getId(), is(todoData.getId()));
+		assertThat(todoItem.getUpdatedDateTime(), is(todoData.getUpdatedDateTime()));
 	}
 
 
