@@ -9,6 +9,7 @@ import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
+import io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -18,6 +19,10 @@ public class App extends Application<CustomAppConfiguration> {
 	static final Logger LOG = LoggerFactory.getLogger(App.class);
 
 	static EmailService EMAIL_SERVICE;
+	
+	static IDaoProvider daoProvider;
+	
+	public static ViewProvider viewProvider;
 
 	public static void main(String[] args) throws Exception {
 		new App().run(args);
@@ -50,8 +55,8 @@ public class App extends Application<CustomAppConfiguration> {
 
 		EMAIL_SERVICE = new EmailService(configuration.getEmail());
 
-		DaoProvider daoProvider = new DaoProvider();
-		ViewProvider viewProvider = new ViewProvider(daoProvider);
+		daoProvider = DaoProvider.create();
+		viewProvider = ViewProvider.create(daoProvider, configuration);
 
 		AceDao.setSchemaName(null);
 
@@ -67,7 +72,10 @@ public class App extends Application<CustomAppConfiguration> {
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
 		} else if (ServerConfiguration.DEV.equals(mode)) {
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
+			environment.jersey().register(new ReplayEventsResource(jdbi, daoProvider, viewProvider));
 		}
+		
+		environment.jersey().register(new JsonProcessingExceptionMapper(true));
 
 		environment.jersey().register(new GetServerInfoResource());
 
