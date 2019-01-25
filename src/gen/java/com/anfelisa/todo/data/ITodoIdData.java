@@ -8,6 +8,10 @@ import com.anfelisa.todo.models.ITodoIdModel;
 
 @JsonDeserialize(as=TodoIdData.class)
 public interface ITodoIdData extends ITodoIdModel, IDataContainer {
+	
+	ITodoIdData withId(String id);
+	
+	
 }
 
 /*       S.D.G.       */

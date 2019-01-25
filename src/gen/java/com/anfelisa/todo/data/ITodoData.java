@@ -8,6 +8,18 @@ import com.anfelisa.todo.models.ITodoModel;
 
 @JsonDeserialize(as=TodoData.class)
 public interface ITodoData extends ITodoModel, IDataContainer {
+	
+	ITodoData withId(String id);
+	
+	ITodoData withDescription(String description);
+	
+	ITodoData withDone(Boolean done);
+	
+	ITodoData withCreatedDateTime(org.joda.time.DateTime createdDateTime);
+	
+	ITodoData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
+	
+	
 }
 
 /*       S.D.G.       */

@@ -44,7 +44,7 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 
-public class TodoBaseTest {
+public class BaseTest {
 
 	protected final JodaObjectMapper mapper = new JodaObjectMapper();
 
@@ -136,3 +136,4 @@ public class TodoBaseTest {
 	}
 
 }
+

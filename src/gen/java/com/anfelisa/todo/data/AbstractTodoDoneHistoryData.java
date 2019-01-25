@@ -49,6 +49,10 @@ public abstract class AbstractTodoDoneHistoryData extends AbstractData implement
 	public void setId(String id) {
 		this.id = id;
 	}
+	public ITodoDoneHistoryData withId(String id) {
+		this.id = id;
+		return this;
+	}
 	
 	@JsonProperty
 	public String getDescription() {
@@ -57,6 +61,10 @@ public abstract class AbstractTodoDoneHistoryData extends AbstractData implement
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public ITodoDoneHistoryData withDescription(String description) {
+		this.description = description;
+		return this;
+	}
 	
 	@JsonProperty
 	public org.joda.time.DateTime getDoneDateTime() {
@@ -64,6 +72,10 @@ public abstract class AbstractTodoDoneHistoryData extends AbstractData implement
 	}
 	public void setDoneDateTime(org.joda.time.DateTime doneDateTime) {
 		this.doneDateTime = doneDateTime;
+	}
+	public ITodoDoneHistoryData withDoneDateTime(org.joda.time.DateTime doneDateTime) {
+		this.doneDateTime = doneDateTime;
+		return this;
 	}
 	
 	

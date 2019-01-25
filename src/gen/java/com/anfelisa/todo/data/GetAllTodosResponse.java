@@ -15,6 +15,9 @@ public class GetAllTodosResponse implements IGetAllTodosResponse {
 	
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
 	
+	public GetAllTodosResponse() {
+	}
+	
 	public GetAllTodosResponse(com.anfelisa.todo.models.ITodoListModel data) {
 		todoList = data.getTodoList();
 	}

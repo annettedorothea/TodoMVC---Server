@@ -53,6 +53,7 @@ public class ReplayEventsResource {
 				IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
 						daoProvider, viewProvider);
 				event.notifyListeners();
+				daoProvider.addPreparingEventToTimeline(event, nextEvent.getUuid());
 				LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
 			}
 
@@ -71,4 +72,5 @@ public class ReplayEventsResource {
 	}
 
 }
+
 

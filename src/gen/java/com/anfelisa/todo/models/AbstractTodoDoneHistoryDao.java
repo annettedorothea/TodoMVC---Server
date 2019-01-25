@@ -10,7 +10,7 @@ import java.util.Optional;
 public class AbstractTodoDoneHistoryDao {
 	
 	public void insert(Handle handle, ITodoDoneHistoryModel todoDoneHistoryModel) {
-		Update statement = handle.createUpdate("INSERT INTO public.tododonehistory (id, description, donedatetime) VALUES (:id, :description, :donedatetime)");
+		Update statement = handle.createUpdate("INSERT INTO tododonehistory (id, description, donedatetime) VALUES (:id, :description, :donedatetime)");
 		statement.bind("id",  todoDoneHistoryModel.getId() );
 		statement.bind("description",  todoDoneHistoryModel.getDescription() );
 		statement.bind("donedatetime",  todoDoneHistoryModel.getDoneDateTime() );
@@ -19,7 +19,7 @@ public class AbstractTodoDoneHistoryDao {
 	
 	
 	public void updateById(Handle handle, ITodoDoneHistoryModel todoDoneHistoryModel) {
-		Update statement = handle.createUpdate("UPDATE public.tododonehistory SET id = :id, description = :description, donedatetime = :donedatetime WHERE id = :id");
+		Update statement = handle.createUpdate("UPDATE tododonehistory SET id = :id, description = :description, donedatetime = :donedatetime WHERE id = :id");
 		statement.bind("id",  todoDoneHistoryModel.getId() );
 		statement.bind("description",  todoDoneHistoryModel.getDescription() );
 		statement.bind("donedatetime",  todoDoneHistoryModel.getDoneDateTime() );
@@ -28,13 +28,13 @@ public class AbstractTodoDoneHistoryDao {
 	}
 
 	public void deleteById(Handle handle, String id) {
-		Update statement = handle.createUpdate("DELETE FROM public.tododonehistory WHERE id = :id");
+		Update statement = handle.createUpdate("DELETE FROM tododonehistory WHERE id = :id");
 		statement.bind("id", id);
 		statement.execute();
 	}
 
 	public ITodoDoneHistoryModel selectById(Handle handle, String id) {
-		Optional<ITodoDoneHistoryModel> optional = handle.createQuery("SELECT id, description, donedatetime FROM public.tododonehistory WHERE id = :id")
+		Optional<ITodoDoneHistoryModel> optional = handle.createQuery("SELECT id, description, donedatetime FROM tododonehistory WHERE id = :id")
 			.bind("id", id)
 			.map(new TodoDoneHistoryMapper())
 			.findFirst();
@@ -42,13 +42,13 @@ public class AbstractTodoDoneHistoryDao {
 	}
 	
 	public List<ITodoDoneHistoryModel> selectAll(Handle handle) {
-		return handle.createQuery("SELECT id, description, donedatetime FROM public.tododonehistory")
+		return handle.createQuery("SELECT id, description, donedatetime FROM tododonehistory")
 			.map(new TodoDoneHistoryMapper())
 			.list();
 	}
 
 	public void truncate(Handle handle) {
-		Update statement = handle.createUpdate("TRUNCATE public.tododonehistory CASCADE");
+		Update statement = handle.createUpdate("TRUNCATE TABLE tododonehistory");
 		statement.execute();
 	}
 

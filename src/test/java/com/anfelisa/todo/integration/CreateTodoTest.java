@@ -19,6 +19,8 @@ import org.mockito.Mock;
 
 import com.anfelisa.ace.App;
 import com.anfelisa.ace.ITimelineItem;
+import com.anfelisa.todo.data.GetAllTodosResponse;
+import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 import com.anfelisa.todo.models.ITodoModel;
 import com.anfelisa.todo.views.TodoView;
@@ -34,7 +36,8 @@ public class CreateTodoTest extends TodoBaseTest {
 		prepare();
 
 		String uuid = UUID.randomUUID().toString();
-		TodoData todoData = new TodoData(uuid, "todo 1", null, null, null, uuid);
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		
 
 		Response response = callCreateTodo(todoData);
 
@@ -47,8 +50,8 @@ public class CreateTodoTest extends TodoBaseTest {
 		prepare();
 
 		String uuid = UUID.randomUUID().toString();
-		TodoData todoData = new TodoData(uuid, "todo 1", null, null, null, uuid);
-		TodoData expectedTodoData = new TodoData(uuid, "todo 1", false, null, null, uuid);
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
 
 		callCreateTodo(todoData);
 
@@ -59,6 +62,22 @@ public class CreateTodoTest extends TodoBaseTest {
 	}
 
 	@Test
+	public void createsTodoApiCall() throws JsonProcessingException {
+		prepare();
+		
+		String uuid = UUID.randomUUID().toString();
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
+		
+		callCreateTodo(todoData);
+		
+		Response response = callGetAll();
+		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
+		assertThat(allTodosResponse.getTodoList().size(), is(1));
+		assertEquals(allTodosResponse.getTodoList().get(0), expectedTodoData);
+	}
+	
+	@Test
 	public void createsTodoMocked() throws JsonProcessingException {
 		List<ITimelineItem> timeline = new ArrayList<>();
 		prepare(timeline);
@@ -66,8 +85,8 @@ public class CreateTodoTest extends TodoBaseTest {
 		App.viewProvider.todoView = todoViewMock;
 
 		String uuid = UUID.randomUUID().toString();
-		TodoData todoData = new TodoData(uuid, "todo 1", null, null, null, uuid);
-		TodoData expectedTodoData = new TodoData(uuid, "todo 1", false, null, null, uuid);
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
 
 		callCreateTodo(todoData);
 

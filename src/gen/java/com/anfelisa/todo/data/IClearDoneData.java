@@ -8,6 +8,8 @@ import com.anfelisa.todo.models.IClearDoneModel;
 
 @JsonDeserialize(as=ClearDoneData.class)
 public interface IClearDoneData extends IClearDoneModel, IDataContainer {
+	
+	
 }
 
 /*       S.D.G.       */

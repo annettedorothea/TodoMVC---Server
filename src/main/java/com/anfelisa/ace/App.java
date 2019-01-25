@@ -58,8 +58,6 @@ public class App extends Application<CustomAppConfiguration> {
 		daoProvider = DaoProvider.create();
 		viewProvider = ViewProvider.create(daoProvider, configuration);
 
-		AceDao.setSchemaName(null);
-
 		final JdbiFactory factory = new JdbiFactory();
 
 		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");

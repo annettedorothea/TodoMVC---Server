@@ -39,6 +39,10 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
 		this.todoList = todoList;
 	}
+	public ITodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
+		this.todoList = todoList;
+		return this;
+	}
 	
 	
 }

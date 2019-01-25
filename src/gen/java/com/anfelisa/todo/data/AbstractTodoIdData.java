@@ -40,6 +40,10 @@ public abstract class AbstractTodoIdData extends AbstractData implements ITodoId
 	public void setId(String id) {
 		this.id = id;
 	}
+	public ITodoIdData withId(String id) {
+		this.id = id;
+		return this;
+	}
 	
 	
 }

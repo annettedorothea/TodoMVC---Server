@@ -10,7 +10,7 @@ import java.util.Optional;
 public class AbstractTodoDao {
 	
 	public void insert(Handle handle, ITodoModel todoModel) {
-		Update statement = handle.createUpdate("INSERT INTO public.todo (id, description, done, createddatetime, updateddatetime) VALUES (:id, :description, :done, :createddatetime, :updateddatetime)");
+		Update statement = handle.createUpdate("INSERT INTO todo (id, description, done, createddatetime, updateddatetime) VALUES (:id, :description, :done, :createddatetime, :updateddatetime)");
 		statement.bind("id",  todoModel.getId() );
 		statement.bind("description",  todoModel.getDescription() );
 		statement.bind("done",  todoModel.getDone() );
@@ -21,7 +21,7 @@ public class AbstractTodoDao {
 	
 	
 	public void updateById(Handle handle, ITodoModel todoModel) {
-		Update statement = handle.createUpdate("UPDATE public.todo SET id = :id, description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
+		Update statement = handle.createUpdate("UPDATE todo SET id = :id, description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
 		statement.bind("id",  todoModel.getId() );
 		statement.bind("description",  todoModel.getDescription() );
 		statement.bind("done",  todoModel.getDone() );
@@ -32,13 +32,13 @@ public class AbstractTodoDao {
 	}
 
 	public void deleteById(Handle handle, String id) {
-		Update statement = handle.createUpdate("DELETE FROM public.todo WHERE id = :id");
+		Update statement = handle.createUpdate("DELETE FROM todo WHERE id = :id");
 		statement.bind("id", id);
 		statement.execute();
 	}
 
 	public ITodoModel selectById(Handle handle, String id) {
-		Optional<ITodoModel> optional = handle.createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM public.todo WHERE id = :id")
+		Optional<ITodoModel> optional = handle.createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM todo WHERE id = :id")
 			.bind("id", id)
 			.map(new TodoMapper())
 			.findFirst();
@@ -46,13 +46,13 @@ public class AbstractTodoDao {
 	}
 	
 	public List<ITodoModel> selectAll(Handle handle) {
-		return handle.createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM public.todo")
+		return handle.createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM todo")
 			.map(new TodoMapper())
 			.list();
 	}
 
 	public void truncate(Handle handle) {
-		Update statement = handle.createUpdate("TRUNCATE public.todo CASCADE");
+		Update statement = handle.createUpdate("TRUNCATE TABLE todo");
 		statement.execute();
 	}
 

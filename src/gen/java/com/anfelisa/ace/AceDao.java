@@ -9,27 +9,13 @@ import org.jdbi.v3.core.statement.Update;
 
 public class AceDao {
 
-	private static String schemaName = "public";
-
-	public static void setSchemaName(String schemaName) {
-		AceDao.schemaName = schemaName;
-	}
-
-	private String timelineTable() {
-		if (StringUtils.isBlank(AceDao.schemaName)) {
-			return "public.timeline";
-		} else {
-			return AceDao.schemaName + ".timeline";
-		}
-	}
-
 	public void truncateTimelineTable(Handle handle) {
-		handle.execute("TRUNCATE " + timelineTable());
+		handle.execute("TRUNCATE TABLE timeline");
 	}
 
 	public boolean contains(Handle handle, String uuid) {
 		Optional<Integer> optional = handle
-				.createQuery("SELECT count(uuid) " + "FROM " + timelineTable() + " "
+				.createQuery("SELECT count(uuid) " + "FROM timeline "
 						+ "where uuid = :uuid")
 				.bind("uuid", uuid)
 				.mapTo((Integer.class)).findFirst();
@@ -38,8 +24,7 @@ public class AceDao {
 	}
 
 	public void insertIntoTimeline(Handle handle, String type, String method, String name, String data, String uuid) {
-		Update statement = handle.createUpdate("INSERT INTO " + timelineTable()
-				+ " (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
+		Update statement = handle.createUpdate("INSERT INTO timeline (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
 		statement.bind("type", type);
 		if (method != null) {
 			statement.bind("method", method);
@@ -54,8 +39,7 @@ public class AceDao {
 
 	public ITimelineItem selectLastAction(Handle handle) {
 		Optional<ITimelineItem> optional = handle
-				.createQuery("SELECT type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
-						+ "order by time desc " + "limit 1")
+				.createQuery("SELECT type, method, name, time, data, uuid FROM timeline order by time desc limit 1")
 				.map(new TimelineItemMapper())
 				.findFirst();
 		return optional.isPresent() ? optional.get() : null;
@@ -63,15 +47,13 @@ public class AceDao {
 
 	public List<ITimelineItem> selectTimeline(Handle handle) {
 		return handle
-				.createQuery("SELECT type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
-						+ "order by time asc ")
+				.createQuery("SELECT type, method, name, time, data, uuid FROM timeline order by time asc")
 				.map(new TimelineItemMapper()).list();
 	}
 	
 	public List<ITimelineItem> selectReplayTimeline(Handle handle) {
 		return handle
-				.createQuery("SELECT type, method, name, time, data, uuid " + "FROM " + timelineTable() + " "
-						+ "where type = 'event' order by time asc ")
+				.createQuery("SELECT type, method, name, time, data, uuid FROM timeline where type = 'event' order by time asc ")
 				.map(new TimelineItemMapper()).list();
 	}
 	

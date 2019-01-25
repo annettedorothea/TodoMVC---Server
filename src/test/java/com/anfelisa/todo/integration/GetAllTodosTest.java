@@ -20,10 +20,11 @@ public class GetAllTodosTest extends TodoBaseTest {
 
 	@Test
 	public void returnsOK() throws JsonProcessingException {
-		List<ITimelineItem> timeline = new ArrayList<>();
 		TodoData todo1 = createCreateTodoData("abc", new DateTime(2019, 1, 24, 13, 20));
 		TodoData todo2 = createCreateTodoData("xyz", new DateTime(2019, 1, 24, 13, 10));
 		TodoData todo3 = createCreateTodoData("def", new DateTime(2019, 1, 24, 13, 30));
+
+		List<ITimelineItem> timeline = new ArrayList<>();
 		timeline.add(createCreateTodoSuccessEvent(todo1));
 		timeline.add(createCreateTodoSuccessEvent(todo2));
 		timeline.add(createCreateTodoSuccessEvent(todo3));
@@ -37,10 +38,11 @@ public class GetAllTodosTest extends TodoBaseTest {
 
 	@Test
 	public void returnsTodosOrderedByCreationDate() throws JsonProcessingException {
-		List<ITimelineItem> timeline = new ArrayList<>();
 		TodoData todo1 = createCreateTodoData("abc", new DateTime(2019, 1, 24, 13, 20));
 		TodoData todo2 = createCreateTodoData("xyz", new DateTime(2019, 1, 24, 13, 10));
 		TodoData todo3 = createCreateTodoData("def", new DateTime(2019, 1, 24, 13, 30));
+
+		List<ITimelineItem> timeline = new ArrayList<>();
 		timeline.add(createCreateTodoSuccessEvent(todo1));
 		timeline.add(createCreateTodoSuccessEvent(todo2));
 		timeline.add(createCreateTodoSuccessEvent(todo3));
@@ -50,9 +52,7 @@ public class GetAllTodosTest extends TodoBaseTest {
 		Response response = callGetAll();
 
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
-
 		assertThat(allTodosResponse.getTodoList().size(), is(3));
-
 		assertEquals(allTodosResponse.getTodoList().get(0), todo2);
 		assertEquals(allTodosResponse.getTodoList().get(1), todo1);
 		assertEquals(allTodosResponse.getTodoList().get(2), todo3);
