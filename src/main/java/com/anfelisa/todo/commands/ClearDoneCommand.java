@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
-import com.anfelisa.todo.data.ClearDoneData;
+import com.anfelisa.todo.data.IClearDoneData;
 
 public class ClearDoneCommand extends AbstractClearDoneCommand {
 
 	static final Logger LOG = LoggerFactory.getLogger(ClearDoneCommand.class);
 
-	public ClearDoneCommand(ClearDoneData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public ClearDoneCommand(IClearDoneData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super(commandData, databaseHandle, daoProvider, viewProvider);
 	}
 	

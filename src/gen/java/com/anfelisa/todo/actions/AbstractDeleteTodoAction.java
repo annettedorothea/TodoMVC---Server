@@ -30,13 +30,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 
+import com.anfelisa.todo.data.ITodoIdData;
 import com.anfelisa.todo.data.TodoIdData;
 
 import com.anfelisa.todo.commands.DeleteTodoCommand;
 
 @SuppressWarnings("unused")
 @Path("/todos/delete")
-public abstract class AbstractDeleteTodoAction extends Action<TodoIdData> {
+public abstract class AbstractDeleteTodoAction extends Action<ITodoIdData> {
 
 	public AbstractDeleteTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.DeleteTodoAction", HttpMethod.DELETE, jdbi, appConfiguration, daoProvider, viewProvider);
@@ -48,7 +49,7 @@ public abstract class AbstractDeleteTodoAction extends Action<TodoIdData> {
 	}
 	
 	public void setActionData(IDataContainer data) {
-		this.actionData = (TodoIdData)data;
+		this.actionData = (ITodoIdData)data;
 	}
 
 	protected final void loadDataForGetRequest() {

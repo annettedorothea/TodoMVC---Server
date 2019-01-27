@@ -7,13 +7,13 @@ import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 
-import com.anfelisa.todo.data.TodoData;
+import com.anfelisa.todo.data.ITodoData;
 
-public abstract class AbstractUpdateTodoCommand extends Command<TodoData> {
+public abstract class AbstractUpdateTodoCommand extends Command<ITodoData> {
 
 	protected static final String success = "success";
 
-	public AbstractUpdateTodoCommand(TodoData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractUpdateTodoCommand(ITodoData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.commands.UpdateTodoCommand", commandParam, databaseHandle, daoProvider, viewProvider);
 	}
 

@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
-import com.anfelisa.todo.data.ToggleAllData;
+import com.anfelisa.todo.data.IToggleAllData;
 import com.anfelisa.todo.models.ITodoModel;
 
 public class ToggleAllCommand extends AbstractToggleAllCommand {
 
 	static final Logger LOG = LoggerFactory.getLogger(ToggleAllCommand.class);
 
-	public ToggleAllCommand(ToggleAllData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public ToggleAllCommand(IToggleAllData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super(commandData, databaseHandle, daoProvider, viewProvider);
 	}
 	

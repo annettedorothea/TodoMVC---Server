@@ -13,49 +13,53 @@ import org.junit.Test;
 
 import com.anfelisa.ace.ITimelineItem;
 import com.anfelisa.todo.data.GetAllTodosResponse;
+import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class GetAllTodosTest extends TodoBaseTest {
 
+	private ITodoData secondTodo;
+	private ITodoData firstTodo;
+	private ITodoData thirdTodo;
+	
 	@Test
 	public void returnsOK() throws JsonProcessingException {
-		TodoData todo1 = createCreateTodoData("abc", new DateTime(2019, 1, 24, 13, 20));
-		TodoData todo2 = createCreateTodoData("xyz", new DateTime(2019, 1, 24, 13, 10));
-		TodoData todo3 = createCreateTodoData("def", new DateTime(2019, 1, 24, 13, 30));
+		createTestTodos();
+		
+		prepare(createTimeline());
 
-		List<ITimelineItem> timeline = new ArrayList<>();
-		timeline.add(createCreateTodoSuccessEvent(todo1));
-		timeline.add(createCreateTodoSuccessEvent(todo2));
-		timeline.add(createCreateTodoSuccessEvent(todo3));
-
-		prepare(timeline);
-
-		Response response = callGetAll();
+		Response response = callGetAllTodos(randomUUID());
 
 		assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 	}
 
 	@Test
 	public void returnsTodosOrderedByCreationDate() throws JsonProcessingException {
-		TodoData todo1 = createCreateTodoData("abc", new DateTime(2019, 1, 24, 13, 20));
-		TodoData todo2 = createCreateTodoData("xyz", new DateTime(2019, 1, 24, 13, 10));
-		TodoData todo3 = createCreateTodoData("def", new DateTime(2019, 1, 24, 13, 30));
-
-		List<ITimelineItem> timeline = new ArrayList<>();
-		timeline.add(createCreateTodoSuccessEvent(todo1));
-		timeline.add(createCreateTodoSuccessEvent(todo2));
-		timeline.add(createCreateTodoSuccessEvent(todo3));
-
-		prepare(timeline);
-
-		Response response = callGetAll();
-
+		createTestTodos();
+		
+		prepare(createTimeline());
+		
+		Response response = callGetAllTodos(randomUUID());
+		
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
-		assertThat(allTodosResponse.getTodoList().size(), is(3));
-		assertEquals(allTodosResponse.getTodoList().get(0), todo2);
-		assertEquals(allTodosResponse.getTodoList().get(1), todo1);
-		assertEquals(allTodosResponse.getTodoList().get(2), todo3);
+		assertEquals(allTodosResponse.getTodoList().get(0), firstTodo);
+		assertEquals(allTodosResponse.getTodoList().get(1), secondTodo);
+		assertEquals(allTodosResponse.getTodoList().get(2), thirdTodo);
 	}
-
+	
+	private void createTestTodos() throws JsonProcessingException {
+		firstTodo = new TodoData(randomUUID()).withDescription("xyz").withCreatedDateTime(new DateTime(2019, 1, 24, 13, 10)).withId(randomUUID()); 
+		secondTodo = new TodoData(randomUUID()).withDescription("abc").withCreatedDateTime(new DateTime(2019, 1, 24, 13, 20)).withId(randomUUID());
+		thirdTodo = new TodoData(randomUUID()).withDescription("def").withCreatedDateTime(new DateTime(2019, 1, 25, 13, 0)).withId(randomUUID());
+	}
+	
+	private List<ITimelineItem> createTimeline() throws JsonProcessingException {
+		List<ITimelineItem> timeline = new ArrayList<>();
+		timeline.add(createCreateTodoSuccessEventTimelineItem(secondTodo));
+		timeline.add(createCreateTodoSuccessEventTimelineItem(firstTodo));
+		timeline.add(createCreateTodoSuccessEventTimelineItem(thirdTodo));
+		return timeline;
+	}
+	
 }

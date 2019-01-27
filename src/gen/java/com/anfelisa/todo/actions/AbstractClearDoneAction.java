@@ -30,13 +30,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 
+import com.anfelisa.todo.data.IClearDoneData;
 import com.anfelisa.todo.data.ClearDoneData;
 
 import com.anfelisa.todo.commands.ClearDoneCommand;
 
 @SuppressWarnings("unused")
 @Path("/todos/clear-done")
-public abstract class AbstractClearDoneAction extends Action<ClearDoneData> {
+public abstract class AbstractClearDoneAction extends Action<IClearDoneData> {
 
 	public AbstractClearDoneAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.ClearDoneAction", HttpMethod.DELETE, jdbi, appConfiguration, daoProvider, viewProvider);
@@ -48,7 +49,7 @@ public abstract class AbstractClearDoneAction extends Action<ClearDoneData> {
 	}
 	
 	public void setActionData(IDataContainer data) {
-		this.actionData = (ClearDoneData)data;
+		this.actionData = (IClearDoneData)data;
 	}
 
 	protected final void loadDataForGetRequest() {

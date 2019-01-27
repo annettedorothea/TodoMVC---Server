@@ -1,7 +1,7 @@
 JAVA
 
-com.anfelisa.todo
 
+com.anfelisa.todo
 ACE 
 	GetAllTodos<TodoList> 
 		GET "/todos/all"
@@ -14,7 +14,7 @@ ACE
 	
 	ToggleTodo<TodoToggle> 
 		PUT "/todos/toggle" 
-		queryParams id 
+		queryParams id
 		on success ( Todo.toggle TodoDoneHistory.toggle )
 	
 	ToggleAll<ToggleAll>
@@ -31,9 +31,11 @@ ACE
 		queryParams id 
 		on success (Todo.delete)
 	
+	
 	ClearDone<ClearDone> 
 		DELETE "/todos/clear-done" 
 		on success (Todo.clearDone)
+	
 		
 views 
 	Todo {

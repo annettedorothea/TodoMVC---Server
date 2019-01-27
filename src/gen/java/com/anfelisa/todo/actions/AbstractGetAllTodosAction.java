@@ -30,12 +30,13 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 
+import com.anfelisa.todo.data.ITodoListData;
 import com.anfelisa.todo.data.TodoListData;
 
 
 @SuppressWarnings("unused")
 @Path("/todos/all")
-public abstract class AbstractGetAllTodosAction extends Action<TodoListData> {
+public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 
 	public AbstractGetAllTodosAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.GetAllTodosAction", HttpMethod.GET, jdbi, appConfiguration, daoProvider, viewProvider);
@@ -47,7 +48,7 @@ public abstract class AbstractGetAllTodosAction extends Action<TodoListData> {
 	}
 	
 	public void setActionData(IDataContainer data) {
-		this.actionData = (TodoListData)data;
+		this.actionData = (ITodoListData)data;
 	}
 
 

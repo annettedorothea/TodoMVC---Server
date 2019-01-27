@@ -7,13 +7,13 @@ import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 
-import com.anfelisa.todo.data.ClearDoneData;
+import com.anfelisa.todo.data.IClearDoneData;
 
-public abstract class AbstractClearDoneCommand extends Command<ClearDoneData> {
+public abstract class AbstractClearDoneCommand extends Command<IClearDoneData> {
 
 	protected static final String success = "success";
 
-	public AbstractClearDoneCommand(ClearDoneData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractClearDoneCommand(IClearDoneData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.commands.ClearDoneCommand", commandParam, databaseHandle, daoProvider, viewProvider);
 	}
 

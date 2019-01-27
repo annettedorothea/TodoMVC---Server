@@ -3,7 +3,6 @@ package com.anfelisa.ace;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Update;
 

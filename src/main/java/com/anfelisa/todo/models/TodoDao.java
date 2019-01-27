@@ -8,7 +8,7 @@ import org.jdbi.v3.core.statement.PreparedBatch;
 import org.jdbi.v3.core.statement.Update;
 import org.joda.time.DateTime;
 
-import com.anfelisa.todo.data.ToggleAllData;
+import com.anfelisa.todo.data.IToggleAllData;
 
 public class TodoDao extends AbstractTodoDao {
 	public void toggleTodo(Handle handle, ITodoToggleModel model) {
@@ -52,7 +52,7 @@ public class TodoDao extends AbstractTodoDao {
 				.list();
 	}
 
-	public void toggleAll(Handle handle, ToggleAllData dataContainer) {
+	public void toggleAll(Handle handle, IToggleAllData dataContainer) {
 		List<ITodoModel> todos = dataContainer.getTodosToBeToggled();
 		List<String> idList = todos.stream().map(ITodoModel::getId).collect(Collectors.toList());
 		Update statement = handle.createUpdate(

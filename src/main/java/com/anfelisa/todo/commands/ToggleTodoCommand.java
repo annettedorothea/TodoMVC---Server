@@ -6,14 +6,14 @@ import org.slf4j.LoggerFactory;
 import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
-import com.anfelisa.todo.data.TodoToggleData;
+import com.anfelisa.todo.data.ITodoToggleData;
 import com.anfelisa.todo.models.ITodoModel;
 
 public class ToggleTodoCommand extends AbstractToggleTodoCommand {
 
 	static final Logger LOG = LoggerFactory.getLogger(ToggleTodoCommand.class);
 
-	public ToggleTodoCommand(TodoToggleData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public ToggleTodoCommand(ITodoToggleData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super(commandData, databaseHandle, daoProvider, viewProvider);
 	}
 	

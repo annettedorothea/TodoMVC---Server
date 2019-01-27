@@ -36,9 +36,8 @@ public class CreateTodoTest extends TodoBaseTest {
 		prepare();
 
 		String uuid = UUID.randomUUID().toString();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
 		
-
 		Response response = callCreateTodo(todoData);
 
 		assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
@@ -49,8 +48,8 @@ public class CreateTodoTest extends TodoBaseTest {
 	public void createsTodo() throws JsonProcessingException {
 		prepare();
 
-		String uuid = UUID.randomUUID().toString();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		String uuid = randomUUID();
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
 		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
 
 		callCreateTodo(todoData);
@@ -62,30 +61,46 @@ public class CreateTodoTest extends TodoBaseTest {
 	}
 
 	@Test
-	public void createsTodoApiCall() throws JsonProcessingException {
+	public void setsDoneToFalse() throws JsonProcessingException {
 		prepare();
 		
-		String uuid = UUID.randomUUID().toString();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		String uuid = randomUUID();
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withDone(true);
 		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
 		
 		callCreateTodo(todoData);
 		
-		Response response = callGetAll();
+		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(handle);
+		assertThat(todos.size(), is(1));
+		
+		assertEquals(todos.get(0), expectedTodoData);
+	}
+	
+	@Test
+	public void createsTodoApiCall() throws JsonProcessingException {
+		prepare();
+		
+		String uuid = randomUUID();
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
+		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
+		
+		callCreateTodo(todoData);
+		
+		Response response = callGetAllTodos(UUID.randomUUID().toString());
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
 		assertThat(allTodosResponse.getTodoList().size(), is(1));
 		assertEquals(allTodosResponse.getTodoList().get(0), expectedTodoData);
 	}
 	
-	@Test
+	//@Test
 	public void createsTodoMocked() throws JsonProcessingException {
 		List<ITimelineItem> timeline = new ArrayList<>();
 		prepare(timeline);
 
 		App.viewProvider.todoView = todoViewMock;
 
-		String uuid = UUID.randomUUID().toString();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withId(uuid);
+		String uuid = randomUUID();
+		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
 		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
 
 		callCreateTodo(todoData);

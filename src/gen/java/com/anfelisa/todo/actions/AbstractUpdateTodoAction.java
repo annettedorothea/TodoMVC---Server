@@ -30,13 +30,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 
+import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 
 import com.anfelisa.todo.commands.UpdateTodoCommand;
 
 @SuppressWarnings("unused")
 @Path("/todos/update")
-public abstract class AbstractUpdateTodoAction extends Action<TodoData> {
+public abstract class AbstractUpdateTodoAction extends Action<ITodoData> {
 
 	public AbstractUpdateTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.UpdateTodoAction", HttpMethod.PUT, jdbi, appConfiguration, daoProvider, viewProvider);
@@ -48,7 +49,7 @@ public abstract class AbstractUpdateTodoAction extends Action<TodoData> {
 	}
 	
 	public void setActionData(IDataContainer data) {
-		this.actionData = (TodoData)data;
+		this.actionData = (ITodoData)data;
 	}
 
 	protected final void loadDataForGetRequest() {
@@ -59,7 +60,7 @@ public abstract class AbstractUpdateTodoAction extends Action<TodoData> {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateTodoResource(
-			@NotNull TodoData payload)
+			@NotNull ITodoData payload)
 			throws JsonProcessingException {
 		this.actionData = new TodoData(payload.getUuid());
 		this.actionData.setId(payload.getId());

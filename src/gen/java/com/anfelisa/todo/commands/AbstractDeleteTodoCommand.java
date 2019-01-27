@@ -7,13 +7,13 @@ import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 
-import com.anfelisa.todo.data.TodoIdData;
+import com.anfelisa.todo.data.ITodoIdData;
 
-public abstract class AbstractDeleteTodoCommand extends Command<TodoIdData> {
+public abstract class AbstractDeleteTodoCommand extends Command<ITodoIdData> {
 
 	protected static final String success = "success";
 
-	public AbstractDeleteTodoCommand(TodoIdData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractDeleteTodoCommand(ITodoIdData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.commands.DeleteTodoCommand", commandParam, databaseHandle, daoProvider, viewProvider);
 	}
 

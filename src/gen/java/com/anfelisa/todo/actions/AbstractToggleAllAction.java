@@ -30,13 +30,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 
+import com.anfelisa.todo.data.IToggleAllData;
 import com.anfelisa.todo.data.ToggleAllData;
 
 import com.anfelisa.todo.commands.ToggleAllCommand;
 
 @SuppressWarnings("unused")
 @Path("/todos/toggle-all")
-public abstract class AbstractToggleAllAction extends Action<ToggleAllData> {
+public abstract class AbstractToggleAllAction extends Action<IToggleAllData> {
 
 	public AbstractToggleAllAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.ToggleAllAction", HttpMethod.PUT, jdbi, appConfiguration, daoProvider, viewProvider);
@@ -48,7 +49,7 @@ public abstract class AbstractToggleAllAction extends Action<ToggleAllData> {
 	}
 	
 	public void setActionData(IDataContainer data) {
-		this.actionData = (ToggleAllData)data;
+		this.actionData = (IToggleAllData)data;
 	}
 
 	protected final void loadDataForGetRequest() {

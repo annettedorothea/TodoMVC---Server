@@ -7,13 +7,13 @@ import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 
-import com.anfelisa.todo.data.TodoToggleData;
+import com.anfelisa.todo.data.ITodoToggleData;
 
-public abstract class AbstractToggleTodoCommand extends Command<TodoToggleData> {
+public abstract class AbstractToggleTodoCommand extends Command<ITodoToggleData> {
 
 	protected static final String success = "success";
 
-	public AbstractToggleTodoCommand(TodoToggleData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractToggleTodoCommand(ITodoToggleData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.commands.ToggleTodoCommand", commandParam, databaseHandle, daoProvider, viewProvider);
 	}
 

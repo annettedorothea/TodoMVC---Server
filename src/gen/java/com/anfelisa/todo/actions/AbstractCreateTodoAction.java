@@ -30,13 +30,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 
+import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 
 import com.anfelisa.todo.commands.CreateTodoCommand;
 
 @SuppressWarnings("unused")
 @Path("/todos/create")
-public abstract class AbstractCreateTodoAction extends Action<TodoData> {
+public abstract class AbstractCreateTodoAction extends Action<ITodoData> {
 
 	public AbstractCreateTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.CreateTodoAction", HttpMethod.POST, jdbi, appConfiguration, daoProvider, viewProvider);
@@ -48,7 +49,7 @@ public abstract class AbstractCreateTodoAction extends Action<TodoData> {
 	}
 	
 	public void setActionData(IDataContainer data) {
-		this.actionData = (TodoData)data;
+		this.actionData = (ITodoData)data;
 	}
 
 	protected final void loadDataForGetRequest() {
@@ -59,7 +60,7 @@ public abstract class AbstractCreateTodoAction extends Action<TodoData> {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createTodoResource(
-			@NotNull TodoData payload)
+			@NotNull ITodoData payload)
 			throws JsonProcessingException {
 		this.actionData = new TodoData(payload.getUuid());
 		this.actionData.setDescription(payload.getDescription());
