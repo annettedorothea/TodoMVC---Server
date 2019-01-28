@@ -12,12 +12,13 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import com.anfelisa.ace.ITimelineItem;
+import com.anfelisa.todo.BaseTest;
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class GetAllTodosTest extends TodoBaseTest {
+public class GetAllTodosTest extends BaseTest {
 
 	private ITodoData secondTodo;
 	private ITodoData firstTodo;

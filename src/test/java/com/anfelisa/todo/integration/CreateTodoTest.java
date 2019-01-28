@@ -13,12 +13,14 @@ import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 
 import com.anfelisa.ace.App;
 import com.anfelisa.ace.ITimelineItem;
+import com.anfelisa.todo.BaseTest;
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
@@ -26,7 +28,7 @@ import com.anfelisa.todo.models.ITodoModel;
 import com.anfelisa.todo.views.TodoView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class CreateTodoTest extends TodoBaseTest {
+public class CreateTodoTest extends BaseTest {
 
 	@Mock
 	private TodoView todoViewMock;
@@ -34,6 +36,8 @@ public class CreateTodoTest extends TodoBaseTest {
 	@Test
 	public void returnsOK() {
 		prepare();
+		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
+		setSystemTime(systemTime);
 
 		String uuid = UUID.randomUUID().toString();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
@@ -47,10 +51,13 @@ public class CreateTodoTest extends TodoBaseTest {
 	@Test
 	public void createsTodo() throws JsonProcessingException {
 		prepare();
+		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
+		setSystemTime(systemTime);
 
 		String uuid = randomUUID();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
-		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
+		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
+				.withCreatedDateTime(systemTime);
 
 		callCreateTodo(todoData);
 
@@ -63,10 +70,13 @@ public class CreateTodoTest extends TodoBaseTest {
 	@Test
 	public void setsDoneToFalse() throws JsonProcessingException {
 		prepare();
+		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
+		setSystemTime(systemTime);
 		
 		String uuid = randomUUID();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withDone(true);
-		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
+		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
+				.withCreatedDateTime(systemTime);
 		
 		callCreateTodo(todoData);
 		
@@ -79,10 +89,13 @@ public class CreateTodoTest extends TodoBaseTest {
 	@Test
 	public void createsTodoApiCall() throws JsonProcessingException {
 		prepare();
+		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
+		setSystemTime(systemTime);
 		
 		String uuid = randomUUID();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
-		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
+		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
+				.withCreatedDateTime(systemTime);
 		
 		callCreateTodo(todoData);
 		

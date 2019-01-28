@@ -70,7 +70,9 @@ public class App extends Application<CustomAppConfiguration> {
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
 		} else if (ServerConfiguration.DEV.equals(mode)) {
 			environment.jersey().register(new GetServerTimelineResource(jdbi));
+		} else if (ServerConfiguration.TEST.equals(mode)) {
 			environment.jersey().register(new ReplayEventsResource(jdbi, daoProvider, viewProvider));
+			environment.jersey().register(new SetSystemTimeResource());
 		}
 		
 		environment.jersey().register(new JsonProcessingExceptionMapper(true));
