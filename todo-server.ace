@@ -51,8 +51,6 @@ views
 	}
 
 models 
-	schema public
-	
 	persistent TodoDoneHistory {
 		Unique PrimaryKey NotNull String id
 		NotNull String description

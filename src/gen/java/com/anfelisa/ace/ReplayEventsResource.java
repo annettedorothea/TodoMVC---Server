@@ -10,6 +10,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
@@ -39,7 +41,7 @@ public class ReplayEventsResource {
 	@PUT
 	@Timed
 	@Path("/replay-events")
-	public Response put(List<ITimelineItem> timeline) {
+	public Response put(List<ITimelineItem> timeline) throws JsonProcessingException {
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		try {
 			databaseHandle.beginTransaction();
@@ -47,7 +49,9 @@ public class ReplayEventsResource {
 			Handle handle = databaseHandle.getHandle();
 			daoProvider.truncateAllViews(handle);
 			daoProvider.getAceDao().truncateTimelineTable(handle);
+			databaseHandle.commitTransaction();
 
+			databaseHandle.beginTransaction();
 			if (timeline != null) {
 				for (ITimelineItem nextEvent : timeline) {
 					IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
