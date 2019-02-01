@@ -18,9 +18,10 @@ import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 
+import com.anfelisa.ace.AbstractBaseTest;
 import com.anfelisa.ace.App;
 import com.anfelisa.ace.ITimelineItem;
-import com.anfelisa.todo.BaseTest;
+import com.anfelisa.todo.TestUtils;
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
@@ -28,7 +29,7 @@ import com.anfelisa.todo.models.ITodoModel;
 import com.anfelisa.todo.views.TodoView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class CreateTodoTest extends BaseTest {
+public class CreateTodoTest extends AbstractBaseTest {
 
 	@Mock
 	private TodoView todoViewMock;
@@ -42,7 +43,7 @@ public class CreateTodoTest extends BaseTest {
 		String uuid = UUID.randomUUID().toString();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
 		
-		Response response = callCreateTodo(todoData);
+		Response response = TestUtils.callCreateTodo(todoData);
 
 		assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
@@ -54,17 +55,17 @@ public class CreateTodoTest extends BaseTest {
 		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
 		setSystemTime(systemTime);
 
-		String uuid = randomUUID();
+		String uuid = TestUtils.randomUUID();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
 		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
 				.withCreatedDateTime(systemTime);
 
-		callCreateTodo(todoData);
+		TestUtils.callCreateTodo(todoData);
 
 		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(handle);
 		assertThat(todos.size(), is(1));
 
-		assertEquals(todos.get(0), expectedTodoData);
+		TestUtils.assertEquals(todos.get(0), expectedTodoData);
 	}
 
 	@Test
@@ -73,17 +74,17 @@ public class CreateTodoTest extends BaseTest {
 		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
 		setSystemTime(systemTime);
 		
-		String uuid = randomUUID();
+		String uuid = TestUtils.randomUUID();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withDone(true);
 		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
 				.withCreatedDateTime(systemTime);
 		
-		callCreateTodo(todoData);
+		TestUtils.callCreateTodo(todoData);
 		
 		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(handle);
 		assertThat(todos.size(), is(1));
 		
-		assertEquals(todos.get(0), expectedTodoData);
+		TestUtils.assertEquals(todos.get(0), expectedTodoData);
 	}
 	
 	@Test
@@ -92,17 +93,17 @@ public class CreateTodoTest extends BaseTest {
 		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
 		setSystemTime(systemTime);
 		
-		String uuid = randomUUID();
+		String uuid = TestUtils.randomUUID();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
 		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
 				.withCreatedDateTime(systemTime);
 		
-		callCreateTodo(todoData);
+		TestUtils.callCreateTodo(todoData);
 		
-		Response response = callGetAllTodos(UUID.randomUUID().toString());
+		Response response = TestUtils.callGetAllTodos(UUID.randomUUID().toString());
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
 		assertThat(allTodosResponse.getTodoList().size(), is(1));
-		assertEquals(allTodosResponse.getTodoList().get(0), expectedTodoData);
+		TestUtils.assertEquals(allTodosResponse.getTodoList().get(0), expectedTodoData);
 	}
 	
 	//@Test
@@ -112,20 +113,21 @@ public class CreateTodoTest extends BaseTest {
 
 		App.viewProvider.todoView = todoViewMock;
 
-		String uuid = randomUUID();
+		String uuid = TestUtils.randomUUID();
 		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
 		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
 
-		callCreateTodo(todoData);
+		TestUtils.callCreateTodo(todoData);
 
 		verify(todoViewMock, times(1)).create(argThat(new ArgumentMatcher<TodoData>() {
 			@Override
 			public boolean matches(Object argument) {
-				assertEquals((TodoData)argument, expectedTodoData);
+				TestUtils.assertEquals((TodoData)argument, expectedTodoData);
 				return true;
 			}
 		}), anyObject());
 
 	}
+
 
 }

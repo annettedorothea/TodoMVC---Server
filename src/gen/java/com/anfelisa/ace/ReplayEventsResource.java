@@ -2,7 +2,6 @@ package com.anfelisa.ace;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -39,8 +38,8 @@ public class ReplayEventsResource {
 
 	@PUT
 	@Timed
-	@Path("/prepare")
-	public Response put(@NotNull List<ITimelineItem> timeline) {
+	@Path("/replay-events")
+	public Response put(List<ITimelineItem> timeline) {
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
 		try {
 			databaseHandle.beginTransaction();
@@ -49,18 +48,20 @@ public class ReplayEventsResource {
 			daoProvider.truncateAllViews(handle);
 			daoProvider.getAceDao().truncateTimelineTable(handle);
 
-			for (ITimelineItem nextEvent : timeline) {
-				IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
-						daoProvider, viewProvider);
-				event.notifyListeners();
-				daoProvider.addPreparingEventToTimeline(event, nextEvent.getUuid());
-				LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
+			if (timeline != null) {
+				for (ITimelineItem nextEvent : timeline) {
+					IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
+							daoProvider, viewProvider);
+					event.notifyListeners();
+					daoProvider.addPreparingEventToTimeline(event, nextEvent.getUuid());
+					LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
+				}
+				LOG.info("EVENT REPLAY FINISHED: successfully replayed " + timeline.size() + " events");
 			}
 
 			databaseHandle.commitTransaction();
 
-			LOG.info("EVENT REPLAY FINISHED: successfully replayed " + timeline.size() + " events");
-			return Response.ok("prepared test by publishing " + timeline.size() + " events").build();
+			return Response.ok().build();
 		} catch (Exception e) {
 			databaseHandle.rollbackTransaction();
 			LOG.error("exception during prepare test");

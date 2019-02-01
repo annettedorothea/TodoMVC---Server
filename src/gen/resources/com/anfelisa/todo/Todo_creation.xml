@@ -1,4 +1,4 @@
-<createTable tableName="todo">
+<createTable tableName="\"todo\"">
 	<column name="id" type="character varying">
 		<constraints primaryKey="true" nullable="false"  />
 	</column>
