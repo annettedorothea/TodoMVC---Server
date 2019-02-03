@@ -8,7 +8,7 @@ public class JodaObjectMapper extends ObjectMapper {
 	private static final long serialVersionUID = 3204337293769989499L;
 
 	public JodaObjectMapper() {
-        super();
-        registerModule(new JodaModule());
-    }
+	       super();
+	       registerModule(new JodaModule());
+	   }
 }

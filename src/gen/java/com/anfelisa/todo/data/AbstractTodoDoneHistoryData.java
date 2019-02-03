@@ -8,6 +8,8 @@ import org.joda.time.DateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import com.anfelisa.todo.models.ITodoDoneHistoryModel;
 
 import com.anfelisa.ace.AbstractData;
 import com.anfelisa.ace.IDataContainer;
@@ -76,6 +78,22 @@ public abstract class AbstractTodoDoneHistoryData extends AbstractData implement
 	public ITodoDoneHistoryData withDoneDateTime(org.joda.time.DateTime doneDateTime) {
 		this.doneDateTime = doneDateTime;
 		return this;
+	}
+	
+	
+	
+	public List<String> equalsPrimitiveTypes(ITodoDoneHistoryModel other) {
+		List<String> differingAttributes = new ArrayList<String>();
+		if (!(this.getId() == null && other.getId() == null) && !this.getId().equals(other.getId())) {
+			differingAttributes.add("id: " + this.getId() + " " + other.getId());
+		}
+		if (!(this.getDescription() == null && other.getDescription() == null) && !this.getDescription().equals(other.getDescription())) {
+			differingAttributes.add("description: " + this.getDescription() + " " + other.getDescription());
+		}
+		if (!(this.getDoneDateTime() == null && other.getDoneDateTime() == null) && !this.getDoneDateTime().equals(other.getDoneDateTime())) {
+			differingAttributes.add("doneDateTime: " + this.getDoneDateTime() + " " + other.getDoneDateTime());
+		}
+		return differingAttributes;
 	}
 	
 	

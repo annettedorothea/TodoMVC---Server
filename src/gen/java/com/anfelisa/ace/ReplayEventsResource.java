@@ -58,7 +58,7 @@ public class ReplayEventsResource {
 							daoProvider, viewProvider);
 					event.notifyListeners();
 					daoProvider.addPreparingEventToTimeline(event, nextEvent.getUuid());
-					LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
+					//LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
 				}
 				LOG.info("EVENT REPLAY FINISHED: successfully replayed " + timeline.size() + " events");
 			}

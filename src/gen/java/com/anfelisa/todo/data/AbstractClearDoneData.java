@@ -8,6 +8,8 @@ import org.joda.time.DateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import com.anfelisa.todo.models.IClearDoneModel;
 
 import com.anfelisa.ace.AbstractData;
 import com.anfelisa.ace.IDataContainer;
@@ -25,6 +27,9 @@ public abstract class AbstractClearDoneData extends AbstractData implements ICle
 	}
 
 
+	
+	
+	
 	
 }
 

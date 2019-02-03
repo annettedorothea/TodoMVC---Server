@@ -8,6 +8,8 @@ import org.joda.time.DateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import com.anfelisa.todo.models.ITodoIdModel;
 
 import com.anfelisa.ace.AbstractData;
 import com.anfelisa.ace.IDataContainer;
@@ -43,6 +45,16 @@ public abstract class AbstractTodoIdData extends AbstractData implements ITodoId
 	public ITodoIdData withId(String id) {
 		this.id = id;
 		return this;
+	}
+	
+	
+	
+	public List<String> equalsPrimitiveTypes(ITodoIdModel other) {
+		List<String> differingAttributes = new ArrayList<String>();
+		if (!(this.getId() == null && other.getId() == null) && !this.getId().equals(other.getId())) {
+			differingAttributes.add("id: " + this.getId() + " " + other.getId());
+		}
+		return differingAttributes;
 	}
 	
 	

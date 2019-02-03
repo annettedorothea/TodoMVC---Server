@@ -2,10 +2,6 @@ package com.anfelisa.todo.integration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,35 +11,27 @@ import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 
-import com.anfelisa.ace.AbstractBaseTest;
-import com.anfelisa.ace.App;
-import com.anfelisa.ace.ITimelineItem;
-import com.anfelisa.todo.TestUtils;
+import com.anfelisa.todo.ActionCalls;
 import com.anfelisa.todo.data.GetAllTodosResponse;
-import com.anfelisa.todo.data.ITodoData;
-import com.anfelisa.todo.data.TodoData;
 import com.anfelisa.todo.models.ITodoModel;
+import com.anfelisa.todo.models.TodoModel;
 import com.anfelisa.todo.views.TodoView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class CreateTodoTest extends AbstractBaseTest {
+public class CreateTodoTest extends BaseTest {
 
 	@Mock
 	private TodoView todoViewMock;
 
 	@Test
 	public void returnsOK() {
-		prepare();
+		prepare(DROPWIZARD.getLocalPort());
 		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
-		setSystemTime(systemTime);
+		setSystemTime(systemTime, DROPWIZARD.getLocalPort());
 
-		String uuid = UUID.randomUUID().toString();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
-		
-		Response response = TestUtils.callCreateTodo(todoData);
+		Response response = ActionCalls.callCreateTodo(randomUUID(), "todo 1", DROPWIZARD.getLocalPort());
 
 		assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
@@ -51,83 +39,72 @@ public class CreateTodoTest extends AbstractBaseTest {
 
 	@Test
 	public void createsTodo() throws JsonProcessingException {
-		prepare();
+		prepare(DROPWIZARD.getLocalPort());
 		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
-		setSystemTime(systemTime);
+		setSystemTime(systemTime, DROPWIZARD.getLocalPort());
 
-		String uuid = TestUtils.randomUUID();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
-		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
-				.withCreatedDateTime(systemTime);
+		String uuid = randomUUID();
+		
+		TodoModel expectedTodoData = new TodoModel();
+		expectedTodoData.setDescription("todo 1");
+		expectedTodoData.setId(uuid);
+		expectedTodoData.setDone(false);
+		expectedTodoData.setCreatedDateTime(systemTime);
 
-		TestUtils.callCreateTodo(todoData);
+		ActionCalls.callCreateTodo(uuid, "todo 1", DROPWIZARD.getLocalPort());
 
 		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(handle);
 		assertThat(todos.size(), is(1));
 
-		TestUtils.assertEquals(todos.get(0), expectedTodoData);
+		List<String> differingAttributs = expectedTodoData.equalsPrimitiveTypes(todos.get(0));
+		assertThat(differingAttributs, is(new ArrayList<String>()));
 	}
 
 	@Test
 	public void setsDoneToFalse() throws JsonProcessingException {
-		prepare();
+		prepare(DROPWIZARD.getLocalPort());
 		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
-		setSystemTime(systemTime);
+		setSystemTime(systemTime, DROPWIZARD.getLocalPort());
 		
-		String uuid = TestUtils.randomUUID();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1").withDone(true);
-		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
-				.withCreatedDateTime(systemTime);
+		String uuid = randomUUID();
 		
-		TestUtils.callCreateTodo(todoData);
+		TodoModel expectedTodoData = new TodoModel();
+		expectedTodoData.setDescription("todo 1");
+		expectedTodoData.setId(uuid);
+		expectedTodoData.setDone(false);
+		expectedTodoData.setCreatedDateTime(systemTime);
+		
+		ActionCalls.callCreateTodo(uuid, "todo 1", DROPWIZARD.getLocalPort());
 		
 		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(handle);
 		assertThat(todos.size(), is(1));
 		
-		TestUtils.assertEquals(todos.get(0), expectedTodoData);
+		List<String> differingAttributs = expectedTodoData.equalsPrimitiveTypes(todos.get(0));
+		assertThat(differingAttributs, is(new ArrayList<String>()));
 	}
 	
 	@Test
 	public void createsTodoApiCall() throws JsonProcessingException {
-		prepare();
+		prepare(DROPWIZARD.getLocalPort());
 		DateTime systemTime = new DateTime(2019, 1, 23, 15, 0, 0);
-		setSystemTime(systemTime);
+		setSystemTime(systemTime, DROPWIZARD.getLocalPort());
 		
-		String uuid = TestUtils.randomUUID();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
-		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false)
-				.withCreatedDateTime(systemTime);
+		String uuid = randomUUID();
+
+		TodoModel expectedTodoData = new TodoModel();
+		expectedTodoData.setDescription("todo 1");
+		expectedTodoData.setId(uuid);
+		expectedTodoData.setDone(false);
+		expectedTodoData.setCreatedDateTime(systemTime);
 		
-		TestUtils.callCreateTodo(todoData);
+		ActionCalls.callCreateTodo(uuid, "todo 1", DROPWIZARD.getLocalPort());
 		
-		Response response = TestUtils.callGetAllTodos(UUID.randomUUID().toString());
+		Response response = ActionCalls.callGetAllTodos(UUID.randomUUID().toString(), DROPWIZARD.getLocalPort());
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
 		assertThat(allTodosResponse.getTodoList().size(), is(1));
-		TestUtils.assertEquals(allTodosResponse.getTodoList().get(0), expectedTodoData);
+		
+		List<String> differingAttributs = expectedTodoData.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(0));
+		assertThat(differingAttributs, is(new ArrayList<String>()));
 	}
 	
-	//@Test
-	public void createsTodoMocked() throws JsonProcessingException {
-		List<ITimelineItem> timeline = new ArrayList<>();
-		prepare(timeline);
-
-		App.viewProvider.todoView = todoViewMock;
-
-		String uuid = TestUtils.randomUUID();
-		ITodoData todoData = new TodoData(uuid).withDescription("todo 1");
-		ITodoData expectedTodoData = new TodoData(uuid).withDescription("todo 1").withId(uuid).withDone(false);
-
-		TestUtils.callCreateTodo(todoData);
-
-		verify(todoViewMock, times(1)).create(argThat(new ArgumentMatcher<TodoData>() {
-			@Override
-			public boolean matches(Object argument) {
-				TestUtils.assertEquals((TodoData)argument, expectedTodoData);
-				return true;
-			}
-		}), anyObject());
-
-	}
-
-
 }

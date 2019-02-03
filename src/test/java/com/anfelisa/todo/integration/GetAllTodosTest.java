@@ -6,33 +6,32 @@ import static org.hamcrest.Matchers.is;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import com.anfelisa.ace.AbstractBaseTest;
 import com.anfelisa.ace.ITimelineItem;
+import com.anfelisa.todo.ActionCalls;
 import com.anfelisa.todo.TestUtils;
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class GetAllTodosTest extends AbstractBaseTest {
+public class GetAllTodosTest extends BaseTest {
 
 	private ITodoData secondTodo;
 	private ITodoData firstTodo;
 	private ITodoData thirdTodo;
-	
+
 	@Test
 	public void returnsOK() throws JsonProcessingException {
 		createTestTodos();
-		
-		prepare(createTimeline());
 
-		Response response = TestUtils.callGetAllTodos(TestUtils.randomUUID());
+		prepare(createTimeline(), DROPWIZARD.getLocalPort());
+
+		Response response = ActionCalls.callGetAllTodos(randomUUID(), DROPWIZARD.getLocalPort());
 
 		assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 	}
@@ -40,23 +39,30 @@ public class GetAllTodosTest extends AbstractBaseTest {
 	@Test
 	public void returnsTodosOrderedByCreationDate() throws JsonProcessingException {
 		createTestTodos();
-		
-		prepare(createTimeline());
-		
-		Response response = TestUtils.callGetAllTodos(TestUtils.randomUUID());
-		
+
+		prepare(createTimeline(), DROPWIZARD.getLocalPort());
+
+		Response response = ActionCalls.callGetAllTodos(randomUUID(), DROPWIZARD.getLocalPort());
+
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
-		TestUtils.assertEquals(allTodosResponse.getTodoList().get(0), firstTodo);
-		TestUtils.assertEquals(allTodosResponse.getTodoList().get(1), secondTodo);
-		TestUtils.assertEquals(allTodosResponse.getTodoList().get(2), thirdTodo);
+
+		List<String> differingAttributs = firstTodo.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(0));
+		assertThat(differingAttributs, is(new ArrayList<String>()));
+		differingAttributs = secondTodo.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(1));
+		assertThat(differingAttributs, is(new ArrayList<String>()));
+		differingAttributs = thirdTodo.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(2));
+		assertThat(differingAttributs, is(new ArrayList<String>()));
 	}
-	
+
 	private void createTestTodos() throws JsonProcessingException {
-		firstTodo = new TodoData(TestUtils.randomUUID()).withDescription("xyz").withCreatedDateTime(new DateTime(2019, 1, 24, 13, 10)).withId(TestUtils.randomUUID()); 
-		secondTodo = new TodoData(TestUtils.randomUUID()).withDescription("abc").withCreatedDateTime(new DateTime(2019, 1, 24, 13, 20)).withId(TestUtils.randomUUID());
-		thirdTodo = new TodoData(TestUtils.randomUUID()).withDescription("def").withCreatedDateTime(new DateTime(2019, 1, 25, 13, 0)).withId(TestUtils.randomUUID());
+		firstTodo = new TodoData(randomUUID()).withDescription("xyz")
+				.withCreatedDateTime(new DateTime(2019, 1, 24, 13, 10)).withId(randomUUID());
+		secondTodo = new TodoData(randomUUID()).withDescription("abc")
+				.withCreatedDateTime(new DateTime(2019, 1, 24, 13, 20)).withId(randomUUID());
+		thirdTodo = new TodoData(randomUUID()).withDescription("def")
+				.withCreatedDateTime(new DateTime(2019, 1, 25, 13, 0)).withId(randomUUID());
 	}
-	
+
 	private List<ITimelineItem> createTimeline() throws JsonProcessingException {
 		List<ITimelineItem> timeline = new ArrayList<>();
 		timeline.add(TestUtils.createCreateTodoSuccessEventTimelineItem(secondTodo));
@@ -65,5 +71,4 @@ public class GetAllTodosTest extends AbstractBaseTest {
 		return timeline;
 	}
 
-	
 }

@@ -1,7 +1,9 @@
 package com.anfelisa.todo.models;
 
+import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+@SuppressWarnings("unused")
 @JsonDeserialize(as=TodoModel.class)
 public interface ITodoModel {
 
@@ -20,7 +22,9 @@ public interface ITodoModel {
 	org.joda.time.DateTime getUpdatedDateTime();
 	void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
 	
-
+	
+	List<String> equalsPrimitiveTypes(ITodoModel other);
+	
 }
 
 /*       S.D.G.       */

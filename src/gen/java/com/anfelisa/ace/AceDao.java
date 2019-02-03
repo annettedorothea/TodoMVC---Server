@@ -23,17 +23,17 @@ public class AceDao {
 	}
 
 	public void insertIntoTimeline(Handle handle, String type, String method, String name, String data, String uuid) {
-		Update statement = handle.createUpdate("INSERT INTO timeline (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
-		statement.bind("type", type);
-		if (method != null) {
-			statement.bind("method", method);
-		} else {
-			statement.bind("method", "---");
-		}
-		statement.bind("name", name);
-		statement.bind("data", data);
-		statement.bind("uuid", uuid);
-		statement.execute();
+	Update statement = handle.createUpdate("INSERT INTO timeline (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
+	statement.bind("type", type);
+	if (method != null) {
+		statement.bind("method", method);
+	} else {
+		statement.bind("method", "---");
+	}
+	statement.bind("name", name);
+	statement.bind("data", data);
+	statement.bind("uuid", uuid);
+	statement.execute();
 	}
 
 	public ITimelineItem selectLastAction(Handle handle) {

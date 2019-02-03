@@ -1,7 +1,9 @@
 package com.anfelisa.todo.models;
 
+import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+@SuppressWarnings("unused")
 @JsonDeserialize(as=TodoToggleModel.class)
 public interface ITodoToggleModel {
 
@@ -17,7 +19,9 @@ public interface ITodoToggleModel {
 	org.joda.time.DateTime getUpdatedDateTime();
 	void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
 	
-
+	
+	List<String> equalsPrimitiveTypes(ITodoToggleModel other);
+	
 }
 
 /*       S.D.G.       */

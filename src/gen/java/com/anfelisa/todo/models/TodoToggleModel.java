@@ -3,6 +3,8 @@ package com.anfelisa.todo.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
+import java.util.List;
+import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class TodoToggleModel implements ITodoToggleModel {
@@ -17,6 +19,9 @@ public class TodoToggleModel implements ITodoToggleModel {
 	
 	private org.joda.time.DateTime updatedDateTime;
 	
+
+	public TodoToggleModel() {
+	}
 
 	public TodoToggleModel(
 		@JsonProperty("id") String id,
@@ -62,7 +67,21 @@ public class TodoToggleModel implements ITodoToggleModel {
 		this.updatedDateTime = updatedDateTime;
 	}
 	
-
+	
+	public List<String> equalsPrimitiveTypes(ITodoToggleModel other) {
+		List<String> differingAttributes = new ArrayList<String>();
+		if (!(this.getId() == null && other.getId() == null) && !this.getId().equals(other.getId())) {
+			differingAttributes.add("id: " + this.getId() + " " + other.getId());
+		}
+		if (!(this.getDone() == null && other.getDone() == null) && !this.getDone().equals(other.getDone())) {
+			differingAttributes.add("done: " + this.getDone() + " " + other.getDone());
+		}
+		if (!(this.getUpdatedDateTime() == null && other.getUpdatedDateTime() == null) && !this.getUpdatedDateTime().equals(other.getUpdatedDateTime())) {
+			differingAttributes.add("updatedDateTime: " + this.getUpdatedDateTime() + " " + other.getUpdatedDateTime());
+		}
+		return differingAttributes;
+	}
+	
 }
 
 /*       S.D.G.       */
