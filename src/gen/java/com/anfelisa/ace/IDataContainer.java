@@ -16,7 +16,5 @@ public interface IDataContainer {
 
 	void migrateLegacyData(String json);
 
-	void overwriteNotReplayableData(IDataContainer original);
-
 }
 

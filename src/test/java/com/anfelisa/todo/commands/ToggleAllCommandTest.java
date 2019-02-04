@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.todo.data.ToggleAllData;
 import com.anfelisa.todo.models.ITodoModel;
@@ -35,7 +34,7 @@ public class ToggleAllCommandTest {
 	private TodoDao todoDaoMock;
 
 	@Mock
-	private Handle handleMock;
+	private Handle readonlyHandleMock;
 	
 	private List<ITodoModel> allTodos;
 	
@@ -47,20 +46,20 @@ public class ToggleAllCommandTest {
 
 		allTodos = new ArrayList<ITodoModel>();
 		when(daoProviderMock.getTodoDao()).thenReturn(todoDaoMock);
-		when(todoDaoMock.selectAll(handleMock)).thenReturn(allTodos);
+		when(todoDaoMock.selectAll(readonlyHandleMock)).thenReturn(allTodos);
 
 		commandData = new ToggleAllData("uuid");
 		systemTime = new DateTime();
 		commandData.setSystemTime(systemTime); 
 		
-		command = new ToggleAllCommand(commandData, new DatabaseHandle(handleMock, null), daoProviderMock, null);
+		command = new ToggleAllCommand(commandData, daoProviderMock, null);
 	}
 
 	@Test
 	public void whenAllAreDone_toggleAll() {
 		whenAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 
 		assertThat(commandData.getTodosToBeToggled(), hasSize(allTodos.size()));
 		assertThat(commandData.getTodosToBeToggled(), contains(allTodos.get(0), allTodos.get(1), allTodos.get(2)));
@@ -70,7 +69,7 @@ public class ToggleAllCommandTest {
 	public void whenAllAreDone_setDoneFalse() {
 		whenAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getDone(), is(false));
 	}
@@ -79,7 +78,7 @@ public class ToggleAllCommandTest {
 	public void whenAllAreDone_setsOutcomeSuccess() {
 		whenAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getOutcome(), is(ToggleAllCommand.success));
 	}
@@ -88,7 +87,7 @@ public class ToggleAllCommandTest {
 	public void whenAllAreDone_setsUpdatedDateTime() {
 		whenAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getUpdatedDateTime(), is(systemTime));
 	}
@@ -97,7 +96,7 @@ public class ToggleAllCommandTest {
 	public void whenNotAllAreDone_toggleOpen() {
 		whenNotAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getTodosToBeToggled(), hasSize(1));
 		assertThat(commandData.getTodosToBeToggled(), contains(allTodos.get(1)));
@@ -107,7 +106,7 @@ public class ToggleAllCommandTest {
 	public void whenNotAllAreDone_setDoneTrue() {
 		whenNotAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getDone(), is(true));
 	}
@@ -116,7 +115,7 @@ public class ToggleAllCommandTest {
 	public void whenNotAllAreDone_setsOutcomeSuccess() {
 		whenNotAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getOutcome(), is(ToggleAllCommand.success));
 	}
@@ -125,7 +124,7 @@ public class ToggleAllCommandTest {
 	public void whenNotAllAreDone_setsUpdatedDateTime() {
 		whenNotAllAreDone();
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getUpdatedDateTime(), is(systemTime));
 	}

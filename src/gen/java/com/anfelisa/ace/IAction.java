@@ -14,11 +14,9 @@ public interface IAction {
 	
 	ICommand getCommand();
 	
-    DatabaseHandle getDatabaseHandle();
-	
-    void setDatabaseHandle(DatabaseHandle databaseHandle);
-
     Response apply();
-
+    
+    void initActionData();
+    
 }
 

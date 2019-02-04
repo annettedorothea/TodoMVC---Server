@@ -2,6 +2,7 @@ package com.anfelisa.todo.actions;
 
 import java.util.List;
 
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,16 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 	}
 
 
-	protected final void loadDataForGetRequest() {
-		List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(getHandle());
+	protected final void loadDataForGetRequest(Handle readonlyHandle) {
+		List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle);
 		this.actionData.setTodoList(todos);
+	}
+
+
+	@Override
+	public void initActionData() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,9 +1,9 @@
 package com.anfelisa.todo.commands;
 
 import javax.ws.rs.WebApplicationException;
+import org.jdbi.v3.core.Handle;
 
 import com.anfelisa.ace.Command;
-import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 
@@ -13,19 +13,19 @@ public abstract class AbstractClearDoneCommand extends Command<IClearDoneData> {
 
 	protected static final String success = "success";
 
-	public AbstractClearDoneCommand(IClearDoneData commandParam, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.commands.ClearDoneCommand", commandParam, databaseHandle, daoProvider, viewProvider);
+	public AbstractClearDoneCommand(IClearDoneData commandParam, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.commands.ClearDoneCommand", commandParam, daoProvider, viewProvider);
 	}
 
-	public AbstractClearDoneCommand(DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.commands.ClearDoneCommand", null, databaseHandle, daoProvider, viewProvider);
+	public AbstractClearDoneCommand(IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super("com.anfelisa.todo.commands.ClearDoneCommand", null, daoProvider, viewProvider);
 	}
 
 	@Override
-	public void publishEvents() {
+	public void publishEvents(Handle handle, Handle timelineHandle) {
 		switch (this.commandData.getOutcome()) {
 		case success:
-			new com.anfelisa.todo.events.ClearDoneSuccessEvent(this.commandData, databaseHandle, daoProvider, viewProvider).publish();
+			new com.anfelisa.todo.events.ClearDoneSuccessEvent(this.commandData, daoProvider, viewProvider).publish(handle, timelineHandle);
 			break;
 		default:
 			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());

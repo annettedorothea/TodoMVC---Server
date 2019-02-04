@@ -1,6 +1,5 @@
 package com.anfelisa.todo.data;
 
-import com.anfelisa.ace.IDataContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TodoData extends AbstractTodoData implements ITodoData {
@@ -29,17 +28,6 @@ public class TodoData extends AbstractTodoData implements ITodoData {
 
 
 	public void migrateLegacyData(String json) {
-	}
-
-	public void overwriteNotReplayableData(IDataContainer dataContainer) {
-		/*if (dataContainer != null) {
-			try {
-				ITodoData original = (ITodoData)dataContainer;
-				//overwrite values
-			} catch (ClassCastException x) {
-				LOG.error("cannot cast data to ITodoData for overwriting not replayable attributes", x);
-			}
-		}*/
 	}
 
 }

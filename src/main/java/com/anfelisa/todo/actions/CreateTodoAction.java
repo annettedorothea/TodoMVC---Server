@@ -16,6 +16,12 @@ public class CreateTodoAction extends AbstractCreateTodoAction {
 		super(jdbi,appConfiguration, daoProvider, viewProvider);
 	}
 
+	@Override
+	public void initActionData() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

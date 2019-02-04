@@ -3,10 +3,10 @@ package com.anfelisa.todo.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdbi.v3.core.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.todo.data.IToggleAllData;
@@ -16,14 +16,14 @@ public class ToggleAllCommand extends AbstractToggleAllCommand {
 
 	static final Logger LOG = LoggerFactory.getLogger(ToggleAllCommand.class);
 
-	public ToggleAllCommand(IToggleAllData commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super(commandData, databaseHandle, daoProvider, viewProvider);
+	public ToggleAllCommand(IToggleAllData commandData, IDaoProvider daoProvider, ViewProvider viewProvider) {
+		super(commandData, daoProvider, viewProvider);
 	}
 	
 	@Override
-	protected void executeCommand() {
+	protected void executeCommand(Handle readonlyHandle) {
 		this.commandData.setUpdatedDateTime(this.commandData.getSystemTime());
-		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(getHandle());
+		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(readonlyHandle);
 		List<ITodoModel> open = new ArrayList<>();
 		boolean allAreDone = true;
 		for (ITodoModel todo : todos) {

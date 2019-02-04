@@ -1,15 +1,15 @@
 package com.anfelisa.ace;
 
+import org.jdbi.v3.core.Handle;
+
 public interface ICommand {
 
 	String getCommandName();
 
 	IDataContainer getCommandData();
 
-	DatabaseHandle getDatabaseHandle();
+	void execute(Handle readonlyHandle, Handle timelineHandle);
 
-	void execute();
-
-	void publishEvents();
+	void publishEvents(Handle handle, Handle timelineHandle);
 }
 

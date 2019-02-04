@@ -6,7 +6,12 @@ import java.util.Optional;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.statement.Update;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import javax.ws.rs.WebApplicationException;
+
 public class AceDao {
+
+	private JodaObjectMapper mapper = new JodaObjectMapper();
 
 	public void truncateTimelineTable(Handle handle) {
 		handle.execute("TRUNCATE TABLE timeline");
@@ -23,17 +28,17 @@ public class AceDao {
 	}
 
 	public void insertIntoTimeline(Handle handle, String type, String method, String name, String data, String uuid) {
-	Update statement = handle.createUpdate("INSERT INTO timeline (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
-	statement.bind("type", type);
-	if (method != null) {
-		statement.bind("method", method);
-	} else {
-		statement.bind("method", "---");
-	}
-	statement.bind("name", name);
-	statement.bind("data", data);
-	statement.bind("uuid", uuid);
-	statement.execute();
+		Update statement = handle.createUpdate("INSERT INTO timeline (type, method, name, time, data, uuid) " + "VALUES (:type, :method, :name, NOW(), :data, :uuid);");
+		statement.bind("type", type);
+		if (method != null) {
+			statement.bind("method", method);
+		} else {
+			statement.bind("method", "---");
+		}
+		statement.bind("name", name);
+		statement.bind("data", data);
+		statement.bind("uuid", uuid);
+		statement.execute();
 	}
 
 	public ITimelineItem selectLastAction(Handle handle) {
@@ -56,5 +61,52 @@ public class AceDao {
 				.map(new TimelineItemMapper()).list();
 	}
 	
+	public void addActionToTimeline(IAction action, Handle timelineHandle) {
+		try {
+			String json = mapper.writeValueAsString(action.getActionData());
+			addItemToTimeline("action", action.getHttpMethod().name(), action.getActionName(), json,
+					action.getActionData().getUuid(), timelineHandle);
+		} catch (JsonProcessingException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+
+	public void addCommandToTimeline(ICommand command, Handle timelineHandle) {
+		try {
+			addItemToTimeline("command", null, command.getCommandName(),
+					mapper.writeValueAsString(command.getCommandData()), command.getCommandData().getUuid(),
+					timelineHandle);
+		} catch (JsonProcessingException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+
+	public void addEventToTimeline(IEvent event, Handle timelineHandle) {
+		try {
+			addItemToTimeline("event", null, event.getEventName(), mapper.writeValueAsString(event.getEventData()),
+					event.getEventData().getUuid(), timelineHandle);
+		} catch (JsonProcessingException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+
+	public void addPreparingEventToTimeline(IEvent event, String uuid, Handle timelineHandle) {
+		try {
+			addItemToTimeline("preparing event", null, event.getEventName(),
+					mapper.writeValueAsString(event.getEventData()), uuid, timelineHandle);
+		} catch (JsonProcessingException e) {
+			throw new WebApplicationException(e);
+		}
+	}
+
+	public void addExceptionToTimeline(String uuid, Throwable x, Handle timelineHandle) {
+		this.insertIntoTimeline(timelineHandle, "exception", "", x.getClass().getName(),
+				x.getMessage() != null ? x.getMessage() : "", uuid);
+	}
+
+	private void addItemToTimeline(String type, String method, String name, String json, String uuid,
+			Handle timelineHandle) {
+		this.insertIntoTimeline(timelineHandle, type, method, name, json, uuid);
+	}
 
 }

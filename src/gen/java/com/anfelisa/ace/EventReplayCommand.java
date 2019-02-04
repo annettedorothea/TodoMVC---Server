@@ -36,7 +36,7 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 
 		final JdbiFactory factory = new JdbiFactory();
 		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
-		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), null);
+		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi);
 
 		AppRegistration.registerConsumers(viewProvider, ServerConfiguration.REPLAY);
 
@@ -50,9 +50,8 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 
 			int i = 0;
 			for (ITimelineItem nextEvent : timeline) {
-				IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
-						daoProvider, viewProvider);
-				event.notifyListeners();
+				IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), daoProvider, viewProvider);
+				event.notifyListeners(databaseHandle.getHandle());
 				i++;
 				if (i%1000 == 0) {
 					LOG.info("published " + i + " events");

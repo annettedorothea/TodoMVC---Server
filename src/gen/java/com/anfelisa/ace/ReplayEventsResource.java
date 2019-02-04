@@ -42,7 +42,7 @@ public class ReplayEventsResource {
 	@Timed
 	@Path("/replay-events")
 	public Response put(List<ITimelineItem> timeline) throws JsonProcessingException {
-		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
+		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi);
 		try {
 			databaseHandle.beginTransaction();
 
@@ -54,11 +54,10 @@ public class ReplayEventsResource {
 			databaseHandle.beginTransaction();
 			if (timeline != null) {
 				for (ITimelineItem nextEvent : timeline) {
-					IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
-							daoProvider, viewProvider);
-					event.notifyListeners();
-					daoProvider.addPreparingEventToTimeline(event, nextEvent.getUuid());
-					//LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
+					IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), daoProvider, viewProvider);
+					event.notifyListeners(databaseHandle.getHandle());
+					daoProvider.getAceDao().addPreparingEventToTimeline(event, nextEvent.getUuid(), databaseHandle.getTimelineHandle());
+					LOG.info("published " + nextEvent.getUuid() + " - " + nextEvent.getName());
 				}
 				LOG.info("EVENT REPLAY FINISHED: successfully replayed " + timeline.size() + " events");
 			}

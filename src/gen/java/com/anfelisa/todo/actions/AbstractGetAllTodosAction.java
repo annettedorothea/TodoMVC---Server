@@ -18,28 +18,54 @@ import com.anfelisa.ace.CustomAppConfiguration;
 import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.IDataContainer;
+import com.anfelisa.ace.App;
+import com.anfelisa.ace.DatabaseHandle;
+import com.anfelisa.ace.ServerConfiguration;
+import com.anfelisa.ace.E2E;
+import com.anfelisa.ace.ITimelineItem;
+import com.anfelisa.ace.IAction;
+import com.anfelisa.ace.SetSystemTimeResource;
+import com.anfelisa.ace.JodaObjectMapper;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.Handle;
 
 import com.anfelisa.ace.Action;
 import com.anfelisa.ace.HttpMethod;
 import com.anfelisa.ace.ICommand;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
+import javax.ws.rs.WebApplicationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.ITodoListData;
 import com.anfelisa.todo.data.TodoListData;
 
-
-@SuppressWarnings("unused")
 @Path("/todos/all")
+@SuppressWarnings("unused")
 public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 
+	static final Logger LOG = LoggerFactory.getLogger(AbstractGetAllTodosAction.class);
+
+	private DatabaseHandle databaseHandle;
+	private Jdbi jdbi;
+	private JodaObjectMapper mapper;
+	private CustomAppConfiguration appConfiguration;
+	protected IDaoProvider daoProvider;
+	private ViewProvider viewProvider;
+
 	public AbstractGetAllTodosAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.actions.GetAllTodosAction", HttpMethod.GET, jdbi, appConfiguration, daoProvider, viewProvider);
+		super("com.anfelisa.todo.actions.GetAllTodosAction", HttpMethod.GET);
+		this.jdbi = jdbi;
+		mapper = new JodaObjectMapper();
+		this.appConfiguration = appConfiguration;
+		this.daoProvider = daoProvider;
+		this.viewProvider = viewProvider;
 	}
 
 	@Override
@@ -51,6 +77,7 @@ public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 		this.actionData = (ITodoListData)data;
 	}
 
+	protected abstract void loadDataForGetRequest(Handle readonlyHandle);
 
 	@GET
 	@Timed
@@ -62,6 +89,70 @@ public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 		this.actionData = new TodoListData(uuid);
 		return this.apply();
 	}
+
+	public Response apply() {
+		databaseHandle = new DatabaseHandle(jdbi);
+		databaseHandle.beginTransaction();
+		try {
+			IDataContainer originalData = null;
+			if (ServerConfiguration.DEV.equals(appConfiguration.getServerConfiguration().getMode())
+					|| ServerConfiguration.LIVE.equals(appConfiguration.getServerConfiguration().getMode())) {
+				if (daoProvider.getAceDao().contains(databaseHandle.getHandle(), this.actionData.getUuid())) {
+					databaseHandle.commitTransaction();
+					throwBadRequest("uuid already exists - please choose another one");
+				}
+				this.actionData.setSystemTime(new DateTime());
+				this.initActionData();
+			} else if (ServerConfiguration.REPLAY.equals(appConfiguration.getServerConfiguration().getMode())) {
+				ITimelineItem timelineItem = E2E.selectAction(this.actionData.getUuid());
+				if (timelineItem != null) {
+					IAction action = ActionFactory.createAction(timelineItem.getName(), timelineItem.getData(), jdbi,
+							appConfiguration, daoProvider, viewProvider);
+					if (action != null) {
+						originalData = action.getActionData();
+						this.actionData = (ITodoListData)originalData;
+					}
+				} else {
+					throw new WebApplicationException(
+							"action for " + this.actionData.getUuid() + " not found in timeline");
+				}
+			} else if (ServerConfiguration.TEST.equals(appConfiguration.getServerConfiguration().getMode())) {
+				if (SetSystemTimeResource.systemTime != null) {
+					this.actionData.setSystemTime(SetSystemTimeResource.systemTime);
+				} else {
+					this.actionData.setSystemTime(new DateTime());
+				}
+			}
+			daoProvider.getAceDao().addActionToTimeline(this, this.databaseHandle.getTimelineHandle());
+			this.loadDataForGetRequest(this.databaseHandle.getReadonlyHandle());
+			Response response = Response.ok(this.createReponse()).build();
+			databaseHandle.commitTransaction();
+			return response;
+		} catch (WebApplicationException x) {
+			LOG.error(actionName + " failed " + x.getMessage());
+			try {
+				databaseHandle.rollbackTransaction();
+				daoProvider.getAceDao().addExceptionToTimeline(this.actionData.getUuid(), x, this.databaseHandle.getTimelineHandle());
+				App.reportException(x);
+			} catch (Exception ex) {
+				LOG.error("failed to rollback or to save or report exception " + ex.getMessage());
+			}
+			return Response.status(x.getResponse().getStatusInfo()).entity(x.getMessage()).build();
+		} catch (Exception x) {
+			LOG.error(actionName + " failed " + x.getMessage());
+			try {
+				databaseHandle.rollbackTransaction();
+				daoProvider.getAceDao().addExceptionToTimeline(this.actionData.getUuid(), x, this.databaseHandle.getTimelineHandle());
+				App.reportException(x);
+			} catch (Exception ex) {
+				LOG.error("failed to rollback or to save or report exception " + ex.getMessage());
+			}
+			return Response.status(500).entity(x.getMessage()).build();
+		} finally {
+			databaseHandle.close();
+		}
+	}
+
 
 	protected Object createReponse() {
 		return new com.anfelisa.todo.data.GetAllTodosResponse(this.actionData);

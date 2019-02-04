@@ -11,16 +11,6 @@ public interface IDaoProvider {
 	
 	AceDao getAceDao();
 	
-	void addExceptionToTimeline(String uuid, Throwable x, DatabaseHandle databaseHandle);
-	
-	void addPreparingEventToTimeline(IEvent event, String uuid);
-	
-	public void addEventToTimeline(IEvent event);
-	
-	public void addCommandToTimeline(ICommand command);
-
-	public void addActionToTimeline(IAction command);
-	
 	TodoDao getTodoDao();
 
 	TodoDoneHistoryDao getTodoDoneHistoryDao();

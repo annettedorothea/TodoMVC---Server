@@ -5,13 +5,13 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
 import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.anfelisa.ace.DatabaseHandle;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.todo.data.TodoToggleData;
 import com.anfelisa.todo.models.ITodoModel;
@@ -30,7 +30,7 @@ public class ToggleTodoCommandTest {
 	private TodoDao todoDaoMock;
 
 	@Mock
-	private Handle handleMock;
+	private Handle readonlyHandleMock;
 	
 	private ITodoModel doneTodo;
 	private ITodoModel openTodo;
@@ -44,41 +44,41 @@ public class ToggleTodoCommandTest {
 		doneTodo = new TodoModel("1", "done", true, null, null);
 		openTodo = new TodoModel("2", "open", false, null, null);
 		when(daoProviderMock.getTodoDao()).thenReturn(todoDaoMock);
-		when(todoDaoMock.selectById(handleMock, doneTodo.getId())).thenReturn(doneTodo);
-		when(todoDaoMock.selectById(handleMock, openTodo.getId())).thenReturn(openTodo);
+		when(todoDaoMock.selectById(readonlyHandleMock, doneTodo.getId())).thenReturn(doneTodo);
+		when(todoDaoMock.selectById(readonlyHandleMock, openTodo.getId())).thenReturn(openTodo);
 
 		commandData = new TodoToggleData("uuid");
 		systemTime = new DateTime();
 		commandData.setSystemTime(systemTime); 
 		commandData.setId(doneTodo.getId()); 
 
-		command = new ToggleTodoCommand(commandData, new DatabaseHandle(handleMock, null), daoProviderMock, null);
+		command = new ToggleTodoCommand(commandData, daoProviderMock, null);
 	}
 
 	@Test
 	public void setsTodoInCommandData() {
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 
 		assertThat(commandData.getTodoToBeToggled(), is(doneTodo));
 	}
 	
 	@Test
 	public void setsUpdatedDateTime() {
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getUpdatedDateTime(), is(systemTime));
 	}
 	
 	@Test
 	public void setsOutcomeSuccess() {
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getOutcome(), is(ToggleTodoCommand.success));
 	}
 	
 	@Test
 	public void togglesDone() {
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getDone(), is(false));
 	}
@@ -87,7 +87,7 @@ public class ToggleTodoCommandTest {
 	public void togglesOpen() {
 		commandData.setId(openTodo.getId()); 
 		
-		command.executeCommand();
+		command.executeCommand(readonlyHandleMock);
 		
 		assertThat(commandData.getDone(), is(true));
 	}

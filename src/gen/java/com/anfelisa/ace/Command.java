@@ -9,27 +9,24 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 
 	protected T commandData;
 	private String commandName;
-	protected DatabaseHandle databaseHandle;
 	protected JodaObjectMapper mapper;
 	protected IDaoProvider daoProvider;
 	protected ViewProvider viewProvider;
 
-	public Command(String commandName, T commandData, DatabaseHandle databaseHandle, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public Command(String commandName, T commandData, IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super();
 		this.commandData = commandData;
 		this.commandName = commandName;
-		this.databaseHandle = databaseHandle;
 		mapper = new JodaObjectMapper();
 		this.daoProvider = daoProvider;
 		this.viewProvider = viewProvider;
 	}
 
-	protected void executeCommand() {
-	}
+	protected abstract void executeCommand(Handle readonlyHandle);
 
-	public void execute() {
-		this.executeCommand();
-		daoProvider.addCommandToTimeline(this);
+	public void execute(Handle readonlyHandle, Handle timelineHandle) {
+		this.executeCommand(readonlyHandle);
+		daoProvider.getAceDao().addCommandToTimeline(this, timelineHandle);
 	}
 
 	public IDataContainer getCommandData() {
@@ -38,18 +35,6 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 
 	public String getCommandName() {
 		return commandName;
-	}
-
-	public DatabaseHandle getDatabaseHandle() {
-		return databaseHandle;
-	}
-
-	protected Handle getHandle() {
-		if (databaseHandle != null) {
-			return databaseHandle.getHandle();
-		} else {
-			throw new RuntimeException("no database handle");
-		}
 	}
 
 	protected void throwUnauthorized() {

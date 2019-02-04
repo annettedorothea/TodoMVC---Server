@@ -39,7 +39,7 @@ public class PrepareE2EResource {
 	@Timed
 	@Path("/prepare")
 	public Response put(@NotNull @QueryParam("uuid") String uuid) {
-		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi.open(), jdbi.open());
+		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi);
 		LOG.info("PREPARE ACTION " + uuid);
 		try {
 			databaseHandle.beginTransaction();
@@ -51,11 +51,10 @@ public class PrepareE2EResource {
 					ITimelineItem nextEvent = E2E.selectEvent(nextAction.getUuid());
 					if (nextEvent != null) {
 						LOG.info("PUBLISH EVENT " + nextEvent.getUuid() + " - " + nextEvent.getName());
-						IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), databaseHandle,
-								daoProvider, viewProvider);
+						IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), daoProvider, viewProvider);
 						if (event != null) {
-							event.notifyListeners();
-							daoProvider.addPreparingEventToTimeline(event, nextAction.getUuid());
+							event.notifyListeners(databaseHandle.getHandle());
+							daoProvider.getAceDao().addPreparingEventToTimeline(event, nextAction.getUuid(), databaseHandle.getTimelineHandle());
 							eventCount++;
 						} else {
 							LOG.error("failed to create " + nextEvent.getName());
