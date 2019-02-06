@@ -26,23 +26,28 @@ public class StartE2ESessionResource {
 
 	static final Logger LOG = LoggerFactory.getLogger(StartE2ESessionResource.class);
 
-	private Jdbi jdbi;
+	private Jdbi jdbi;			
+	private CustomAppConfiguration configuration;
 
 	private IDaoProvider daoProvider = new DaoProvider();
 	
 	private E2E e2e;
 
-	public StartE2ESessionResource(Jdbi jdbi, IDaoProvider daoProvider, E2E e2e) {
+	public StartE2ESessionResource(Jdbi jdbi, IDaoProvider daoProvider, E2E e2e, CustomAppConfiguration configuration) {
 		super();
 		this.jdbi = jdbi;
 		this.daoProvider = daoProvider;
 		this.e2e = e2e;
+		this.configuration = configuration;
 	}
 
 	@PUT
 	@Timed
 	@Path("/start")
 	public Response put(@NotNull List<ITimelineItem> timeline) throws JsonProcessingException {
+		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
+			throw new WebApplicationException("start e2e session is not available in a live environment", Response.Status.FORBIDDEN);
+		}
 		if (e2e.isSessionRunning() && e2e.getSessionStartedAt().plusMinutes(1).isAfterNow()) {
 			throw new WebApplicationException("session is already running", Response.Status.SERVICE_UNAVAILABLE);
 		}

@@ -25,23 +25,28 @@ import com.codahale.metrics.annotation.Timed;
 public class ReplayEventsResource {
 
 	private Jdbi jdbi;
+	private CustomAppConfiguration configuration;
 
 	static final Logger LOG = LoggerFactory.getLogger(ReplayEventsResource.class);
 
 	private IDaoProvider daoProvider;
 	private ViewProvider viewProvider;
 
-	public ReplayEventsResource(Jdbi jdbi, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public ReplayEventsResource(Jdbi jdbi, IDaoProvider daoProvider, ViewProvider viewProvider, CustomAppConfiguration configuration) {
 		super();
 		this.jdbi = jdbi;
 		this.daoProvider = daoProvider;
 		this.viewProvider = viewProvider;
+		this.configuration = configuration;
 	}
 
 	@PUT
 	@Timed
 	@Path("/replay-events")
 	public Response put(List<ITimelineItem> timeline) throws JsonProcessingException {
+		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
+			throw new WebApplicationException("replay e2e events is not available in a live environment", Response.Status.FORBIDDEN);
+		}
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi);
 		try {
 			databaseHandle.beginTransaction();

@@ -66,15 +66,15 @@ public class App extends Application<CustomAppConfiguration> {
 
 		String mode = configuration.getServerConfiguration().getMode();
 		if (ServerConfiguration.REPLAY.equals(mode)) {
-			environment.jersey().register(new PrepareE2EResource(jdbi, daoProvider, viewProvider, e2e));
-			environment.jersey().register(new StartE2ESessionResource(jdbi, daoProvider, e2e));
-			environment.jersey().register(new StopE2ESessionResource(e2e));
-			environment.jersey().register(new GetServerTimelineResource(jdbi));
+			environment.jersey().register(new PrepareE2EResource(jdbi, daoProvider, viewProvider, e2e, configuration));
+			environment.jersey().register(new StartE2ESessionResource(jdbi, daoProvider, e2e, configuration));
+			environment.jersey().register(new StopE2ESessionResource(e2e, configuration));
+			environment.jersey().register(new GetServerTimelineResource(jdbi, configuration));
 		} else if (ServerConfiguration.DEV.equals(mode)) {
-			environment.jersey().register(new GetServerTimelineResource(jdbi));
+			environment.jersey().register(new GetServerTimelineResource(jdbi, configuration));
 		} else if (ServerConfiguration.TEST.equals(mode)) {
-			environment.jersey().register(new ReplayEventsResource(jdbi, daoProvider, viewProvider));
-			environment.jersey().register(new SetSystemTimeResource());
+			environment.jersey().register(new ReplayEventsResource(jdbi, daoProvider, viewProvider, configuration));
+			environment.jersey().register(new SetSystemTimeResource(configuration));
 		}
 		
 		environment.jersey().register(new JsonProcessingExceptionMapper(true));

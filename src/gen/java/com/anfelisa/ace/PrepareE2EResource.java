@@ -22,6 +22,7 @@ import com.codahale.metrics.annotation.Timed;
 public class PrepareE2EResource {
 
 	private Jdbi jdbi;
+	private CustomAppConfiguration configuration;
 
 	static final Logger LOG = LoggerFactory.getLogger(PrepareE2EResource.class);
 
@@ -29,18 +30,22 @@ public class PrepareE2EResource {
 	private ViewProvider viewProvider;
 	private E2E e2e;
 
-	public PrepareE2EResource(Jdbi jdbi, IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
+	public PrepareE2EResource(Jdbi jdbi, IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e, CustomAppConfiguration configuration) {
 		super();
 		this.jdbi = jdbi;
 		this.daoProvider = daoProvider;
 		this.viewProvider = viewProvider;
 		this.e2e = e2e;
+		this.configuration = configuration;
 	}
 
 	@PUT
 	@Timed
 	@Path("/prepare")
 	public Response put(@NotNull @QueryParam("uuid") String uuid) {
+		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
+			throw new WebApplicationException("prepare e2e replay is not available in a live environment", Response.Status.FORBIDDEN);
+		}
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi);
 		LOG.info("PREPARE ACTION " + uuid);
 		try {

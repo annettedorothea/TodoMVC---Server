@@ -24,20 +24,25 @@ import com.codahale.metrics.annotation.Timed;
 public class GetServerTimelineResource {
 
 	private Jdbi jdbi;
+	private CustomAppConfiguration configuration;
 
 	static final Logger LOG = LoggerFactory.getLogger(GetServerTimelineResource.class);
 
 	private AceDao aceDao = new AceDao();
 
-	public GetServerTimelineResource(Jdbi jdbi) {
+	public GetServerTimelineResource(Jdbi jdbi, CustomAppConfiguration configuration) {
 		super();
 		this.jdbi = jdbi;
+		this.configuration = configuration;
 	}
 
 	@GET
 	@Timed
 	@Path("/timeline")
 	public Response get() {
+		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
+			throw new WebApplicationException("get server timeline is not available in a live environment", Response.Status.FORBIDDEN);
+		}
 		Handle timelineHandle = jdbi.open();
 		try {
 			List<ITimelineItem> serverTimeline = aceDao.selectTimeline(timelineHandle);
