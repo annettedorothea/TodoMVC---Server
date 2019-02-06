@@ -37,6 +37,7 @@ import com.anfelisa.ace.Action;
 import com.anfelisa.ace.HttpMethod;
 import com.anfelisa.ace.ICommand;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import javax.ws.rs.WebApplicationException;
 
@@ -54,18 +55,21 @@ public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 
 	private DatabaseHandle databaseHandle;
 	private Jdbi jdbi;
-	private JodaObjectMapper mapper;
-	private CustomAppConfiguration appConfiguration;
+	protected JodaObjectMapper mapper;
+	protected CustomAppConfiguration appConfiguration;
 	protected IDaoProvider daoProvider;
 	private ViewProvider viewProvider;
+	private E2E e2e;
 
-	public AbstractGetAllTodosAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractGetAllTodosAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, 
+			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
 		super("com.anfelisa.todo.actions.GetAllTodosAction", HttpMethod.GET);
 		this.jdbi = jdbi;
 		mapper = new JodaObjectMapper();
 		this.appConfiguration = appConfiguration;
 		this.daoProvider = daoProvider;
 		this.viewProvider = viewProvider;
+		this.e2e = e2e;
 	}
 
 	@Override
@@ -94,7 +98,6 @@ public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 		databaseHandle = new DatabaseHandle(jdbi);
 		databaseHandle.beginTransaction();
 		try {
-			IDataContainer originalData = null;
 			if (ServerConfiguration.DEV.equals(appConfiguration.getServerConfiguration().getMode())
 					|| ServerConfiguration.LIVE.equals(appConfiguration.getServerConfiguration().getMode())) {
 				if (daoProvider.getAceDao().contains(databaseHandle.getHandle(), this.actionData.getUuid())) {
@@ -104,18 +107,9 @@ public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 				this.actionData.setSystemTime(new DateTime());
 				this.initActionData();
 			} else if (ServerConfiguration.REPLAY.equals(appConfiguration.getServerConfiguration().getMode())) {
-				ITimelineItem timelineItem = E2E.selectAction(this.actionData.getUuid());
-				if (timelineItem != null) {
-					IAction action = ActionFactory.createAction(timelineItem.getName(), timelineItem.getData(), jdbi,
-							appConfiguration, daoProvider, viewProvider);
-					if (action != null) {
-						originalData = action.getActionData();
-						this.actionData = (ITodoListData)originalData;
-					}
-				} else {
-					throw new WebApplicationException(
-							"action for " + this.actionData.getUuid() + " not found in timeline");
-				}
+				ITimelineItem timelineItem = e2e.selectAction(this.actionData.getUuid());
+				IDataContainer originalData = AceDataFactory.createAceData(timelineItem.getName(), timelineItem.getData());
+				this.actionData = (ITodoListData)originalData;
 			} else if (ServerConfiguration.TEST.equals(appConfiguration.getServerConfiguration().getMode())) {
 				if (SetSystemTimeResource.systemTime != null) {
 					this.actionData.setSystemTime(SetSystemTimeResource.systemTime);
@@ -123,8 +117,8 @@ public abstract class AbstractGetAllTodosAction extends Action<ITodoListData> {
 					this.actionData.setSystemTime(new DateTime());
 				}
 			}
-			daoProvider.getAceDao().addActionToTimeline(this, this.databaseHandle.getTimelineHandle());
 			this.loadDataForGetRequest(this.databaseHandle.getReadonlyHandle());
+			daoProvider.getAceDao().addActionToTimeline(this, this.databaseHandle.getTimelineHandle());
 			Response response = Response.ok(this.createReponse()).build();
 			databaseHandle.commitTransaction();
 			return response;

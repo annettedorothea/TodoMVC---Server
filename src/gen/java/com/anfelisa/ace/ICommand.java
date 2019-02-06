@@ -7,6 +7,8 @@ public interface ICommand {
 	String getCommandName();
 
 	IDataContainer getCommandData();
+	
+	void setCommandData(IDataContainer data);
 
 	void execute(Handle readonlyHandle, Handle timelineHandle);
 

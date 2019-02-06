@@ -4,6 +4,7 @@ import javax.ws.rs.WebApplicationException;
 import org.jdbi.v3.core.Handle;
 
 import com.anfelisa.ace.Command;
+import com.anfelisa.ace.CustomAppConfiguration;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 
@@ -13,12 +14,8 @@ public abstract class AbstractClearDoneCommand extends Command<IClearDoneData> {
 
 	protected static final String success = "success";
 
-	public AbstractClearDoneCommand(IClearDoneData commandParam, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.commands.ClearDoneCommand", commandParam, daoProvider, viewProvider);
-	}
-
-	public AbstractClearDoneCommand(IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.commands.ClearDoneCommand", null, daoProvider, viewProvider);
+	public AbstractClearDoneCommand(IClearDoneData commandParam, IDaoProvider daoProvider, ViewProvider viewProvider, CustomAppConfiguration appConfiguration) {
+		super("com.anfelisa.todo.commands.ClearDoneCommand", commandParam, daoProvider, viewProvider, appConfiguration);
 	}
 
 	@Override

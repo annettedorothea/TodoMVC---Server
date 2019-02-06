@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.codahale.metrics.annotation.Timed;
 
 @Path("/e2e")
-@Produces(MediaType.TEXT_PLAIN)
+@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PrepareE2EResource {
 
@@ -27,12 +27,14 @@ public class PrepareE2EResource {
 
 	private IDaoProvider daoProvider;
 	private ViewProvider viewProvider;
+	private E2E e2e;
 
-	public PrepareE2EResource(Jdbi jdbi, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public PrepareE2EResource(Jdbi jdbi, IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
 		super();
 		this.jdbi = jdbi;
 		this.daoProvider = daoProvider;
 		this.viewProvider = viewProvider;
+		this.e2e = e2e;
 	}
 
 	@PUT
@@ -45,10 +47,10 @@ public class PrepareE2EResource {
 			databaseHandle.beginTransaction();
 
 			int eventCount = 0;
-			ITimelineItem nextAction = E2E.selectNextAction();
+			ITimelineItem nextAction = e2e.selectNextAction();
 			while (nextAction != null && !nextAction.getUuid().equals(uuid)) {
 				if (!nextAction.getMethod().equalsIgnoreCase("GET")) {
-					ITimelineItem nextEvent = E2E.selectEvent(nextAction.getUuid());
+					ITimelineItem nextEvent = e2e.selectEvent(nextAction.getUuid());
 					if (nextEvent != null) {
 						LOG.info("PUBLISH EVENT " + nextEvent.getUuid() + " - " + nextEvent.getName());
 						IEvent event = EventFactory.createEvent(nextEvent.getName(), nextEvent.getData(), daoProvider, viewProvider);
@@ -61,7 +63,7 @@ public class PrepareE2EResource {
 						}
 					}
 				}
-				nextAction = E2E.selectNextAction();
+				nextAction = e2e.selectNextAction();
 			}
 
 			databaseHandle.commitTransaction();

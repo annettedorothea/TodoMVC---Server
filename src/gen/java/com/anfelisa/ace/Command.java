@@ -2,6 +2,7 @@ package com.anfelisa.ace;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import com.anfelisa.ace.CustomAppConfiguration;
 
 import org.jdbi.v3.core.Handle;
 
@@ -12,14 +13,16 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 	protected JodaObjectMapper mapper;
 	protected IDaoProvider daoProvider;
 	protected ViewProvider viewProvider;
+	protected CustomAppConfiguration appConfiguration;
 
-	public Command(String commandName, T commandData, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public Command(String commandName, T commandData, IDaoProvider daoProvider, ViewProvider viewProvider, CustomAppConfiguration appConfiguration) {
 		super();
 		this.commandData = commandData;
 		this.commandName = commandName;
 		mapper = new JodaObjectMapper();
 		this.daoProvider = daoProvider;
 		this.viewProvider = viewProvider;
+		this.appConfiguration = appConfiguration;
 	}
 
 	protected abstract void executeCommand(Handle readonlyHandle);
@@ -31,6 +34,11 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 
 	public IDataContainer getCommandData() {
 		return commandData;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setCommandData(IDataContainer data) {
+		commandData = (T)data;
 	}
 
 	public String getCommandName() {

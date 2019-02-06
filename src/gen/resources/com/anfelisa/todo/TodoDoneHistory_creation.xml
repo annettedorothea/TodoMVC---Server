@@ -1,4 +1,4 @@
-<createTable tableName="\"tododonehistory\"">
+<createTable tableName="tododonehistory">
 	<column name="id" type="character varying">
 		<constraints primaryKey="true" nullable="false"  />
 	</column>

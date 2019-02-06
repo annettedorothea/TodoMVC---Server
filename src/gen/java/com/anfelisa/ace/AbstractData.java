@@ -1,6 +1,8 @@
 package com.anfelisa.ace;
 
 import org.joda.time.DateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,17 +12,13 @@ public abstract class AbstractData implements IDataContainer {
 	
 	private String outcome;
 	
-	private org.joda.time.DateTime systemTime;
+	private DateTime systemTime;
 	
-	public AbstractData(String uuid, String outcome, DateTime systemTime) {
-		super();
-		this.uuid = uuid;
-		this.outcome = outcome;
-		this.systemTime = systemTime;
-	}
-
+	private Map<String, String> uuidsForTriggeredAction;
+	
 	public AbstractData( String uuid ) {
 		this.uuid = uuid;
+		this.uuidsForTriggeredAction = new HashMap<String, String>();
 	}
 
 	@JsonProperty
@@ -29,12 +27,17 @@ public abstract class AbstractData implements IDataContainer {
 	}
 
 	@JsonProperty
-	public org.joda.time.DateTime getSystemTime() {
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	@JsonProperty
+	public DateTime getSystemTime() {
 		return systemTime;
 	}
 
 	@JsonProperty
-	public void setSystemTime(org.joda.time.DateTime systemTime) {
+	public void setSystemTime(DateTime systemTime) {
 		this.systemTime = systemTime;
 	}
 
@@ -46,6 +49,24 @@ public abstract class AbstractData implements IDataContainer {
 	@JsonProperty
 	public void setOutcome(String outcome) {
 		this.outcome = outcome;
+	}
+	
+	@JsonProperty
+	public Map<String, String> getUuidsForTriggeredAction() {
+		return uuidsForTriggeredAction;
+	}
+
+	@JsonProperty
+	public void setUuidsForTriggeredAction(Map<String, String> uuidsForTriggeredAction) {
+		this.uuidsForTriggeredAction = uuidsForTriggeredAction;
+	}
+
+	public void addUuidForTriggeredAction(String actionName, String uuid) {
+		uuidsForTriggeredAction.put(actionName, uuid);
+	}
+
+	public String getUuidForTriggeredAction(String actionName) {
+		return uuidsForTriggeredAction.get(actionName);
 	}
 
 }

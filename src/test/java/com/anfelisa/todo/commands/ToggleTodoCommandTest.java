@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
 import org.jdbi.v3.core.Handle;
-import org.jdbi.v3.core.Jdbi;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class ToggleTodoCommandTest {
 		commandData.setSystemTime(systemTime); 
 		commandData.setId(doneTodo.getId()); 
 
-		command = new ToggleTodoCommand(commandData, daoProviderMock, null);
+		command = new ToggleTodoCommand(commandData, daoProviderMock, null, null);
 	}
 
 	@Test

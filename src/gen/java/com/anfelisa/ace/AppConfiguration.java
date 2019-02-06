@@ -14,6 +14,16 @@ public class AppConfiguration extends Configuration {
 	@NotNull
 	private DataSourceFactory database = new DataSourceFactory();
 
+	private int port;
+	
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
 	@Valid
 	@NotNull
 	private ServerConfiguration serverConfiguration = new ServerConfiguration();

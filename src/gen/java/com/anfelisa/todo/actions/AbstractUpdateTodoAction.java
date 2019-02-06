@@ -1,5 +1,7 @@
 package com.anfelisa.todo.actions;
 
+import java.util.UUID;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -13,6 +15,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.PathParam;
 import io.dropwizard.auth.Auth;
+import javax.ws.rs.HeaderParam;
 
 import com.anfelisa.ace.CustomAppConfiguration;
 import com.anfelisa.ace.ViewProvider;
@@ -37,6 +40,7 @@ import com.anfelisa.ace.Action;
 import com.anfelisa.ace.HttpMethod;
 import com.anfelisa.ace.ICommand;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import javax.ws.rs.WebApplicationException;
 
@@ -55,48 +59,50 @@ public abstract class AbstractUpdateTodoAction extends Action<ITodoData> {
 
 	private DatabaseHandle databaseHandle;
 	private Jdbi jdbi;
-	private JodaObjectMapper mapper;
-	private CustomAppConfiguration appConfiguration;
+	protected JodaObjectMapper mapper;
+	protected CustomAppConfiguration appConfiguration;
 	protected IDaoProvider daoProvider;
 	private ViewProvider viewProvider;
+	private E2E e2e;
 
-	public AbstractUpdateTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
+	public AbstractUpdateTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, 
+			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
 		super("com.anfelisa.todo.actions.UpdateTodoAction", HttpMethod.PUT);
 		this.jdbi = jdbi;
 		mapper = new JodaObjectMapper();
 		this.appConfiguration = appConfiguration;
 		this.daoProvider = daoProvider;
 		this.viewProvider = viewProvider;
+		this.e2e = e2e;
 	}
 
 	@Override
 	public ICommand getCommand() {
-		return new UpdateTodoCommand(this.actionData, daoProvider, viewProvider);
+		return new UpdateTodoCommand(this.actionData, daoProvider, viewProvider, this.appConfiguration);
 	}
 	
 	public void setActionData(IDataContainer data) {
 		this.actionData = (ITodoData)data;
 	}
 
-
 	@PUT
 	@Timed
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateTodoResource(
-			@NotNull ITodoData payload)
+			@NotNull ITodoData payload) 
 			throws JsonProcessingException {
 		this.actionData = new TodoData(payload.getUuid());
 		this.actionData.setId(payload.getId());
 		this.actionData.setDescription(payload.getDescription());
+		
 		return this.apply();
 	}
-
+	
 	public Response apply() {
 		databaseHandle = new DatabaseHandle(jdbi);
 		databaseHandle.beginTransaction();
 		try {
-			IDataContainer originalData = null;
 			if (ServerConfiguration.DEV.equals(appConfiguration.getServerConfiguration().getMode())
 					|| ServerConfiguration.LIVE.equals(appConfiguration.getServerConfiguration().getMode())) {
 				if (daoProvider.getAceDao().contains(databaseHandle.getHandle(), this.actionData.getUuid())) {
@@ -106,18 +112,9 @@ public abstract class AbstractUpdateTodoAction extends Action<ITodoData> {
 				this.actionData.setSystemTime(new DateTime());
 				this.initActionData();
 			} else if (ServerConfiguration.REPLAY.equals(appConfiguration.getServerConfiguration().getMode())) {
-				ITimelineItem timelineItem = E2E.selectAction(this.actionData.getUuid());
-				if (timelineItem != null) {
-					IAction action = ActionFactory.createAction(timelineItem.getName(), timelineItem.getData(), jdbi,
-							appConfiguration, daoProvider, viewProvider);
-					if (action != null) {
-						originalData = action.getActionData();
-						this.actionData = (ITodoData)originalData;
-					}
-				} else {
-					throw new WebApplicationException(
-							"action for " + this.actionData.getUuid() + " not found in timeline");
-				}
+				ITimelineItem timelineItem = e2e.selectAction(this.actionData.getUuid());
+				IDataContainer originalData = AceDataFactory.createAceData(timelineItem.getName(), timelineItem.getData());
+				this.actionData = (ITodoData)originalData;
 			} else if (ServerConfiguration.TEST.equals(appConfiguration.getServerConfiguration().getMode())) {
 				if (SetSystemTimeResource.systemTime != null) {
 					this.actionData.setSystemTime(SetSystemTimeResource.systemTime);
@@ -131,6 +128,8 @@ public abstract class AbstractUpdateTodoAction extends Action<ITodoData> {
 			command.publishEvents(this.databaseHandle.getHandle(), this.databaseHandle.getTimelineHandle());
 			Response response = Response.ok(this.createReponse()).build();
 			databaseHandle.commitTransaction();
+			
+			
 			return response;
 		} catch (WebApplicationException x) {
 			LOG.error(actionName + " failed " + x.getMessage());
@@ -156,6 +155,9 @@ public abstract class AbstractUpdateTodoAction extends Action<ITodoData> {
 			databaseHandle.close();
 		}
 	}
+	
+	
+	
 
 
 }

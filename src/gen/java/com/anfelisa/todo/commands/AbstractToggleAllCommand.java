@@ -4,6 +4,7 @@ import javax.ws.rs.WebApplicationException;
 import org.jdbi.v3.core.Handle;
 
 import com.anfelisa.ace.Command;
+import com.anfelisa.ace.CustomAppConfiguration;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 
@@ -13,12 +14,8 @@ public abstract class AbstractToggleAllCommand extends Command<IToggleAllData> {
 
 	protected static final String success = "success";
 
-	public AbstractToggleAllCommand(IToggleAllData commandParam, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.commands.ToggleAllCommand", commandParam, daoProvider, viewProvider);
-	}
-
-	public AbstractToggleAllCommand(IDaoProvider daoProvider, ViewProvider viewProvider) {
-		super("com.anfelisa.todo.commands.ToggleAllCommand", null, daoProvider, viewProvider);
+	public AbstractToggleAllCommand(IToggleAllData commandParam, IDaoProvider daoProvider, ViewProvider viewProvider, CustomAppConfiguration appConfiguration) {
+		super("com.anfelisa.todo.commands.ToggleAllCommand", commandParam, daoProvider, viewProvider, appConfiguration);
 	}
 
 	@Override

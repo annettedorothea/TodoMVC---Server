@@ -6,6 +6,7 @@ import com.anfelisa.ace.AceExecutionMode;
 import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.ace.ViewProvider;
 import com.anfelisa.ace.ServerConfiguration;
+import com.anfelisa.ace.E2E;
 
 import org.jdbi.v3.core.Jdbi;
 
@@ -15,14 +16,15 @@ import com.anfelisa.todo.actions.*;
 @SuppressWarnings("all")
 public class AppRegistration {
 
-	public static void registerResources(Environment environment, Jdbi jdbi, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, ViewProvider viewProvider) {
-		environment.jersey().register(new GetAllTodosAction(jdbi, appConfiguration, daoProvider, viewProvider));
-		environment.jersey().register(new CreateTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));
-		environment.jersey().register(new ToggleTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));
-		environment.jersey().register(new ToggleAllAction(jdbi, appConfiguration, daoProvider, viewProvider));
-		environment.jersey().register(new UpdateTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));
-		environment.jersey().register(new DeleteTodoAction(jdbi, appConfiguration, daoProvider, viewProvider));
-		environment.jersey().register(new ClearDoneAction(jdbi, appConfiguration, daoProvider, viewProvider));
+	public static void registerResources(Environment environment, Jdbi jdbi, CustomAppConfiguration appConfiguration, 
+			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
+		environment.jersey().register(new GetAllTodosAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new CreateTodoAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new ToggleTodoAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new ToggleAllAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new UpdateTodoAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new DeleteTodoAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new ClearDoneAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
 	}
 
 	public static void registerConsumers(ViewProvider viewProvider, String mode) {

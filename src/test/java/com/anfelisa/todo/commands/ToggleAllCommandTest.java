@@ -52,7 +52,7 @@ public class ToggleAllCommandTest {
 		systemTime = new DateTime();
 		commandData.setSystemTime(systemTime); 
 		
-		command = new ToggleAllCommand(commandData, daoProviderMock, null);
+		command = new ToggleAllCommand(commandData, daoProviderMock, null, null);
 	}
 
 	@Test

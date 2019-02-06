@@ -68,24 +68,31 @@ public class EventFactory {
 	}
 
 	public static IEvent createEvent(String eventClass, IDataContainer data, IDaoProvider daoProvider, ViewProvider viewProvider) {
+
 		if (eventClass.equals("com.anfelisa.todo.events.CreateTodoSuccessEvent")) {
 			return new CreateTodoSuccessEvent((TodoData)data, daoProvider, viewProvider);
 		}
+
 		if (eventClass.equals("com.anfelisa.todo.events.ToggleTodoSuccessEvent")) {
 			return new ToggleTodoSuccessEvent((TodoToggleData)data, daoProvider, viewProvider);
 		}
+
 		if (eventClass.equals("com.anfelisa.todo.events.ToggleAllSuccessEvent")) {
 			return new ToggleAllSuccessEvent((ToggleAllData)data, daoProvider, viewProvider);
 		}
+
 		if (eventClass.equals("com.anfelisa.todo.events.UpdateTodoSuccessEvent")) {
 			return new UpdateTodoSuccessEvent((TodoData)data, daoProvider, viewProvider);
 		}
+
 		if (eventClass.equals("com.anfelisa.todo.events.DeleteTodoSuccessEvent")) {
 			return new DeleteTodoSuccessEvent((TodoIdData)data, daoProvider, viewProvider);
 		}
+
 		if (eventClass.equals("com.anfelisa.todo.events.ClearDoneSuccessEvent")) {
 			return new ClearDoneSuccessEvent((ClearDoneData)data, daoProvider, viewProvider);
 		}
+
 
 		return null;
 	}

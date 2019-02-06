@@ -7,8 +7,8 @@ import io.dropwizard.setup.Environment;
 public class AppRegistration {
 
 	public static void registerResources(Environment environment, Jdbi jdbi, CustomAppConfiguration appConfiguration,
-			IDaoProvider daoProvider, ViewProvider viewProvider) {
-		com.anfelisa.todo.AppRegistration.registerResources(environment, jdbi, appConfiguration, daoProvider, viewProvider);
+			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
+		com.anfelisa.todo.AppRegistration.registerResources(environment, jdbi, appConfiguration, daoProvider, viewProvider, e2e);
 	}
 
 	public static void registerConsumers(ViewProvider viewProvider, String mode) {

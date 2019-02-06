@@ -6,27 +6,63 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class E2E {
 
-	public static boolean sessionIsRunning;
+	private boolean sessionIsRunning;
 
-	public static DateTime sessionStartedAt;
+	private DateTime sessionStartedAt;
 
-	private static Map<String, AceOperation> timeline;
+	private Map<String, AceOperation> timeline;
 
-	private static List<String> uuidList;
+	private List<String> uuidList;
 
-	private static int index;
+	private int index;
+	
+	private List<Thread> triggerdThreads;
 
-	public static void reset() {
-		E2E.sessionIsRunning = false;
-		E2E.sessionStartedAt = null;
-		E2E.timeline = null;
-		E2E.index = 0;
+	static final Logger LOG = LoggerFactory.getLogger(E2E.class);
+
+	public E2E() {
+		this.sessionIsRunning = false;
+		this.sessionStartedAt = null;
+		this.timeline = null;
+		this.index = 0;
+		this.triggerdThreads = new ArrayList<>();
+	}
+	
+	public void addTriggeredThread(Thread thread) {
+		triggerdThreads.add(thread);
+	}
+	
+	public boolean isSessionRunning() {
+		return this.sessionIsRunning;
 	}
 
-	public static void init(List<ITimelineItem> initialTimeline) {
+	public DateTime getSessionStartedAt() {
+		return this.sessionStartedAt;
+	}
+
+	public void reset() {
+		for (Thread thread : triggerdThreads) {
+			try {
+				LOG.info("wait for thread {} to finish before resetting E2E session", thread.getName());
+				thread.join();
+			} catch (InterruptedException e) {
+				LOG.error("thread.join {} was interrupted", thread.getName(), e);
+			}
+		}
+		this.sessionIsRunning = false;
+		this.sessionStartedAt = null;
+		this.timeline = null;
+		this.index = 0;
+		this.triggerdThreads.clear();
+	}
+
+
+	public void init(List<ITimelineItem> initialTimeline) {
 		timeline = new HashMap<>();
 		uuidList = new ArrayList<>();
 		for (ITimelineItem timelineItem : initialTimeline) {
@@ -47,12 +83,12 @@ public class E2E {
 				aceOperation.setEvent(timelineItem);
 			}
 		}
-		E2E.sessionIsRunning = true;
-		E2E.sessionStartedAt = new DateTime(System.currentTimeMillis());
-		E2E.index = 0;
+		this.sessionIsRunning = true;
+		this.sessionStartedAt = new DateTime(System.currentTimeMillis());
+		this.index = 0;
 	}
 
-	public static ITimelineItem selectNextAction() {
+	public ITimelineItem selectNextAction() {
 		if (index < uuidList.size()) {
 			String uuid = uuidList.get(index);
 			index++;
@@ -61,11 +97,15 @@ public class E2E {
 		return null;
 	}
 
-	public static ITimelineItem selectAction(String uuid) {
+	public ITimelineItem selectAction(String uuid) {
 		return timeline.get(uuid).getAction();
 	}
 
-	public static ITimelineItem selectEvent(String uuid) {
+	public ITimelineItem selectCommand(String uuid) {
+		return timeline.get(uuid).getCommand();
+	}
+
+	public ITimelineItem selectEvent(String uuid) {
 		return timeline.get(uuid).getEvent();
 	}
 	

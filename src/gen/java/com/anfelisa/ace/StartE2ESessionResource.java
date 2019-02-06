@@ -20,7 +20,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Path("/e2e")
-@Produces(MediaType.TEXT_PLAIN)
+@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class StartE2ESessionResource {
 
@@ -29,21 +29,24 @@ public class StartE2ESessionResource {
 	private Jdbi jdbi;
 
 	private IDaoProvider daoProvider = new DaoProvider();
+	
+	private E2E e2e;
 
-	public StartE2ESessionResource(Jdbi jdbi, IDaoProvider daoProvider) {
+	public StartE2ESessionResource(Jdbi jdbi, IDaoProvider daoProvider, E2E e2e) {
 		super();
 		this.jdbi = jdbi;
 		this.daoProvider = daoProvider;
+		this.e2e = e2e;
 	}
 
 	@PUT
 	@Timed
 	@Path("/start")
 	public Response put(@NotNull List<ITimelineItem> timeline) throws JsonProcessingException {
-		if (E2E.sessionIsRunning && E2E.sessionStartedAt.plusMinutes(1).isAfterNow()) {
+		if (e2e.isSessionRunning() && e2e.getSessionStartedAt().plusMinutes(1).isAfterNow()) {
 			throw new WebApplicationException("session is already running", Response.Status.SERVICE_UNAVAILABLE);
 		}
-		E2E.init(timeline);
+		e2e.init(timeline);
 		
 		Handle handle = jdbi.open();
 		try {

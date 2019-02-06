@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 public interface IDataContainer {
 
 	String getUuid();
+	
+	void setUuid(String uuid);
 
 	String getOutcome();
 
@@ -15,6 +17,10 @@ public interface IDataContainer {
 	void setSystemTime(DateTime systemTime);
 
 	void migrateLegacyData(String json);
+
+	void addUuidForTriggeredAction(String actionName, String uuid);
+
+	String getUuidForTriggeredAction(String actionName);
 
 }
 
