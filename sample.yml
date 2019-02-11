@@ -1,0 +1,35 @@
+database:
+  driverClass: org.postgresql.Driver
+  user: <user>
+  password: <password>
+  url: jdbc:postgresql://<host>
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 3s
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minute
+  
+server:
+  rootPath: /api/
+  applicationConnectors:
+    - type: http
+      port: 8096
+  adminConnectors:
+    - type: http
+      port: 8097
+
+config:
+  mode: DEV
+  
+email:
+  host: 
+  port: 
+  user: 
+  password: 
+  tls:
+
+
