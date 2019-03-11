@@ -30,7 +30,7 @@ import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.jdbi.v3.core.Handle;
 import org.joda.time.DateTime;
 
-public abstract class AbstractBaseTest {
+public abstract class AbstractBaseScenario {
 
 	protected final JodaObjectMapper mapper = new JodaObjectMapper();
 

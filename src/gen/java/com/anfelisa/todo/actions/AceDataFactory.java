@@ -93,6 +93,13 @@ public class AceDataFactory {
 				data.migrateLegacyData(json);
 				return data;
 			}
+			if (className.equals("com.anfelisa.todo.actions.BatchCreateAction") ||
+					className.equals("com.anfelisa.todo.commands.BatchCreateCommand") 
+			) {
+				TodoListData data = mapper.readValue(json, TodoListData.class);
+				data.migrateLegacyData(json);
+				return data;
+			}
 		} catch (IOException e) {
 			LOG.error("failed to create ace data {} with data {}", className, json, e);
 		}

@@ -44,6 +44,7 @@ public class AppRegistration {
 		environment.jersey().register(new UpdateTodoAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
 		environment.jersey().register(new DeleteTodoAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
 		environment.jersey().register(new ClearDoneAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new BatchCreateAction(jdbi, appConfiguration, daoProvider, viewProvider, e2e));
 	}
 
 	public static void registerConsumers(ViewProvider viewProvider, String mode) {

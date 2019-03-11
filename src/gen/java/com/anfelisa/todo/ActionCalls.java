@@ -78,6 +78,13 @@ public class ActionCalls {
 		return builder.delete();
 	}
 	
+	public static Response callBatchCreate(String uuid, int port) {
+		Client client = new JerseyClientBuilder().build();
+		Builder builder = client.target(String.format("http://localhost:%d/api/batch-create", port)).request(); 
+		com.anfelisa.todo.data.ITodoListData data = new com.anfelisa.todo.data.TodoListData(uuid);
+		return builder.post(Entity.json(data));
+	}
+	
 	
 }
 

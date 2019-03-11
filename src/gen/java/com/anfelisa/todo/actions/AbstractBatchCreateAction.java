@@ -66,15 +66,14 @@ import javax.ws.rs.WebApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anfelisa.todo.data.ITodoData;
-import com.anfelisa.todo.data.TodoData;
-import com.anfelisa.todo.commands.CreateTodoCommand;
+import com.anfelisa.todo.data.ITodoListData;
+import com.anfelisa.todo.data.TodoListData;
 
-@Path("/todos/create")
+@Path("/batch-create")
 @SuppressWarnings("unused")
-public abstract class AbstractCreateTodoAction extends Action<ITodoData> {
+public abstract class AbstractBatchCreateAction extends Action<ITodoListData> {
 
-	static final Logger LOG = LoggerFactory.getLogger(AbstractCreateTodoAction.class);
+	static final Logger LOG = LoggerFactory.getLogger(AbstractBatchCreateAction.class);
 
 	private DatabaseHandle databaseHandle;
 	private Jdbi jdbi;
@@ -84,9 +83,9 @@ public abstract class AbstractCreateTodoAction extends Action<ITodoData> {
 	private ViewProvider viewProvider;
 	private E2E e2e;
 
-	public AbstractCreateTodoAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, 
+	public AbstractBatchCreateAction(Jdbi jdbi, CustomAppConfiguration appConfiguration, 
 			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
-		super("com.anfelisa.todo.actions.CreateTodoAction", HttpMethod.POST);
+		super("com.anfelisa.todo.actions.BatchCreateAction", HttpMethod.POST);
 		this.jdbi = jdbi;
 		mapper = new JodaObjectMapper();
 		this.appConfiguration = appConfiguration;
@@ -97,22 +96,21 @@ public abstract class AbstractCreateTodoAction extends Action<ITodoData> {
 
 	@Override
 	public ICommand getCommand() {
-		return new CreateTodoCommand(this.actionData, daoProvider, viewProvider, this.appConfiguration);
+		return null;
 	}
 	
 	public void setActionData(IDataContainer data) {
-		this.actionData = (ITodoData)data;
+		this.actionData = (ITodoListData)data;
 	}
 
 	@POST
 	@Timed
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createTodoResource(
-			@NotNull ITodoData payload) 
+	public Response batchCreateResource(
+			@NotNull @QueryParam("uuid") String uuid) 
 			throws JsonProcessingException {
-		this.actionData = new TodoData(payload.getUuid());
-		this.actionData.setDescription(payload.getDescription());
+		this.actionData = new TodoListData(uuid);
 		
 		return this.apply();
 	}
@@ -132,7 +130,7 @@ public abstract class AbstractCreateTodoAction extends Action<ITodoData> {
 			} else if (ServerConfiguration.REPLAY.equals(appConfiguration.getServerConfiguration().getMode())) {
 				ITimelineItem timelineItem = e2e.selectAction(this.actionData.getUuid());
 				IDataContainer originalData = AceDataFactory.createAceData(timelineItem.getName(), timelineItem.getData());
-				this.actionData = (ITodoData)originalData;
+				this.actionData = (ITodoListData)originalData;
 			} else if (ServerConfiguration.TEST.equals(appConfiguration.getServerConfiguration().getMode())) {
 				if (SetSystemTimeResource.systemTime != null) {
 					this.actionData.setSystemTime(SetSystemTimeResource.systemTime);

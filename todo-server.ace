@@ -9,7 +9,7 @@ ACE
 	CreateTodo<Todo>
 		POST "/todos/create"
 		payload description
-		on success (Todo.create)
+		on success (Todo.create) 
 	
 	ToggleTodo<TodoToggle> 
 		PUT "/todos/toggle" 
@@ -30,11 +30,12 @@ ACE
 		queryParams id 
 		on success (Todo.delete)
 	
-	
 	ClearDone<ClearDone> 
 		DELETE "/todos/clear-done" 
-		on success (Todo.clearDone)
-	
+		on success (Todo.clearDone) 
+		
+	BatchCreate<TodoList>
+		POST "/batch-create"
 		
 views 
 	Todo {
@@ -55,7 +56,6 @@ models
 		Unique PrimaryKey NotNull String id
 		NotNull String description
 		DateTime doneDateTime
-		
 	}
 	
 	persistent Todo {
@@ -90,5 +90,66 @@ models
 	
 	ClearDone {}
 	
-
+scenarios 
+	GetAllTodos
+	GIVEN 
+		CreateTodo.success 
+			uuid "123"
+			systemTime "20191010" {
+				id : "123" 
+				description : "xyz"
+				createdDateTime : "10.10.2019 8:22:00"
+			}
+		CreateTodo.success 
+			uuid "456"
+			systemTime "20191011" {
+				id : "456" 
+				description : "abc"
+				createdDateTime : "10.10.2019 9:01:00"
+			}
+	WHEN GetAllTodos 
+	THEN 200 
+		response {
+			todoList : [
+				{
+					id : "123" 
+					description : "xyz"
+					createdDateTime : "10.10.2019 8:22:00"
+				}
+				{
+					id : "456" 
+					description : "abc"
+					createdDateTime : "10.10.2019 9:01:00"
+				}
+			]
+		}
+	
+	DeleteTodo
+	GIVEN 
+		CreateTodo.success {
+			id : "123" 
+			description : "todo 1"
+			createdDateTime : "10.10.2019 8:22:00"
+		}
+		CreateTodo.success {
+			id : "234" 
+			description : "todo 2"
+			createdDateTime : "10.10.2019 9:01:00"
+		}
+	WHEN DeleteTodo {
+			id : "123"
+		}
+	THEN 200
+		GetAllTodos 
+		response {
+			todoList : [{
+				id : "234" 
+				description : "todo 2"
+				createdDateTime : "10.10.2019 9:01:00"
+			}]
+		}
+		
+		
+		
+		
 
