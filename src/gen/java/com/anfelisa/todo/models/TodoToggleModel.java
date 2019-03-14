@@ -55,33 +55,33 @@ public class TodoToggleModel implements ITodoToggleModel {
 	}
 
 	@JsonProperty
-	public String getId() {
-		return this.id;
-	}
+		public String getId() {
+			return this.id;
+		}
 	public void setId(String id) {
 		this.id = id;
 	}
 	
 	@JsonProperty
-	public Boolean getDone() {
-		return this.done;
-	}
+		public Boolean getDone() {
+			return this.done;
+		}
 	public void setDone(Boolean done) {
 		this.done = done;
 	}
 	
 	@JsonProperty
-	public com.anfelisa.todo.models.ITodoModel getTodoToBeToggled() {
-		return this.todoToBeToggled;
-	}
+		public com.anfelisa.todo.models.ITodoModel getTodoToBeToggled() {
+			return this.todoToBeToggled;
+		}
 	public void setTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled) {
 		this.todoToBeToggled = todoToBeToggled;
 	}
 	
 	@JsonProperty
-	public org.joda.time.DateTime getUpdatedDateTime() {
-		return this.updatedDateTime;
-	}
+		public org.joda.time.DateTime getUpdatedDateTime() {
+			return this.updatedDateTime;
+		}
 	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}

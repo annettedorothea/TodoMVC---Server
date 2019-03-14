@@ -22,6 +22,8 @@ package com.anfelisa.todo.scenarios;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -30,6 +32,10 @@ import org.junit.Test;
 import com.anfelisa.ace.BaseScenario;
 import com.anfelisa.ace.ITimelineItem;
 import com.anfelisa.todo.TestUtils;
+import com.anfelisa.todo.ActionCalls;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class DeleteTodoScenario extends BaseScenario {
 
@@ -56,6 +62,12 @@ public class DeleteTodoScenario extends BaseScenario {
 	@Test
 	public void execute() throws Exception {
 		given();
+		
+		Response response = ActionCalls.callDeleteTodo(randomUUID(), "123", DROPWIZARD.getLocalPort());
+		
+		assertThat(response.getStatus(), is(200));
+		
+		
 
 	}
 	

@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import com.anfelisa.ace.BaseScenario;
 import com.anfelisa.ace.ITimelineItem;
 import com.anfelisa.todo.ActionCalls;
 import com.anfelisa.todo.TestUtils;
@@ -19,7 +20,7 @@ import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class GetAllTodosTest extends BaseTest {
+public class GetAllTodosTest extends BaseScenario {
 
 	private ITodoData secondTodo;
 	private ITodoData firstTodo;

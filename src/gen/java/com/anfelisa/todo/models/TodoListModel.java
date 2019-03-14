@@ -41,9 +41,9 @@ public class TodoListModel implements ITodoListModel {
 	}
 
 	@JsonProperty
-	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
-		return this.todoList;
-	}
+		public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+			return this.todoList;
+		}
 	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
 		this.todoList = todoList;
 	}

@@ -42,9 +42,9 @@ public class TodoIdModel implements ITodoIdModel {
 	}
 
 	@JsonProperty
-	public String getId() {
-		return this.id;
-	}
+		public String getId() {
+			return this.id;
+		}
 	public void setId(String id) {
 		this.id = id;
 	}

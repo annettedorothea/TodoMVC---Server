@@ -51,25 +51,25 @@ public class TodoDoneHistoryModel implements ITodoDoneHistoryModel {
 	}
 
 	@JsonProperty
-	public String getId() {
-		return this.id;
-	}
+		public String getId() {
+			return this.id;
+		}
 	public void setId(String id) {
 		this.id = id;
 	}
 	
 	@JsonProperty
-	public String getDescription() {
-		return this.description;
-	}
+		public String getDescription() {
+			return this.description;
+		}
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	
 	@JsonProperty
-	public org.joda.time.DateTime getDoneDateTime() {
-		return this.doneDateTime;
-	}
+		public org.joda.time.DateTime getDoneDateTime() {
+			return this.doneDateTime;
+		}
 	public void setDoneDateTime(org.joda.time.DateTime doneDateTime) {
 		this.doneDateTime = doneDateTime;
 	}

@@ -72,6 +72,12 @@ public class BaseScenario extends AbstractBaseScenario {
 	public void after() {
 		handle.close();
 	}
+
+	@Override
+	protected String authorization(String username, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
 

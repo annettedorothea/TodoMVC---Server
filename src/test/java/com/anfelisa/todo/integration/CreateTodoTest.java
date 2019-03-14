@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import com.anfelisa.ace.BaseScenario;
 import com.anfelisa.todo.ActionCalls;
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.models.ITodoModel;
@@ -20,7 +21,7 @@ import com.anfelisa.todo.models.TodoModel;
 import com.anfelisa.todo.views.TodoView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class CreateTodoTest extends BaseTest {
+public class CreateTodoTest extends BaseScenario {
 
 	@Mock
 	private TodoView todoViewMock;

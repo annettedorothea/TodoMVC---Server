@@ -42,9 +42,9 @@ public class GetAllTodosResponse implements IGetAllTodosResponse {
 	}
 	
 	@JsonProperty
-	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
-		return this.todoList;
-	}
+		public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+			return this.todoList;
+		}
 	
 }
 

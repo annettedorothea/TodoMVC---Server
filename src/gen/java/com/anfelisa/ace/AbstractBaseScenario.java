@@ -60,6 +60,8 @@ public abstract class AbstractBaseScenario {
 		client.target(String.format("http://localhost:%d/api/test/system-time", port))
 				.request().put(Entity.json(systemTime.toString()));
 	}
+	
+	protected abstract String authorization(String username, String password);
 
 }
 
