@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public interface IClearDoneModel {
 
 	
-	
 }
 
 

@@ -30,8 +30,6 @@ public interface ITodoIdModel {
 	void setId(String id);
 	
 	
-	List<String> equalsPrimitiveTypes(com.anfelisa.todo.models.ITodoIdModel other);
-	
 }
 
 

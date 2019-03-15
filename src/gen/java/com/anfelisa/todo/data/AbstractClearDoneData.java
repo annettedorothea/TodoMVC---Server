@@ -48,8 +48,6 @@ public abstract class AbstractClearDoneData extends AbstractData implements ICle
 
 	
 	
-	
-	
 }
 
 

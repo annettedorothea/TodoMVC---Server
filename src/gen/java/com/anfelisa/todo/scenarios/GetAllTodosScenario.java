@@ -36,42 +36,67 @@ import com.anfelisa.todo.ActionCalls;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 
+@SuppressWarnings("unused")
 public class GetAllTodosScenario extends BaseScenario {
 
 	private void given() throws Exception {
 		List<ITimelineItem> timeline = new ArrayList<>();
 		
-		timeline.add(TestUtils.createCreateTodoSuccessEventTimelineItem(
-			new com.anfelisa.todo.data.TodoData("123")
-			.withId("123")
-			.withDescription("xyz")
-			.withCreatedDateTime(DateTime.parse("10.10.2019 8:22:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")))
-		));
+		com.anfelisa.todo.data.TodoData todo0 = new com.anfelisa.todo.data.TodoData("123");
+		todo0.setSystemTime(DateTime.parse("10.10.2019 8:22:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		todo0.setId("123");
+		todo0.setDescription("xyz");
+		todo0.setCreatedDateTime(DateTime.parse("10.10.2019 8:22:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		timeline.add(TestUtils.createCreateTodoSuccessEventTimelineItem(todo0));
 		
-		timeline.add(TestUtils.createCreateTodoSuccessEventTimelineItem(
-			new com.anfelisa.todo.data.TodoData("456")
-			.withId("456")
-			.withDescription("abc")
-			.withCreatedDateTime(DateTime.parse("10.10.2019 9:01:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")))
-		));
+		com.anfelisa.todo.data.TodoData todo1 = new com.anfelisa.todo.data.TodoData("456");
+		todo1.setSystemTime(DateTime.parse("10.10.2019 9:01:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		todo1.setId("456");
+		todo1.setDescription("abc");
+		todo1.setCreatedDateTime(DateTime.parse("10.10.2019 9:01:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		timeline.add(TestUtils.createCreateTodoSuccessEventTimelineItem(todo1));
 		
 		prepare(timeline, DROPWIZARD.getLocalPort());
 	}
 	
-	@Test
-	public void execute() throws Exception {
-		given();
-		
-		Response response = ActionCalls.callGetAllTodos(randomUUID(), DROPWIZARD.getLocalPort());
-		
+	private Response when() throws Exception {
+		return ActionCalls.callGetAllTodos(randomUUID(), DROPWIZARD.getLocalPort());
+	}
+	
+	private void then(Response response) throws Exception {
 		assertThat(response.getStatus(), is(200));
 		
-		com.anfelisa.todo.data.GetAllTodosResponse expected = new com.anfelisa.todo.data.GetAllTodosResponse();
-		com.anfelisa.todo.data.GetAllTodosResponse actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
-		assertThat(actual, is(expected));
+		com.anfelisa.todo.data.TodoListData expectedData = new com.anfelisa.todo.data.TodoListData("");
+		List<com.anfelisa.todo.models.ITodoModel> expectedDataTodoList = new ArrayList<com.anfelisa.todo.models.ITodoModel>();
+		com.anfelisa.todo.models.ITodoModel expectedDataTodoList0 = new com.anfelisa.todo.models.TodoModel();
+		expectedDataTodoList0.setId("123");
+		expectedDataTodoList0.setDescription("xyz");
+		expectedDataTodoList0.setCreatedDateTime(DateTime.parse("10.10.2019 8:22:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		expectedDataTodoList.add(expectedDataTodoList0);
+		com.anfelisa.todo.models.ITodoModel expectedDataTodoList1 = new com.anfelisa.todo.models.TodoModel();
+		expectedDataTodoList1.setId("456");
+		expectedDataTodoList1.setDescription("abc");
+		expectedDataTodoList1.setCreatedDateTime(DateTime.parse("10.10.2019 9:01:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		expectedDataTodoList.add(expectedDataTodoList1);
+		expectedData.setTodoList(expectedDataTodoList);
 		
+		com.anfelisa.todo.data.GetAllTodosResponse expected = new com.anfelisa.todo.data.GetAllTodosResponse(expectedData);
 
+		com.anfelisa.todo.data.GetAllTodosResponse actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
+
+		assertThat(actual, sameBeanAs(expected));
+		
+	}
+	
+	@Test
+	public void getAllTodos() throws Exception {
+		given();
+		
+		Response response = when();
+
+		then(response);
 	}
 	
 	

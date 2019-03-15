@@ -19,6 +19,7 @@ import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.TodoData;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 
 public class GetAllTodosTest extends BaseScenario {
 
@@ -47,12 +48,9 @@ public class GetAllTodosTest extends BaseScenario {
 
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
 
-		List<String> differingAttributs = firstTodo.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(0));
-		assertThat(differingAttributs, is(new ArrayList<String>()));
-		differingAttributs = secondTodo.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(1));
-		assertThat(differingAttributs, is(new ArrayList<String>()));
-		differingAttributs = thirdTodo.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(2));
-		assertThat(differingAttributs, is(new ArrayList<String>()));
+		assertThat(firstTodo, sameBeanAs(allTodosResponse.getTodoList().get(0)));
+		assertThat(secondTodo, sameBeanAs(allTodosResponse.getTodoList().get(1)));
+		assertThat(thirdTodo, sameBeanAs(allTodosResponse.getTodoList().get(2)));
 	}
 
 	private void createTestTodos() throws JsonProcessingException {

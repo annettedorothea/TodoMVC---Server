@@ -101,21 +101,6 @@ public abstract class AbstractTodoDoneHistoryData extends AbstractData implement
 	
 	
 	
-	public List<String> equalsPrimitiveTypes(com.anfelisa.todo.models.ITodoDoneHistoryModel other) {
-		List<String> differingAttributes = new ArrayList<String>();
-		if (!(this.getId() == null && other.getId() == null) && !this.getId().equals(other.getId())) {
-			differingAttributes.add("id: " + this.getId() + " " + other.getId());
-		}
-		if (!(this.getDescription() == null && other.getDescription() == null) && !this.getDescription().equals(other.getDescription())) {
-			differingAttributes.add("description: " + this.getDescription() + " " + other.getDescription());
-		}
-		if (!(this.getDoneDateTime() == null && other.getDoneDateTime() == null) && !this.getDoneDateTime().equals(other.getDoneDateTime())) {
-			differingAttributes.add("doneDateTime: " + this.getDoneDateTime() + " " + other.getDoneDateTime());
-		}
-		return differingAttributes;
-	}
-	
-	
 }
 
 

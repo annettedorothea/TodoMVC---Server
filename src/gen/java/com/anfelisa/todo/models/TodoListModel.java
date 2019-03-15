@@ -49,7 +49,6 @@ public class TodoListModel implements ITodoListModel {
 	}
 	
 	
-	
 }
 
 

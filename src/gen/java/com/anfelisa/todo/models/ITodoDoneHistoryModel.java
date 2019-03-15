@@ -36,8 +36,6 @@ public interface ITodoDoneHistoryModel {
 	void setDoneDateTime(org.joda.time.DateTime doneDateTime);
 	
 	
-	List<String> equalsPrimitiveTypes(com.anfelisa.todo.models.ITodoDoneHistoryModel other);
-	
 }
 
 

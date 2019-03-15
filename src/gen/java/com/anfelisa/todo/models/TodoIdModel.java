@@ -50,14 +50,6 @@ public class TodoIdModel implements ITodoIdModel {
 	}
 	
 	
-	public List<String> equalsPrimitiveTypes(com.anfelisa.todo.models.ITodoIdModel other) {
-		List<String> differingAttributes = new ArrayList<String>();
-		if (!(this.getId() == null && other.getId() == null) && !this.getId().equals(other.getId())) {
-			differingAttributes.add("id: " + this.getId() + " " + other.getId());
-		}
-		return differingAttributes;
-	}
-	
 }
 
 

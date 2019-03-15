@@ -117,21 +117,6 @@ public abstract class AbstractTodoToggleData extends AbstractData implements ITo
 	
 	
 	
-	public List<String> equalsPrimitiveTypes(com.anfelisa.todo.models.ITodoToggleModel other) {
-		List<String> differingAttributes = new ArrayList<String>();
-		if (!(this.getId() == null && other.getId() == null) && !this.getId().equals(other.getId())) {
-			differingAttributes.add("id: " + this.getId() + " " + other.getId());
-		}
-		if (!(this.getDone() == null && other.getDone() == null) && !this.getDone().equals(other.getDone())) {
-			differingAttributes.add("done: " + this.getDone() + " " + other.getDone());
-		}
-		if (!(this.getUpdatedDateTime() == null && other.getUpdatedDateTime() == null) && !this.getUpdatedDateTime().equals(other.getUpdatedDateTime())) {
-			differingAttributes.add("updatedDateTime: " + this.getUpdatedDateTime() + " " + other.getUpdatedDateTime());
-		}
-		return differingAttributes;
-	}
-	
-	
 }
 
 

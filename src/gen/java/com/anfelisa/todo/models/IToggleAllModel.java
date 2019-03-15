@@ -36,8 +36,6 @@ public interface IToggleAllModel {
 	void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
 	
 	
-	List<String> equalsPrimitiveTypes(com.anfelisa.todo.models.IToggleAllModel other);
-	
 }
 
 

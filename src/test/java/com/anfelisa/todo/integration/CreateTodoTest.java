@@ -1,9 +1,9 @@
 package com.anfelisa.todo.integration;
 
+import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,8 +57,7 @@ public class CreateTodoTest extends BaseScenario {
 		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(handle);
 		assertThat(todos.size(), is(1));
 
-		List<String> differingAttributs = expectedTodoData.equalsPrimitiveTypes(todos.get(0));
-		assertThat(differingAttributs, is(new ArrayList<String>()));
+		assertThat(todos.get(0), sameBeanAs(expectedTodoData));
 	}
 
 	@Test
@@ -80,8 +79,7 @@ public class CreateTodoTest extends BaseScenario {
 		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(handle);
 		assertThat(todos.size(), is(1));
 		
-		List<String> differingAttributs = expectedTodoData.equalsPrimitiveTypes(todos.get(0));
-		assertThat(differingAttributs, is(new ArrayList<String>()));
+		assertThat(todos.get(0), sameBeanAs(expectedTodoData));
 	}
 	
 	@Test
@@ -104,8 +102,7 @@ public class CreateTodoTest extends BaseScenario {
 		GetAllTodosResponse allTodosResponse = response.readEntity(GetAllTodosResponse.class);
 		assertThat(allTodosResponse.getTodoList().size(), is(1));
 		
-		List<String> differingAttributs = expectedTodoData.equalsPrimitiveTypes(allTodosResponse.getTodoList().get(0));
-		assertThat(differingAttributs, is(new ArrayList<String>()));
+		assertThat(allTodosResponse.getTodoList().get(0), sameBeanAs(expectedTodoData));
 	}
 	
 }

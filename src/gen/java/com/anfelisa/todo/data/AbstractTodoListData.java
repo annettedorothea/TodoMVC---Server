@@ -67,8 +67,6 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	
 	
 	
-	
-	
 }
 
 

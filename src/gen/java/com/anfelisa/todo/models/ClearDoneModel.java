@@ -35,7 +35,6 @@ public class ClearDoneModel implements IClearDoneModel {
 	}
 
 	
-	
 }
 
 

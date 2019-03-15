@@ -42,8 +42,6 @@ public interface ITodoModel {
 	void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
 	
 	
-	List<String> equalsPrimitiveTypes(com.anfelisa.todo.models.ITodoModel other);
-	
 }
 
 

@@ -37,10 +37,6 @@ public interface IDataContainer {
 
 	void migrateLegacyData(String json);
 
-	void addUuidForTriggeredAction(String actionName, String uuid);
-
-	String getUuidForTriggeredAction(String actionName);
-
 }
 
 

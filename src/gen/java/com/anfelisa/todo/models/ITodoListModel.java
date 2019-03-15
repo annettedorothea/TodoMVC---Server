@@ -30,7 +30,6 @@ public interface ITodoListModel {
 	void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList);
 	
 	
-	
 }
 
 
