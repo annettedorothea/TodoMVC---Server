@@ -41,7 +41,7 @@ public class BaseScenario extends AbstractBaseScenario {
 	static final Logger LOG = LoggerFactory.getLogger(BaseScenario.class);
 
 	public static final DropwizardTestSupport<CustomAppConfiguration> DROPWIZARD = new DropwizardTestSupport<CustomAppConfiguration>(
-			App.class, "test.yml");
+			App.class, "scenario.yml");
 	
 	private static Jdbi jdbi;
 

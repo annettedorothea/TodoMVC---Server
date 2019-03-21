@@ -6,3 +6,4 @@ target
 live.yml
 replay-live.yml
 test.yml
+scenario.yml

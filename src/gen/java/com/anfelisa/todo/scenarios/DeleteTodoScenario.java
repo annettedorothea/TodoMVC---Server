@@ -44,13 +44,13 @@ public class DeleteTodoScenario extends BaseScenario {
 	private void given() throws Exception {
 		List<ITimelineItem> timeline = new ArrayList<>();
 		
-		com.anfelisa.todo.data.TodoData todo0 = new com.anfelisa.todo.data.TodoData("123");
+		com.anfelisa.todo.data.TodoData todo0 = new com.anfelisa.todo.data.TodoData(randomUUID());
 		todo0.setId("123");
 		todo0.setDescription("todo 1");
 		todo0.setCreatedDateTime(DateTime.parse("10.10.2019 8:22:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
 		timeline.add(TestUtils.createCreateTodoSuccessEventTimelineItem(todo0));
 		
-		com.anfelisa.todo.data.TodoData todo1 = new com.anfelisa.todo.data.TodoData("234");
+		com.anfelisa.todo.data.TodoData todo1 = new com.anfelisa.todo.data.TodoData(randomUUID());
 		todo1.setId("234");
 		todo1.setDescription("todo 2");
 		todo1.setCreatedDateTime(DateTime.parse("10.10.2019 9:01:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
@@ -60,7 +60,6 @@ public class DeleteTodoScenario extends BaseScenario {
 	}
 	
 	private Response when() throws Exception {
-		setSystemTime(DateTime.parse("10.10.2019 9:04:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")), DROPWIZARD.getLocalPort());
 		return ActionCalls.callDeleteTodo(randomUUID(), "123", DROPWIZARD.getLocalPort());
 	}
 	
@@ -68,11 +67,10 @@ public class DeleteTodoScenario extends BaseScenario {
 		assertThat(response.getStatus(), is(200));
 		
 		
-		setSystemTime(DateTime.parse("10.10.2019 9:05:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")), DROPWIZARD.getLocalPort());
 
 		Response getAllTodos0 = ActionCalls.callGetAllTodos(randomUUID(), DROPWIZARD.getLocalPort());
 		
-		com.anfelisa.todo.data.TodoListData expectedGetAllTodos0Data = new com.anfelisa.todo.data.TodoListData("");
+		com.anfelisa.todo.data.TodoListData expectedGetAllTodos0Data = new com.anfelisa.todo.data.TodoListData(randomUUID());
 		List<com.anfelisa.todo.models.ITodoModel> expectedGetAllTodos0DataTodoList = new ArrayList<com.anfelisa.todo.models.ITodoModel>();
 		com.anfelisa.todo.models.ITodoModel expectedGetAllTodos0DataTodoList0 = new com.anfelisa.todo.models.TodoModel();
 		expectedGetAllTodos0DataTodoList0.setId("234");

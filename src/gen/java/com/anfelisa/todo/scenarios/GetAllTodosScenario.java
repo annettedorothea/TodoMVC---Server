@@ -44,15 +44,13 @@ public class GetAllTodosScenario extends BaseScenario {
 	private void given() throws Exception {
 		List<ITimelineItem> timeline = new ArrayList<>();
 		
-		com.anfelisa.todo.data.TodoData todo0 = new com.anfelisa.todo.data.TodoData("123");
-		todo0.setSystemTime(DateTime.parse("10.10.2019 8:22:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		com.anfelisa.todo.data.TodoData todo0 = new com.anfelisa.todo.data.TodoData(randomUUID());
 		todo0.setId("123");
 		todo0.setDescription("xyz");
 		todo0.setCreatedDateTime(DateTime.parse("10.10.2019 8:22:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
 		timeline.add(TestUtils.createCreateTodoSuccessEventTimelineItem(todo0));
 		
-		com.anfelisa.todo.data.TodoData todo1 = new com.anfelisa.todo.data.TodoData("456");
-		todo1.setSystemTime(DateTime.parse("10.10.2019 9:01:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
+		com.anfelisa.todo.data.TodoData todo1 = new com.anfelisa.todo.data.TodoData(randomUUID());
 		todo1.setId("456");
 		todo1.setDescription("abc");
 		todo1.setCreatedDateTime(DateTime.parse("10.10.2019 9:01:00", DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss")));
@@ -68,7 +66,7 @@ public class GetAllTodosScenario extends BaseScenario {
 	private void then(Response response) throws Exception {
 		assertThat(response.getStatus(), is(200));
 		
-		com.anfelisa.todo.data.TodoListData expectedData = new com.anfelisa.todo.data.TodoListData("");
+		com.anfelisa.todo.data.TodoListData expectedData = new com.anfelisa.todo.data.TodoListData(randomUUID());
 		List<com.anfelisa.todo.models.ITodoModel> expectedDataTodoList = new ArrayList<com.anfelisa.todo.models.ITodoModel>();
 		com.anfelisa.todo.models.ITodoModel expectedDataTodoList0 = new com.anfelisa.todo.models.TodoModel();
 		expectedDataTodoList0.setId("123");

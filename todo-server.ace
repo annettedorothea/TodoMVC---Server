@@ -87,19 +87,18 @@ models
 	
 	ClearDone {}
 	
+	
 scenarios 
 	GetAllTodos
 	GIVEN 
 		CreateTodo.success 
-			uuid "123"
-			systemTime "10.10.2019 8:22:00" {
+			{
 				id : "123" 
 				description : "xyz"
 				createdDateTime : "10.10.2019 8:22:00"
 			}
 		CreateTodo.success 
-			uuid "456"
-			systemTime "10.10.2019 9:01:00" {
+			{
 				id : "456" 
 				description : "abc"
 				createdDateTime : "10.10.2019 9:01:00"
@@ -124,24 +123,23 @@ scenarios
 	DeleteTodo
 	GIVEN 
 		CreateTodo.success 
-			uuid "123" {
+		{
 			id : "123" 
 			description : "todo 1"
 			createdDateTime : "10.10.2019 8:22:00"
 		}
 		CreateTodo.success 
-			uuid "234" {
+		{
 			id : "234" 
 			description : "todo 2"
 			createdDateTime : "10.10.2019 9:01:00"
 		}
 	WHEN DeleteTodo 
-		systemTime "10.10.2019 9:04:00" {
+		{
 			id : "123"
 		}
 	THEN 200
 		GetAllTodos 
-		systemTime "10.10.2019 9:05:00"
 		response {
 			todoList : [{
 				id : "234" 
