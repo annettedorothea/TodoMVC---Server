@@ -1,13 +1,13 @@
 package com.anfelisa.todo.views;
 
-import org.jdbi.v3.core.Handle;
-
-import com.anfelisa.ace.IDaoProvider;
 import com.anfelisa.todo.data.IClearDoneData;
 import com.anfelisa.todo.data.ITodoData;
 import com.anfelisa.todo.data.ITodoIdData;
 import com.anfelisa.todo.data.ITodoToggleData;
 import com.anfelisa.todo.data.IToggleAllData;
+
+import de.acegen.IDaoProvider;
+import de.acegen.PersistenceHandle;
 
 public class TodoView implements ITodoView {
 
@@ -18,27 +18,27 @@ public class TodoView implements ITodoView {
 		this.daoProvider = daoProvider;
 	}
 
-	public void create(ITodoData data, Handle handle) {
+	public void create(ITodoData data, PersistenceHandle handle) {
 		daoProvider.getTodoDao().insert(handle, data);
 	}
 
-	public void toggle(ITodoToggleData data, Handle handle) {
+	public void toggle(ITodoToggleData data, PersistenceHandle handle) {
 		daoProvider.getTodoDao().toggleTodo(handle, data);
 	}
 
-	public void toggleAll(IToggleAllData data, Handle handle) {
+	public void toggleAll(IToggleAllData data, PersistenceHandle handle) {
 		daoProvider.getTodoDao().toggleAll(handle, data);
 	}
 
-	public void delete(ITodoIdData data, Handle handle) {
+	public void delete(ITodoIdData data, PersistenceHandle handle) {
 		daoProvider.getTodoDao().deleteById(handle, data.getId());
 	}
 
-	public void update(ITodoData data, Handle handle) {
+	public void update(ITodoData data, PersistenceHandle handle) {
 		daoProvider.getTodoDao().updateById(handle, data);
 	}
 
-	public void clearDone(IClearDoneData data, Handle handle) {
+	public void clearDone(IClearDoneData data, PersistenceHandle handle) {
 		daoProvider.getTodoDao().deleteDone(handle);
 	}
 

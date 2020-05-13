@@ -31,7 +31,7 @@ public class ToggleAllMapper implements RowMapper<IToggleAllModel> {
 		return new ToggleAllModel(
 			r.getBoolean("done"),
 			null,
-			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")) : null
+			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")).withZone(org.joda.time.DateTimeZone.UTC) : null
 		);
 	}
 }

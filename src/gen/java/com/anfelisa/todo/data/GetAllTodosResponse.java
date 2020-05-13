@@ -21,13 +21,17 @@ package com.anfelisa.todo.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import java.util.List;
 
-import com.anfelisa.ace.IDataContainer;
+import de.acegen.IDataContainer;
+import de.acegen.DateTimeToStringConverter;
+import de.acegen.StringToDateTimeConverter;
 
 @SuppressWarnings("all")
 public class GetAllTodosResponse implements IGetAllTodosResponse {
@@ -42,9 +46,9 @@ public class GetAllTodosResponse implements IGetAllTodosResponse {
 	}
 	
 	@JsonProperty
-		public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
-			return this.todoList;
-		}
+	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+		return this.todoList;
+	}
 	
 }
 

@@ -21,7 +21,7 @@ package com.anfelisa.todo.data;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import com.anfelisa.ace.IDataContainer;
+import de.acegen.IDataContainer;
 
 import com.anfelisa.todo.models.ITodoIdModel;
 

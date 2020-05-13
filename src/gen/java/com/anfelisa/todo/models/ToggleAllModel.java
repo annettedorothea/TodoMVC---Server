@@ -20,10 +20,16 @@
 package com.anfelisa.todo.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import java.util.List;
 import java.util.ArrayList;
+
+import de.acegen.DateTimeToStringConverter;
+import de.acegen.StringToDateTimeConverter;
 
 @SuppressWarnings("all")
 public class ToggleAllModel implements IToggleAllModel {
@@ -50,25 +56,27 @@ public class ToggleAllModel implements IToggleAllModel {
 	}
 
 	@JsonProperty
-		public Boolean getDone() {
-			return this.done;
-		}
+	public Boolean getDone() {
+		return this.done;
+	}
 	public void setDone(Boolean done) {
 		this.done = done;
 	}
 	
 	@JsonProperty
-		public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodosToBeToggled() {
-			return this.todosToBeToggled;
-		}
+	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodosToBeToggled() {
+		return this.todosToBeToggled;
+	}
 	public void setTodosToBeToggled(java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled) {
 		this.todosToBeToggled = todosToBeToggled;
 	}
 	
 	@JsonProperty
-		public org.joda.time.DateTime getUpdatedDateTime() {
-			return this.updatedDateTime;
-		}
+	@JsonSerialize(converter = DateTimeToStringConverter.class)
+	@JsonDeserialize(converter = StringToDateTimeConverter.class)
+	public org.joda.time.DateTime getUpdatedDateTime() {
+		return this.updatedDateTime;
+	}
 	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}

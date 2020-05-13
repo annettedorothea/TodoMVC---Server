@@ -20,6 +20,8 @@
 package com.anfelisa.todo.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,8 +32,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import com.anfelisa.todo.models.ITodoToggleModel;
 
-import com.anfelisa.ace.AbstractData;
-import com.anfelisa.ace.IDataContainer;
+import de.acegen.AbstractData;
+import de.acegen.IDataContainer;
+import de.acegen.DateTimeToStringConverter;
+import de.acegen.StringToDateTimeConverter;
 
 @SuppressWarnings("unused")
 public abstract class AbstractTodoToggleData extends AbstractData implements ITodoToggleData {
@@ -68,9 +72,9 @@ public abstract class AbstractTodoToggleData extends AbstractData implements ITo
 	}
 
 	@JsonProperty
-		public String getId() {
-			return this.id;
-		}
+	public String getId() {
+		return this.id;
+	}
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -80,9 +84,9 @@ public abstract class AbstractTodoToggleData extends AbstractData implements ITo
 	}
 	
 	@JsonProperty
-		public Boolean getDone() {
-			return this.done;
-		}
+	public Boolean getDone() {
+		return this.done;
+	}
 	public void setDone(Boolean done) {
 		this.done = done;
 	}
@@ -92,9 +96,9 @@ public abstract class AbstractTodoToggleData extends AbstractData implements ITo
 	}
 	
 	@JsonProperty
-		public com.anfelisa.todo.models.ITodoModel getTodoToBeToggled() {
-			return this.todoToBeToggled;
-		}
+	public com.anfelisa.todo.models.ITodoModel getTodoToBeToggled() {
+		return this.todoToBeToggled;
+	}
 	public void setTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled) {
 		this.todoToBeToggled = todoToBeToggled;
 	}
@@ -104,9 +108,11 @@ public abstract class AbstractTodoToggleData extends AbstractData implements ITo
 	}
 	
 	@JsonProperty
-		public org.joda.time.DateTime getUpdatedDateTime() {
-			return this.updatedDateTime;
-		}
+	@JsonSerialize(converter = DateTimeToStringConverter.class)
+	@JsonDeserialize(converter = StringToDateTimeConverter.class)
+	public org.joda.time.DateTime getUpdatedDateTime() {
+		return this.updatedDateTime;
+	}
 	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}

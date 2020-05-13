@@ -20,12 +20,12 @@
 package com.anfelisa.todo.commands;
 
 import javax.ws.rs.WebApplicationException;
-import org.jdbi.v3.core.Handle;
 
-import com.anfelisa.ace.Command;
-import com.anfelisa.ace.CustomAppConfiguration;
-import com.anfelisa.ace.IDaoProvider;
-import com.anfelisa.ace.ViewProvider;
+import de.acegen.Command;
+import de.acegen.CustomAppConfiguration;
+import de.acegen.IDaoProvider;
+import de.acegen.ViewProvider;
+import de.acegen.PersistenceHandle;
 
 import com.anfelisa.todo.data.IToggleAllData;
 
@@ -38,10 +38,10 @@ public abstract class AbstractToggleAllCommand extends Command<IToggleAllData> {
 	}
 
 	@Override
-	public void publishEvents(Handle handle, Handle timelineHandle) {
+	public void publishEvents(PersistenceHandle handle, PersistenceHandle timelineHandle) {
 		switch (this.commandData.getOutcome()) {
 		case success:
-			new com.anfelisa.todo.events.ToggleAllSuccessEvent(this.commandData, daoProvider, viewProvider).publish(handle, timelineHandle);
+			new com.anfelisa.todo.events.ToggleAllSuccessEvent(this.commandData, daoProvider, viewProvider, appConfiguration).publish(handle, timelineHandle);
 			break;
 		default:
 			throw new WebApplicationException("unhandled outcome " + this.commandData.getOutcome());

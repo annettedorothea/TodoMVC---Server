@@ -20,6 +20,8 @@
 package com.anfelisa.todo.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,8 +32,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import com.anfelisa.todo.models.ITodoListModel;
 
-import com.anfelisa.ace.AbstractData;
-import com.anfelisa.ace.IDataContainer;
+import de.acegen.AbstractData;
+import de.acegen.IDataContainer;
+import de.acegen.DateTimeToStringConverter;
+import de.acegen.StringToDateTimeConverter;
 
 @SuppressWarnings("unused")
 public abstract class AbstractTodoListData extends AbstractData implements ITodoListData {
@@ -54,9 +58,9 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	}
 
 	@JsonProperty
-		public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
-			return this.todoList;
-		}
+	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+		return this.todoList;
+	}
 	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
 		this.todoList = todoList;
 	}

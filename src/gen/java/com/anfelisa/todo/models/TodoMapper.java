@@ -32,8 +32,8 @@ public class TodoMapper implements RowMapper<ITodoModel> {
 			r.getString("id"),
 			r.getString("description"),
 			r.getBoolean("done"),
-			r.getTimestamp("createdDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("createdDateTime")) : null,
-			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")) : null
+			r.getTimestamp("createdDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("createdDateTime")).withZone(org.joda.time.DateTimeZone.UTC) : null,
+			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")).withZone(org.joda.time.DateTimeZone.UTC) : null
 		);
 	}
 }

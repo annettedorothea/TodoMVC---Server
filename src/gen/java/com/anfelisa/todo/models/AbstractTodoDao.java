@@ -19,7 +19,7 @@
 
 package com.anfelisa.todo.models;
 
-import org.jdbi.v3.core.Handle;
+import de.acegen.PersistenceHandle;
 import org.jdbi.v3.core.statement.Update;
 
 import java.util.List;
@@ -28,8 +28,8 @@ import java.util.Optional;
 @SuppressWarnings("all")
 public class AbstractTodoDao {
 	
-	public void insert(Handle handle, ITodoModel todoModel) {
-		Update statement = handle.createUpdate("INSERT INTO \"todo\" (id, description, done, createddatetime, updateddatetime) VALUES (:id, :description, :done, :createddatetime, :updateddatetime)");
+	public void insert(PersistenceHandle handle, ITodoModel todoModel) {
+		Update statement = handle.getHandle().createUpdate("INSERT INTO \"todo\" (id, description, done, createddatetime, updateddatetime) VALUES (:id, :description, :done, :createddatetime, :updateddatetime)");
 		statement.bind("id",  todoModel.getId() );
 		statement.bind("description",  todoModel.getDescription() );
 		statement.bind("done",  todoModel.getDone() );
@@ -39,8 +39,8 @@ public class AbstractTodoDao {
 	}
 	
 	
-	public void updateById(Handle handle, ITodoModel todoModel) {
-		Update statement = handle.createUpdate("UPDATE \"todo\" SET id = :id, description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
+	public void updateById(PersistenceHandle handle, ITodoModel todoModel) {
+		Update statement = handle.getHandle().createUpdate("UPDATE \"todo\" SET id = :id, description = :description, done = :done, createddatetime = :createddatetime, updateddatetime = :updateddatetime WHERE id = :id");
 		statement.bind("id",  todoModel.getId() );
 		statement.bind("description",  todoModel.getDescription() );
 		statement.bind("done",  todoModel.getDone() );
@@ -50,28 +50,28 @@ public class AbstractTodoDao {
 		statement.execute();
 	}
 
-	public void deleteById(Handle handle, String id) {
-		Update statement = handle.createUpdate("DELETE FROM \"todo\" WHERE id = :id");
+	public void deleteById(PersistenceHandle handle, String id) {
+		Update statement = handle.getHandle().createUpdate("DELETE FROM \"todo\" WHERE id = :id");
 		statement.bind("id", id);
 		statement.execute();
 	}
 
-	public ITodoModel selectById(Handle handle, String id) {
-		Optional<ITodoModel> optional = handle.createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM \"todo\" WHERE id = :id")
+	public ITodoModel selectById(PersistenceHandle handle, String id) {
+		Optional<ITodoModel> optional = handle.getHandle().createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM \"todo\" WHERE id = :id")
 			.bind("id", id)
 			.map(new TodoMapper())
 			.findFirst();
 		return optional.isPresent() ? optional.get() : null;
 	}
 	
-	public List<ITodoModel> selectAll(Handle handle) {
-		return handle.createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM \"todo\"")
+	public List<ITodoModel> selectAll(PersistenceHandle handle) {
+		return handle.getHandle().createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM \"todo\"")
 			.map(new TodoMapper())
 			.list();
 	}
 
-	public void truncate(Handle handle) {
-		Update statement = handle.createUpdate("TRUNCATE TABLE \"todo\" CASCADE");
+	public void truncate(PersistenceHandle handle) {
+		Update statement = handle.getHandle().createUpdate("TRUNCATE TABLE \"todo\" CASCADE");
 		statement.execute();
 	}
 

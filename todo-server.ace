@@ -14,11 +14,11 @@ ACE
 	ToggleTodo<TodoToggle> 
 		PUT "/todos/toggle" 
 		queryParams id
-		on success ( Todo.toggle TodoDoneHistory.toggle )
+		on success ( Todo.toggle )
 	
 	ToggleAll<ToggleAll>
 		PUT "/todos/toggle-all" 
-		on success ( Todo.toggleAll TodoDoneHistory.toggleAll )
+		on success ( Todo.toggleAll )
 	
 	UpdateTodo<Todo>
 		PUT "/todos/update" 
@@ -43,18 +43,8 @@ views
 		update(Todo)
 		clearDone(ClearDone)
 	}
-	TodoDoneHistory {
-		toggle(TodoToggle)
-		toggleAll(ToggleAll)
-	}
 
 models 
-	persistent TodoDoneHistory {
-		Unique PrimaryKey NotNull String id
-		NotNull String description
-		DateTime doneDateTime
-	}
-	
 	persistent Todo {
 		Unique PrimaryKey NotNull String id
 		NotNull String description
@@ -88,69 +78,5 @@ models
 	ClearDone {}
 	
 	
-scenarios 
-	GetAllTodos
-	GIVEN 
-		CreateTodo.success 
-			{
-				id : "123" 
-				description : "xyz"
-				createdDateTime : "10.10.2019 8:22:00"
-			}
-		CreateTodo.success 
-			{
-				id : "456" 
-				description : "abc"
-				createdDateTime : "10.10.2019 9:01:00"
-			}
-	WHEN GetAllTodos 
-	THEN 200 
-		response {
-			todoList : [
-				{
-					id : "123" 
-					description : "xyz"
-					createdDateTime : "10.10.2019 8:22:00"
-				}
-				{
-					id : "456" 
-					description : "abc"
-					createdDateTime : "10.10.2019 9:01:00"
-				}
-			]
-		}
-
-	DeleteTodo
-	GIVEN 
-		CreateTodo.success 
-		{
-			id : "123" 
-			description : "todo 1"
-			createdDateTime : "10.10.2019 8:22:00"
-		}
-		CreateTodo.success 
-		{
-			id : "234" 
-			description : "todo 2"
-			createdDateTime : "10.10.2019 9:01:00"
-		}
-	WHEN DeleteTodo 
-		{
-			id : "123"
-		}
-	THEN 200
-		GetAllTodos 
-		response {
-			todoList : [{
-				id : "234" 
-				description : "todo 2"
-				createdDateTime : "10.10.2019 9:01:00"
-			}]
-		}
-		
-		
-		
-		
-		
 		
 
