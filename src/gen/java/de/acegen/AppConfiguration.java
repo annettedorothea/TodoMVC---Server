@@ -17,6 +17,7 @@
 
 
 
+
 package de.acegen;
 
 import javax.validation.Valid;
@@ -26,26 +27,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.server.DefaultServerFactory;
+import io.dropwizard.server.ServerFactory;
 
 public class AppConfiguration extends Configuration {
 
-	@Valid
+    @Valid
+    @NotNull
+    private ServerFactory server = new DefaultServerFactory();
+
+    @JsonProperty("server")
+    public ServerFactory getServerFactory() {
+        return server;
+    }
+
+    @JsonProperty("server")
+    public void setServerFactory(ServerFactory factory) {
+        this.server = factory;
+    }
+
+    @Valid
 	@NotNull
 	private DataSourceFactory database = new DataSourceFactory();
-
-	private int port;
-	
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-	@Valid
-	@NotNull
-	private ServerConfiguration serverConfiguration = new ServerConfiguration();
 
 	@JsonProperty("database")
 	public DataSourceFactory getDataSourceFactory() {
@@ -57,17 +60,22 @@ public class AppConfiguration extends Configuration {
 		this.database = dataSourceFactory;
 	}
 
+	@Valid
+	@NotNull
+	private Config config = new Config();
+
 	@JsonProperty("config")
-	public ServerConfiguration getServerConfiguration() {
-		return serverConfiguration;
+	public Config getConfig() {
+		return config;
 	}
 
 	@JsonProperty("config")
-	public void setServerConfiguration(ServerConfiguration serverConfiguration) {
-		this.serverConfiguration = serverConfiguration;
+	public void setConfig(Config config) {
+		this.config = config;
 	}
-
+	
 }
+		
 
 
 

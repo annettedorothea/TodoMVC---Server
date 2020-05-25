@@ -31,7 +31,6 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 	
 	@Override
 	public void initActionData() {
-		// TODO Auto-generated method stub
 		
 	}
 

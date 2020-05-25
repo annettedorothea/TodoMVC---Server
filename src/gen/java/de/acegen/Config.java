@@ -21,7 +21,7 @@
 	
 	import com.fasterxml.jackson.annotation.JsonProperty;
 
-	public class ServerConfiguration {
+	public class Config {
 		public static final String REPLAY = "REPLAY";
 		public static final String LIVE = "LIVE";
 		public static final String DEV = "DEV";

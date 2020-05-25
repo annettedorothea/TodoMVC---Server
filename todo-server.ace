@@ -1,5 +1,6 @@
 HttpServer
 
+Dropwizard
 com.anfelisa.todo
 ACE 
 	GetAllTodos<TodoList> 
@@ -76,6 +77,41 @@ models
 	}
 	
 	ClearDone {}
+	
+scenarios 
+
+CreateTodo
+	WHEN CreateTodo
+	uuid "${testId}"
+	{
+		description: "todo ${testId}"
+	}
+	THEN 200
+
+CreateRandomTodo
+	WHEN CreateTodo {
+		description: "${random} ${testId}"
+	}
+	THEN 200
+	
+ToggleTodo 
+	GIVEN CreateTodo
+	WHEN ToggleTodo {
+		id: "${testId}"
+	}
+	THEN 200
+
+ToggleTodoTwice 
+	GIVEN 
+		CreateTodo
+		ToggleTodo
+	WHEN ToggleTodo {
+		id: "${testId}"
+	}
+	THEN 200
+	
+
+
 	
 	
 		

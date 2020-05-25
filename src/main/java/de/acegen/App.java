@@ -24,8 +24,6 @@ public class App extends Application<CustomAppConfiguration> {
 
 	static final Logger LOG = LoggerFactory.getLogger(App.class);
 
-	static EmailService EMAIL_SERVICE;
-	
 	static IDaoProvider daoProvider;
 	
 	public static ViewProvider viewProvider;
@@ -59,8 +57,6 @@ public class App extends Application<CustomAppConfiguration> {
 	public void run(CustomAppConfiguration configuration, Environment environment) throws ClassNotFoundException {
 		LOG.info("running version {}", getVersion());
 
-		EMAIL_SERVICE = new EmailService(configuration.getEmail());
-
 		daoProvider = DaoProvider.create();
 		viewProvider = ViewProvider.create(daoProvider, configuration);
 
@@ -70,14 +66,14 @@ public class App extends Application<CustomAppConfiguration> {
 		
 		E2E e2e = new E2E();
 
-		String mode = configuration.getServerConfiguration().getMode();
-		if (ServerConfiguration.REPLAY.equals(mode)) {
+		String mode = configuration.getConfig().getMode();
+		if (Config.REPLAY.equals(mode)) {
 			environment.jersey().register(new PrepareE2EResource(jdbi, daoProvider, viewProvider, e2e, configuration));
 			environment.jersey().register(new StartE2ESessionResource(jdbi, daoProvider, e2e, configuration));
 			environment.jersey().register(new StopE2ESessionResource(e2e, configuration));
 			environment.jersey().register(new GetServerTimelineResource(jdbi, configuration));
 			LOG.warn("You are running in REPLAY mode. This is a security risc.");
-		} else if (ServerConfiguration.DEV.equals(mode)) {
+		} else if (Config.DEV.equals(mode)) {
 			environment.jersey().register(new GetServerTimelineResource(jdbi, configuration));
 			LOG.warn("You are running in DEV mode. This is a security risc.");
 		}
@@ -97,16 +93,6 @@ public class App extends Application<CustomAppConfiguration> {
 		configureCors(environment);
 	}
 
-	public static void reportException(Exception x) {
-		if (EMAIL_SERVICE != null) {
-			try {
-				EMAIL_SERVICE.sendEmail("!!! Todo exception !!!", x.getMessage());
-			} catch (Exception e) {
-				LOG.error("failed to notify about exception", x.getMessage());
-			}
-		}
-	}
-	
 	private void configureCors(Environment environment) {
 		final FilterRegistration.Dynamic cors = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
 

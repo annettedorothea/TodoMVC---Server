@@ -35,7 +35,6 @@ public class TimelineItemMapper implements RowMapper<ITimelineItem> {
 		DateTime time = DateTime.parse(r.getString("time"), fmt);
 		return new TimelineItem(
 			r.getString("type"),
-			r.getString("method"),
 			r.getString("name"),
 			time,
 			r.getString("data"),

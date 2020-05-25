@@ -27,8 +27,6 @@ public interface ITimelineItem {
 
 	String getType();
 	
-	String getMethod();
-	
 	String getName();
 	
 	DateTime getTimestamp();

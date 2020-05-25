@@ -34,7 +34,6 @@ import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Path("/e2e")
@@ -60,10 +59,9 @@ public class StartE2ESessionResource {
 	}
 
 	@PUT
-	@Timed
 	@Path("/start")
 	public Response put(@NotNull List<ITimelineItem> timeline) throws JsonProcessingException {
-		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
+		if (Config.LIVE.equals(configuration.getConfig().getMode())) {
 			throw new WebApplicationException("start e2e session is not available in a live environment", Response.Status.FORBIDDEN);
 		}
 		if (e2e.isSessionRunning() && e2e.getSessionStartedAt().plusMinutes(1).isAfterNow()) {

@@ -20,6 +20,8 @@
 package de.acegen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.ws.rs.core.Response;
+import org.joda.time.DateTime;
 
 public abstract class AbstractBaseScenario {
 
@@ -35,6 +37,16 @@ public abstract class AbstractBaseScenario {
 		objectMapper = new ObjectMapper();
 	}
 
+	protected abstract void runTest() throws Exception;
+
+	protected abstract Response httpGet(String path, String authorization);
+	
+	protected abstract Response httpPost(String path, Object data, String authorization);
+	
+	protected abstract Response httpPut(String path, Object data, String authorization);
+	
+	protected abstract Response httpDelete(String path, String authorization);
+	
 	protected abstract String randomString();
 	
 	protected abstract String randomUUID();
@@ -52,6 +64,16 @@ public abstract class AbstractBaseScenario {
 	protected abstract void assertFail(String message);
 
 	protected abstract String scenarioName();
+	
+	protected abstract String getTestId();
+
+	protected abstract boolean prerequisite(String scenarioName);
+	
+	protected abstract Response callNotReplayableDataProviderPutValue(
+				String uuid, String key, Object data);
+				
+	protected abstract Response callNotReplayableDataProviderPutSystemTime(
+				String uuid, DateTime dateTime);
 
 }
 

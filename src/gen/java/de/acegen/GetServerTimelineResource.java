@@ -33,8 +33,6 @@ import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.codahale.metrics.annotation.Timed;
-
 @Path("/e2e")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -54,10 +52,9 @@ public class GetServerTimelineResource {
 	}
 
 	@GET
-	@Timed
 	@Path("/timeline")
 	public Response get() {
-		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
+		if (Config.LIVE.equals(configuration.getConfig().getMode())) {
 			throw new WebApplicationException("get server timeline is not available in a live environment", Response.Status.FORBIDDEN);
 		}
 		PersistenceHandle timelineHandle = new PersistenceHandle(jdbi.open());

@@ -23,9 +23,9 @@ import java.util.List;
 
 public abstract class Event<T extends IDataContainer> implements IEvent {
 
-	protected T eventData;
+	private T eventData;
 	private String eventName;
-	protected IDaoProvider daoProvider;
+	private IDaoProvider daoProvider;
 	private ViewProvider viewProvider;
 	private CustomAppConfiguration appConfiguration;
 
@@ -56,7 +56,7 @@ public abstract class Event<T extends IDataContainer> implements IEvent {
 	}
 
 	public void publish(PersistenceHandle handle, PersistenceHandle timelineHandle) {
-		if (appConfiguration.getServerConfiguration().writeTimeline()) {
+		if (appConfiguration.getConfig().writeTimeline()) {
 			daoProvider.getAceDao().addEventToTimeline(this, timelineHandle);
 		}
 		this.notifyListeners(handle);

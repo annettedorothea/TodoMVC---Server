@@ -26,8 +26,6 @@ public class TimelineItem implements ITimelineItem {
 
 	private String type;
 	
-	private String method;
-	
 	private String name;
 	
 	private DateTime timestamp;
@@ -39,7 +37,6 @@ public class TimelineItem implements ITimelineItem {
 	
 	public TimelineItem(
 		@JsonProperty("type") String type, 
-		@JsonProperty("method") String method, 
 		@JsonProperty("name") String name, 
 		@JsonProperty("timestamp") DateTime timestamp, 
 		@JsonProperty("data") String data,
@@ -47,7 +44,6 @@ public class TimelineItem implements ITimelineItem {
 	) {
 		super();
 		this.type = type;
-		this.method = method;
 		this.name = name;
 		this.timestamp = timestamp;
 		this.data = data;
@@ -57,11 +53,6 @@ public class TimelineItem implements ITimelineItem {
 	@JsonProperty
 	public String getType() {
 		return type;
-	}
-
-	@JsonProperty
-	public String getMethod() {
-		return method;
 	}
 
 	@JsonProperty
@@ -86,7 +77,7 @@ public class TimelineItem implements ITimelineItem {
 	
 	@Override
 	public String toString() {
-		return "TimelineItem [type=" + type + ", method=" + method + ", name=" + name + ", timestamp="
+		return "TimelineItem [type=" + type + ", name=" + name + ", timestamp="
 				+ timestamp + ", uuid=" + uuid + "]";
 	}
 

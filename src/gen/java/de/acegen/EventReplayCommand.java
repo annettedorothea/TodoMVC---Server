@@ -42,7 +42,7 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 	@Override
 	protected void run(Environment environment, Namespace namespace, CustomAppConfiguration configuration)
 			throws Exception {
-		if (ServerConfiguration.LIVE.equals(configuration.getServerConfiguration().getMode())) {
+		if (Config.LIVE.equals(configuration.getConfig().getMode())) {
 			throw new RuntimeException("we won't truncate all views and replay events in a live environment");
 		}
 
@@ -53,7 +53,7 @@ public class EventReplayCommand extends EnvironmentCommand<CustomAppConfiguratio
 		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "data-source-name");
 		DatabaseHandle databaseHandle = new DatabaseHandle(jdbi, configuration);
 
-		AppRegistration.registerConsumers(viewProvider, ServerConfiguration.REPLAY);
+		AppRegistration.registerConsumers(viewProvider, Config.REPLAY);
 
 		LOG.info("START EVENT REPLAY");
 		try {

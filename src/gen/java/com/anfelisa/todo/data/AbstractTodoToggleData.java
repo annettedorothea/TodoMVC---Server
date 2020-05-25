@@ -23,8 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import java.util.List;
 import org.slf4j.Logger;
@@ -42,10 +40,8 @@ public abstract class AbstractTodoToggleData extends AbstractData implements ITo
 	
 	static final Logger LOG = LoggerFactory.getLogger(AbstractTodoToggleData.class);
 	
-	@NotNull
 	private String id;
 	
-	@NotNull
 	private Boolean done = false;
 	
 	private com.anfelisa.todo.models.ITodoModel todoToBeToggled;

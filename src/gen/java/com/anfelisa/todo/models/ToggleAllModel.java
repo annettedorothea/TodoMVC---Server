@@ -23,8 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,7 +32,6 @@ import de.acegen.StringToDateTimeConverter;
 @SuppressWarnings("all")
 public class ToggleAllModel implements IToggleAllModel {
 
-	@NotNull
 	private Boolean done = false;
 	
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled;
@@ -81,10 +78,8 @@ public class ToggleAllModel implements IToggleAllModel {
 		this.updatedDateTime = updatedDateTime;
 	}
 	
-	
 }
-
-
+	
 
 
 /******* S.D.G. *******/
