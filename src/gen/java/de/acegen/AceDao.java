@@ -26,7 +26,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.jdbi.v3.core.statement.Update;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import javax.ws.rs.WebApplicationException;
 
 public class AceDao {
 
@@ -94,13 +93,13 @@ public class AceDao {
 				.map(new TimelineItemMapper()).list();
 	}
 	
-	public void addActionToTimeline(IAction action, PersistenceHandle timelineHandle) {
+	public void addActionToTimeline(IAction<? extends IDataContainer> action, PersistenceHandle timelineHandle) {
 		try {
 			String json = mapper.writeValueAsString(action.getActionData());
 			addItemToTimeline("action", action.getActionName(), json,
 					action.getActionData().getUuid(), timelineHandle);
 		} catch (JsonProcessingException e) {
-			throw new WebApplicationException(e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -110,7 +109,7 @@ public class AceDao {
 					mapper.writeValueAsString(command.getCommandData()), command.getCommandData().getUuid(),
 					timelineHandle);
 		} catch (JsonProcessingException e) {
-			throw new WebApplicationException(e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -119,7 +118,7 @@ public class AceDao {
 			addItemToTimeline("event", event.getEventName(), mapper.writeValueAsString(event.getEventData()),
 					event.getEventData().getUuid(), timelineHandle);
 		} catch (JsonProcessingException e) {
-			throw new WebApplicationException(e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -128,7 +127,7 @@ public class AceDao {
 			addItemToTimeline("preparing event", event.getEventName(),
 					mapper.writeValueAsString(event.getEventData()), uuid, timelineHandle);
 		} catch (JsonProcessingException e) {
-			throw new WebApplicationException(e);
+			throw new RuntimeException(e);
 		}
 	}
 
