@@ -19,7 +19,7 @@
 
 package de.acegen;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 
 public interface IDataContainer {
 
@@ -31,9 +31,9 @@ public interface IDataContainer {
 
 	void setOutcome(String outcome);
 
-	DateTime getSystemTime();
+	LocalDateTime getSystemTime();
 
-	void setSystemTime(DateTime systemTime);
+	void setSystemTime(LocalDateTime systemTime);
 
 	void migrateLegacyData(String json);
 

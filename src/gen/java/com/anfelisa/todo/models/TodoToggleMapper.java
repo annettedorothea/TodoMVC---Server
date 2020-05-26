@@ -32,7 +32,7 @@ public class TodoToggleMapper implements RowMapper<ITodoToggleModel> {
 			r.getString("id"),
 			r.getBoolean("done"),
 			null,
-			r.getTimestamp("updatedDateTime") != null ? new org.joda.time.DateTime(r.getTimestamp("updatedDateTime")).withZone(org.joda.time.DateTimeZone.UTC) : null
+			r.getTimestamp("updatedDateTime") != null ? r.getTimestamp("updatedDateTime").toLocalDateTime() : null
 		);
 	}
 }

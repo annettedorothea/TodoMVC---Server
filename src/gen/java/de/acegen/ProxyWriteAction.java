@@ -19,8 +19,7 @@
 
 package de.acegen;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +63,7 @@ public abstract class ProxyWriteAction<T extends IDataContainer> extends Action<
 					databaseHandle.rollbackTransaction();
 					return;
 				}
-				this.actionData.setSystemTime(DateTime.now().withZone(DateTimeZone.UTC));
+				this.actionData.setSystemTime(LocalDateTime.now());
 				this.initActionData();
 			} else if (Config.REPLAY.equals(appConfiguration.getConfig().getMode())) {
 				ITimelineItem timelineItem = e2e.selectAction(this.actionData.getUuid());

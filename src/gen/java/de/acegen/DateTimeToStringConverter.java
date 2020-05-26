@@ -19,13 +19,13 @@
 
 package de.acegen;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 
-public class DateTimeToStringConverter extends StdConverter<DateTime, String> {
+public class DateTimeToStringConverter extends StdConverter<LocalDateTime, String> {
 	@Override
-	public String convert(DateTime value) {
+	public String convert(LocalDateTime value) {
 		return value.toString();
 	}
 }

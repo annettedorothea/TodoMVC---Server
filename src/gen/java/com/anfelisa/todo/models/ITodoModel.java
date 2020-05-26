@@ -35,11 +35,11 @@ public interface ITodoModel {
 	Boolean getDone();
 	void setDone(Boolean done);
 	
-	org.joda.time.DateTime getCreatedDateTime();
-	void setCreatedDateTime(org.joda.time.DateTime createdDateTime);
+	java.time.LocalDateTime getCreatedDateTime();
+	void setCreatedDateTime(java.time.LocalDateTime createdDateTime);
 	
-	org.joda.time.DateTime getUpdatedDateTime();
-	void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
+	java.time.LocalDateTime getUpdatedDateTime();
+	void setUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
 	
 }

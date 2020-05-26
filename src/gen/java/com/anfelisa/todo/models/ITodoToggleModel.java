@@ -35,8 +35,8 @@ public interface ITodoToggleModel {
 	com.anfelisa.todo.models.ITodoModel getTodoToBeToggled();
 	void setTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled);
 	
-	org.joda.time.DateTime getUpdatedDateTime();
-	void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
+	java.time.LocalDateTime getUpdatedDateTime();
+	void setUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
 	
 }

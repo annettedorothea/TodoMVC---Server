@@ -20,6 +20,7 @@
 package de.acegen;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -64,7 +65,7 @@ public class StartE2ESessionResource {
 		if (Config.LIVE.equals(configuration.getConfig().getMode())) {
 			throw new WebApplicationException("start e2e session is not available in a live environment", Response.Status.FORBIDDEN);
 		}
-		if (e2e.isSessionRunning() && e2e.getSessionStartedAt().plusMinutes(1).isAfterNow()) {
+		if (e2e.isSessionRunning() && e2e.getSessionStartedAt().plusMinutes(1).isAfter(LocalDateTime.now())) {
 			throw new WebApplicationException("session is already running", Response.Status.SERVICE_UNAVAILABLE);
 		}
 		e2e.init(timeline);

@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -33,7 +34,6 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.jdbi.v3.core.Jdbi;
-import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -211,7 +211,7 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 
 	@Override
 	protected Response callNotReplayableDataProviderPutSystemTime(
-			String uuid, DateTime dateTime) {
+			String uuid, LocalDateTime dateTime) {
 		Client client = new JerseyClientBuilder().build();
 		Builder builder = client
 				.target(String.format(

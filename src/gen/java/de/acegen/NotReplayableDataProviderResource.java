@@ -27,8 +27,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +52,7 @@ public class NotReplayableDataProviderResource {
 	@PUT
 	@Path("/system-time")
 	public Response putSystemTime(@QueryParam("uuid") String uuid, @QueryParam("system-time") String systemTime) {
-		NotReplayableDataProvider.putSystemTime(uuid, DateTime.parse(systemTime).withZone(DateTimeZone.UTC));
+		NotReplayableDataProvider.putSystemTime(uuid, LocalDateTime.parse(systemTime));
 		return Response.ok().build();
 	}
 	

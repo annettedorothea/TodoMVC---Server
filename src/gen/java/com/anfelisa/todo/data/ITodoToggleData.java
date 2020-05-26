@@ -34,7 +34,7 @@ public interface ITodoToggleData extends ITodoToggleModel, IDataContainer {
 	
 	ITodoToggleData withTodoToBeToggled(com.anfelisa.todo.models.ITodoModel todoToBeToggled);
 	
-	ITodoToggleData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
+	ITodoToggleData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
 	
 }

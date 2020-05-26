@@ -19,8 +19,7 @@
 
 package com.anfelisa.todo.actions;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,11 +63,11 @@ public abstract class AbstractGetAllTodosAction extends ReadAction<ITodoListData
 	
 	@Override
 	protected void initActionDataFromNotReplayableDataProvider() {
-		DateTime systemTime = NotReplayableDataProvider.consumeSystemTime(this.actionData.getUuid());
+		LocalDateTime systemTime = NotReplayableDataProvider.consumeSystemTime(this.actionData.getUuid());
 		if (systemTime != null) {
 			this.actionData.setSystemTime(systemTime);
 		} else {
-			this.actionData.setSystemTime(DateTime.now().withZone(DateTimeZone.UTC));
+			this.actionData.setSystemTime(LocalDateTime.now());
 		}
 	}
 

@@ -32,7 +32,7 @@ public interface IToggleAllData extends IToggleAllModel, IDataContainer {
 	
 	IToggleAllData withTodosToBeToggled(java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled);
 	
-	IToggleAllData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
+	IToggleAllData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
 	
 }

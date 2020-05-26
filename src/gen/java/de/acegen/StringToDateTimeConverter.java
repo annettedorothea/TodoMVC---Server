@@ -19,15 +19,14 @@
 
 package de.acegen;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 
-public class StringToDateTimeConverter extends StdConverter<String, DateTime> {
+public class StringToDateTimeConverter extends StdConverter<String, LocalDateTime> {
 	@Override
-	public DateTime convert(String value) {
-		return DateTime.parse(value).withZone(DateTimeZone.UTC);
+	public LocalDateTime convert(String value) {
+		return LocalDateTime.parse(value);
 	}
 }
 

@@ -38,9 +38,9 @@ public class TodoModel implements ITodoModel {
 	
 	private Boolean done = false;
 	
-	private org.joda.time.DateTime createdDateTime;
+	private java.time.LocalDateTime createdDateTime;
 	
-	private org.joda.time.DateTime updatedDateTime;
+	private java.time.LocalDateTime updatedDateTime;
 	
 
 	public TodoModel() {
@@ -50,8 +50,8 @@ public class TodoModel implements ITodoModel {
 		@JsonProperty("id") String id,
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
-		@JsonProperty("createdDateTime") org.joda.time.DateTime createdDateTime,
-		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
+		@JsonProperty("createdDateTime") java.time.LocalDateTime createdDateTime,
+		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime
 	) {
 		this.id = id;
 		this.description = description;
@@ -87,20 +87,20 @@ public class TodoModel implements ITodoModel {
 	@JsonProperty
 	@JsonSerialize(converter = DateTimeToStringConverter.class)
 	@JsonDeserialize(converter = StringToDateTimeConverter.class)
-	public org.joda.time.DateTime getCreatedDateTime() {
+	public java.time.LocalDateTime getCreatedDateTime() {
 		return this.createdDateTime;
 	}
-	public void setCreatedDateTime(org.joda.time.DateTime createdDateTime) {
+	public void setCreatedDateTime(java.time.LocalDateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
 	}
 	
 	@JsonProperty
 	@JsonSerialize(converter = DateTimeToStringConverter.class)
 	@JsonDeserialize(converter = StringToDateTimeConverter.class)
-	public org.joda.time.DateTime getUpdatedDateTime() {
+	public java.time.LocalDateTime getUpdatedDateTime() {
 		return this.updatedDateTime;
 	}
-	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
+	public void setUpdatedDateTime(java.time.LocalDateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}
 	

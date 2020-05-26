@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ public class E2E {
 
 	private boolean sessionIsRunning;
 
-	private DateTime sessionStartedAt;
+	private LocalDateTime sessionStartedAt;
 
 	private Map<String, AceOperation> timeline;
 
@@ -60,7 +60,7 @@ public class E2E {
 		return this.sessionIsRunning;
 	}
 
-	public DateTime getSessionStartedAt() {
+	public LocalDateTime getSessionStartedAt() {
 		return this.sessionStartedAt;
 	}
 
@@ -103,7 +103,7 @@ public class E2E {
 			}
 		}
 		this.sessionIsRunning = true;
-		this.sessionStartedAt = new DateTime(System.currentTimeMillis());
+		this.sessionStartedAt = LocalDateTime.ofEpochSecond(System.currentTimeMillis(), 0, null);
 		this.index = 0;
 	}
 

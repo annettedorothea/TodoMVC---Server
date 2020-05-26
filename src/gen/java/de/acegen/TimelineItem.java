@@ -19,7 +19,7 @@
 
 package de.acegen;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TimelineItem implements ITimelineItem {
@@ -28,7 +28,7 @@ public class TimelineItem implements ITimelineItem {
 	
 	private String name;
 	
-	private DateTime timestamp;
+	private LocalDateTime timestamp;
 	
 	private String data;
 	
@@ -38,7 +38,7 @@ public class TimelineItem implements ITimelineItem {
 	public TimelineItem(
 		@JsonProperty("type") String type, 
 		@JsonProperty("name") String name, 
-		@JsonProperty("timestamp") DateTime timestamp, 
+		@JsonProperty("timestamp") LocalDateTime timestamp, 
 		@JsonProperty("data") String data,
 		@JsonProperty("uuid") String uuid
 	) {
@@ -61,7 +61,7 @@ public class TimelineItem implements ITimelineItem {
 	}
 
 	@JsonProperty
-	public DateTime getTimestamp() {
+	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
 

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +44,13 @@ public abstract class AbstractToggleAllData extends AbstractData implements ITog
 	
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled;
 	
-	private org.joda.time.DateTime updatedDateTime;
+	private java.time.LocalDateTime updatedDateTime;
 	
 
 	public AbstractToggleAllData(
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("todosToBeToggled") java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled,
-		@JsonProperty("updatedDateTime") org.joda.time.DateTime updatedDateTime
+		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime
 ,		@JsonProperty("uuid") String uuid
 	) {
 		super(uuid);
@@ -90,13 +90,13 @@ public abstract class AbstractToggleAllData extends AbstractData implements ITog
 	@JsonProperty
 	@JsonSerialize(converter = DateTimeToStringConverter.class)
 	@JsonDeserialize(converter = StringToDateTimeConverter.class)
-	public org.joda.time.DateTime getUpdatedDateTime() {
+	public java.time.LocalDateTime getUpdatedDateTime() {
 		return this.updatedDateTime;
 	}
-	public void setUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
+	public void setUpdatedDateTime(java.time.LocalDateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 	}
-	public IToggleAllData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime) {
+	public IToggleAllData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
 		return this;
 	}

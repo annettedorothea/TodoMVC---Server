@@ -19,7 +19,7 @@
 
 package de.acegen;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(as=TimelineItem.class)
@@ -29,7 +29,7 @@ public interface ITimelineItem {
 	
 	String getName();
 	
-	DateTime getTimestamp();
+	LocalDateTime getTimestamp();
 	
 	String getData();
 	

@@ -21,7 +21,7 @@ package de.acegen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.ws.rs.core.Response;
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 
 public abstract class AbstractBaseScenario {
 
@@ -73,7 +73,7 @@ public abstract class AbstractBaseScenario {
 				String uuid, String key, Object data);
 				
 	protected abstract Response callNotReplayableDataProviderPutSystemTime(
-				String uuid, DateTime dateTime);
+				String uuid, LocalDateTime dateTime);
 
 }
 

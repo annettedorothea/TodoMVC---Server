@@ -19,7 +19,7 @@
 
 package de.acegen;
 
-import org.joda.time.DateTime;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,7 +29,7 @@ public abstract class AbstractData implements IDataContainer {
 	
 	private String outcome;
 	
-	private DateTime systemTime;
+	private LocalDateTime systemTime;
 	
 	public AbstractData( String uuid ) {
 		this.uuid = uuid;
@@ -46,12 +46,12 @@ public abstract class AbstractData implements IDataContainer {
 	}
 
 	@JsonProperty
-	public DateTime getSystemTime() {
+	public LocalDateTime getSystemTime() {
 		return systemTime;
 	}
 
 	@JsonProperty
-	public void setSystemTime(DateTime systemTime) {
+	public void setSystemTime(LocalDateTime systemTime) {
 		this.systemTime = systemTime;
 	}
 

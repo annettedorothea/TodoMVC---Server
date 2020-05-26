@@ -22,23 +22,23 @@
 	import java.util.concurrent.ConcurrentHashMap;
 	import java.util.concurrent.ConcurrentMap;
 	
-	import org.joda.time.DateTime;
+	import java.time.LocalDateTime;
 	
 	public class NotReplayableDataProvider {
 		
-		private static ConcurrentMap<String, DateTime> systemTimeMap = new ConcurrentHashMap<>();
+		private static ConcurrentMap<String, LocalDateTime> systemTimeMap = new ConcurrentHashMap<>();
 
 		private static ConcurrentMap<String, ConcurrentMap<String, Object>> valueMap = new ConcurrentHashMap<>();
 	
-		public static DateTime consumeSystemTime(String uuid) {
-			DateTime value = systemTimeMap.get(uuid);
+		public static LocalDateTime consumeSystemTime(String uuid) {
+			LocalDateTime value = systemTimeMap.get(uuid);
 			if (value != null) {
 				systemTimeMap.remove(uuid);
 			}
 			return value;
 		}
 	
-		public static void putSystemTime(String uuid, DateTime systemTime) {
+		public static void putSystemTime(String uuid, LocalDateTime systemTime) {
 			systemTimeMap.put(uuid, systemTime);
 		}
 		

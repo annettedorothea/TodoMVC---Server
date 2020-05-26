@@ -19,15 +19,15 @@
 
 package com.anfelisa.todo.commands;
 
-import de.acegen.ViewProvider;
-import de.acegen.IDaoProvider;
-import de.acegen.CustomAppConfiguration;
-import de.acegen.PersistenceHandle;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.ITodoData;
+
+import de.acegen.CustomAppConfiguration;
+import de.acegen.IDaoProvider;
+import de.acegen.PersistenceHandle;
+import de.acegen.ViewProvider;
 
 public class CreateTodoCommand extends AbstractCreateTodoCommand {
 

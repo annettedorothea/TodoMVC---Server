@@ -34,9 +34,9 @@ public interface ITodoData extends ITodoModel, IDataContainer {
 	
 	ITodoData withDone(Boolean done);
 	
-	ITodoData withCreatedDateTime(org.joda.time.DateTime createdDateTime);
+	ITodoData withCreatedDateTime(java.time.LocalDateTime createdDateTime);
 	
-	ITodoData withUpdatedDateTime(org.joda.time.DateTime updatedDateTime);
+	ITodoData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
 	
 }
