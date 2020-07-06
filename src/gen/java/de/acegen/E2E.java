@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2019, Annette Pohl, Koblenz, Germany
+ * Copyright (c) 2020, Annette Pohl, Koblenz, Germany
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,6 +12,9 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * generated with de.acegen 0.9.2
+ *
  */
 
 
@@ -40,8 +43,6 @@ public class E2E {
 
 	private int index;
 	
-	private List<Thread> triggerdThreads;
-
 	static final Logger LOG = LoggerFactory.getLogger(E2E.class);
 
 	public E2E() {
@@ -49,11 +50,6 @@ public class E2E {
 		this.sessionStartedAt = null;
 		this.timeline = null;
 		this.index = 0;
-		this.triggerdThreads = new ArrayList<>();
-	}
-	
-	public void addTriggeredThread(Thread thread) {
-		triggerdThreads.add(thread);
 	}
 	
 	public boolean isSessionRunning() {
@@ -65,19 +61,10 @@ public class E2E {
 	}
 
 	public void reset() {
-		for (Thread thread : triggerdThreads) {
-			try {
-				LOG.info("wait for thread {} to finish before resetting E2E session", thread.getName());
-				thread.join();
-			} catch (InterruptedException e) {
-				LOG.error("thread.join {} was interrupted", thread.getName(), e);
-			}
-		}
 		this.sessionIsRunning = false;
 		this.sessionStartedAt = null;
 		this.timeline = null;
 		this.index = 0;
-		this.triggerdThreads.clear();
 	}
 
 
@@ -103,7 +90,7 @@ public class E2E {
 			}
 		}
 		this.sessionIsRunning = true;
-		this.sessionStartedAt = LocalDateTime.ofEpochSecond(System.currentTimeMillis(), 0, null);
+		this.sessionStartedAt = LocalDateTime.now();
 		this.index = 0;
 	}
 
@@ -127,9 +114,8 @@ public class E2E {
 	public ITimelineItem selectEvent(String uuid) {
 		return timeline.get(uuid).getEvent();
 	}
-	
-}
 
+}
 
 
 

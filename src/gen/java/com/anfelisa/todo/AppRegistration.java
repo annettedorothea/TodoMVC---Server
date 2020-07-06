@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2019, Annette Pohl, Koblenz, Germany
+ * Copyright (c) 2020, Annette Pohl, Koblenz, Germany
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,6 +12,9 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * generated with de.acegen 0.9.2
+ *
  */
 
 
@@ -41,7 +44,7 @@ public class AppRegistration {
 		environment.jersey().register(new DeleteTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
 		environment.jersey().register(new ClearDoneResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
 	}
-
+	
 	public static void registerConsumers(ViewProvider viewProvider, String mode) {
 		viewProvider.addConsumer("com.anfelisa.todo.events.CreateTodoSuccessEvent", (dataContainer, handle) -> {
 			viewProvider.todoView.create((com.anfelisa.todo.data.TodoData) dataContainer, handle);
@@ -67,9 +70,8 @@ public class AppRegistration {
 			viewProvider.todoView.clearDone((com.anfelisa.todo.data.ClearDoneData) dataContainer, handle);
 		});
 		
-    }
+	}
 }
-
 
 
 

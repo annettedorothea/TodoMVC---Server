@@ -11,6 +11,12 @@ import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.acegen.resources.GetServerInfoResource;
+import de.acegen.resources.GetServerTimelineResource;
+import de.acegen.resources.NotReplayableDataProviderResource;
+import de.acegen.resources.PrepareE2EResource;
+import de.acegen.resources.StartE2ESessionResource;
+import de.acegen.resources.StopE2ESessionResource;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi3.JdbiFactory;
@@ -25,7 +31,7 @@ public class App extends Application<CustomAppConfiguration> {
 	static final Logger LOG = LoggerFactory.getLogger(App.class);
 
 	static IDaoProvider daoProvider;
-	
+
 	public static ViewProvider viewProvider;
 
 	public static void main(String[] args) throws Exception {
@@ -63,7 +69,7 @@ public class App extends Application<CustomAppConfiguration> {
 		final JdbiFactory factory = new JdbiFactory();
 
 		Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "todo");
-		
+
 		E2E e2e = new E2E();
 
 		String mode = configuration.getConfig().getMode();
@@ -76,8 +82,14 @@ public class App extends Application<CustomAppConfiguration> {
 		} else if (Config.DEV.equals(mode)) {
 			environment.jersey().register(new GetServerTimelineResource(jdbi, configuration));
 			LOG.warn("You are running in DEV mode. This is a security risc.");
+		} else if (Config.TEST.equals(mode)) {
+			LOG.warn("You are running in TEST mode and the database is going to be cleared.");
+			PersistenceHandle handle = new PersistenceHandle(jdbi.open());
+			daoProvider.truncateAllViews(handle);
+			handle.getHandle().close();
+			environment.jersey().register(new NotReplayableDataProviderResource());
 		}
-		
+
 		environment.jersey().register(new JsonProcessingExceptionMapper(true));
 
 		environment.jersey().register(new GetServerInfoResource());
@@ -87,7 +99,8 @@ public class App extends Application<CustomAppConfiguration> {
 
 		environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-		AppRegistration.registerResources(environment, new PersistenceConnection(jdbi), configuration, daoProvider, viewProvider, e2e);
+		AppRegistration.registerResources(environment, new PersistenceConnection(jdbi), configuration, daoProvider,
+				viewProvider, e2e);
 		AppRegistration.registerConsumers(viewProvider, mode);
 
 		configureCors(environment);
@@ -107,6 +120,5 @@ public class App extends Application<CustomAppConfiguration> {
 		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
 	}
-
 
 }

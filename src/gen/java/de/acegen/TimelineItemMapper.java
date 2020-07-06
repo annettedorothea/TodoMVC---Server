@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2019, Annette Pohl, Koblenz, Germany
+ * Copyright (c) 2020, Annette Pohl, Koblenz, Germany
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,6 +12,9 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * generated with de.acegen 0.9.2
+ *
  */
 
 
@@ -22,24 +25,22 @@ package de.acegen;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
 public class TimelineItemMapper implements RowMapper<ITimelineItem> {
 	
 	public ITimelineItem map(ResultSet r, StatementContext ctx) throws SQLException {
-		LocalDateTime time = LocalDateTime.parse(r.getString("time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
 		return new TimelineItem(
 			r.getString("type"),
 			r.getString("name"),
-			time,
+			r.getTimestamp("time") != null ? r.getTimestamp("time").toLocalDateTime() : null,
 			r.getString("data"),
 			r.getString("uuid")
 		);
 	}
 }
+
 
 
 

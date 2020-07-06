@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2019, Annette Pohl, Koblenz, Germany
+ * Copyright (c) 2020, Annette Pohl, Koblenz, Germany
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,6 +12,9 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * generated with de.acegen 0.9.2
+ *
  */
 
 
@@ -23,6 +26,7 @@ import de.acegen.PersistenceHandle;
 import org.jdbi.v3.core.statement.Update;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("all")
@@ -64,6 +68,30 @@ public class AbstractTodoDao {
 		return optional.isPresent() ? optional.get() : null;
 	}
 	
+	public ITodoModel selectByPrimaryKey(PersistenceHandle handle, String id) {
+		Optional<ITodoModel> optional = handle.getHandle().createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM \"todo\" WHERE id = :id")
+			.bind("id", id)
+			.map(new TodoMapper())
+			.findFirst();
+		return optional.isPresent() ? optional.get() : null;
+	}
+	
+	public int filterAndCountBy(PersistenceHandle handle, Map<String, String> filterMap) {
+		String sql = "SELECT count(*) FROM \"todo\"";
+		if (filterMap != null) {
+			int i = 0;
+			for(String key : filterMap.keySet()) {
+				if (i == 0) {
+					sql += " WHERE " + key + " = '" + filterMap.get(key) + "'";
+				} else {
+					sql += " AND " + key + " = '" + filterMap.get(key) + "'";
+				}
+				i++;
+			}
+		}
+		return handle.getHandle().createQuery(sql).mapTo(Integer.class).first();
+	}
+
 	public List<ITodoModel> selectAll(PersistenceHandle handle) {
 		return handle.getHandle().createQuery("SELECT id, description, done, createddatetime, updateddatetime FROM \"todo\"")
 			.map(new TodoMapper())
@@ -76,7 +104,6 @@ public class AbstractTodoDao {
 	}
 
 }
-
 
 
 

@@ -24,9 +24,6 @@ import javax.ws.rs.core.Response;
 @SuppressWarnings("unused")
 public class CreateTodoScenario extends AbstractCreateTodoScenario {
 
-	@Override
-	protected void verifications() {
-	}
 
 }
 

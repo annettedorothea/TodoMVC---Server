@@ -23,8 +23,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.client.Client;
@@ -32,6 +36,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.AfterAll;
@@ -67,6 +72,8 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 
 	public Client client;
 
+	protected static Map<String, DescriptiveStatistics> metrics;
+
 	@BeforeAll
 	public static void beforeClass() throws Exception {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
@@ -76,10 +83,27 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		protocol = config.getServer().getApplicationConnectors()[0].getType();
 		rootPath = config.getServer().getRootPath();
 		jdbi = Jdbi.create(config.getDatabase().getUrl());
+		if (metrics == null) {
+			metrics = new HashMap<>();
+		}
 	}
 
 	@AfterAll
 	public static void afterClass() {
+		Object[] actions = metrics.keySet().toArray();
+		Arrays.sort(actions);
+		for (Object action : actions) {
+			DescriptiveStatistics values = metrics.get(action);
+			LOG.info("action {}", action);
+			LOG.info(
+					"{} times and performed with mean {} - standard deviation {} - median {} - percentile(10) {} - percentile(90) {} - min {} - max {}",
+					values.getN(), format(values.getMean()), format(values.getStandardDeviation()), format(values.getPercentile(50)),
+					format(values.getPercentile(10)), format(values.getPercentile(90)),	format(values.getMin()), format(values.getMax()));
+		}
+	}
+
+	private static String format(double d) {
+		return new DecimalFormat("#.##").format(d);
 	}
 
 	@BeforeEach
@@ -184,6 +208,10 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		org.junit.jupiter.api.Assertions.assertNotNull(actual);
 	}
 
+	protected void assertTrue(boolean value) {
+		org.junit.jupiter.api.Assertions.assertTrue(value);
+	}
+	
 	@Override
 	protected boolean prerequisite(String scenarioName) {
 		return true;
@@ -221,6 +249,15 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		return builder.put(Entity.json(dateTime));
 	}
 
+	@Override
+	protected void addToMetrics(String action, Long duration) {
+		DescriptiveStatistics values = metrics.get(action);
+		if (values == null) {
+			values = new DescriptiveStatistics();
+			metrics.put(action, values);
+		}
+		values.addValue(duration);
+	}
 }
 
 

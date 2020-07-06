@@ -26,32 +26,31 @@ import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
+public abstract class ProxyReadAction<T extends IDataContainer> extends Action<T> {
 
-	static final Logger LOG = LoggerFactory.getLogger(WriteAction.class);
+	static final Logger LOG = LoggerFactory.getLogger(ReadAction.class);
 	
 	private PersistenceConnection persistenceConnection;
 	protected CustomAppConfiguration appConfiguration;
 	protected IDaoProvider daoProvider;
-	protected ViewProvider viewProvider;
 	private E2E e2e;
 	
-	public WriteAction(String actionName, PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
+	public ProxyReadAction(String actionName, PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
 			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
 		super(actionName);
 		this.persistenceConnection = persistenceConnection;
 		this.appConfiguration = appConfiguration;
 		this.daoProvider = daoProvider;
-		this.viewProvider = viewProvider;
 		this.e2e = e2e;
 	}
 
+	protected abstract void loadDataForGetRequest(PersistenceHandle readonlyHandle);
+	
 	protected abstract void initActionDataFrom(ITimelineItem timelineItem);
 
-	
 	protected abstract void initActionDataFromNotReplayableDataProvider();
 
-	protected abstract ICommand getCommand();
+	protected abstract T createDataFrom(ITimelineItem timelineItem);
 
 	public void apply() {
 		DatabaseHandle databaseHandle = new DatabaseHandle(persistenceConnection.getJdbi(), appConfiguration);
@@ -61,6 +60,7 @@ public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
 					|| Config.LIVE.equals(appConfiguration.getConfig().getMode())
 					|| Config.TEST.equals(appConfiguration.getConfig().getMode())) {
 				if (!daoProvider.getAceDao().checkUuid(this.actionData.getUuid())) {
+					databaseHandle.rollbackTransaction();
 					LOG.warn("duplicate request {} {} ", actionName, this.actionData.getUuid());
 					databaseHandle.rollbackTransaction();
 					return;
@@ -74,13 +74,17 @@ public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
 			if (Config.TEST.equals(appConfiguration.getConfig().getMode())) {
 				initActionDataFromNotReplayableDataProvider();
 			}
+			if (Config.REPLAY.equals(appConfiguration.getConfig().getMode())) {
+				ITimelineItem timelineItem = e2e.selectAction(this.actionData.getUuid());
+				T originalData = this.createDataFrom(timelineItem);
+				this.setActionData(originalData);
+			} else {
+				this.loadDataForGetRequest(databaseHandle.getReadonlyHandle());
+			}
+			
 			if (appConfiguration.getConfig().writeTimeline()) {
 				daoProvider.getAceDao().addActionToTimeline(this, databaseHandle.getTimelineHandle());
 			}
-			
-			ICommand command = this.getCommand();
-			command.execute(databaseHandle.getReadonlyHandle(), databaseHandle.getTimelineHandle());
-			command.publishEvents(databaseHandle.getHandle(), databaseHandle.getTimelineHandle());
 			databaseHandle.commitTransaction();
 		} catch (IllegalArgumentException x) {
 			LOG.error(actionName + " IllegalArgumentException {} ", x.getMessage());
@@ -118,6 +122,7 @@ public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
 		} finally {
 			databaseHandle.close();
 		}
+		
 	}
 
 }

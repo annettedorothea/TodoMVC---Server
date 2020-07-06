@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2019, Annette Pohl, Koblenz, Germany
+ * Copyright (c) 2020, Annette Pohl, Koblenz, Germany
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,52 +12,42 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * generated with de.acegen 0.9.2
+ *
  */
 
 
 
 
-package de.acegen;
+package de.acegen.resources;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.WebApplicationException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.acegen.App;
+import de.acegen.ServerInfo;
 
-@Path("/e2e")
+@Path("/server")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class StopE2ESessionResource {
+public class GetServerInfoResource {
 
-	static final Logger LOG = LoggerFactory.getLogger(StopE2ESessionResource.class);
-
-	private E2E e2e;
-	private CustomAppConfiguration configuration;
-	
-	public StopE2ESessionResource(E2E e2e, CustomAppConfiguration configuration) {
+	public GetServerInfoResource() {
 		super();
-		this.e2e = e2e;
-		this.configuration = configuration;
 	}
 
-	@PUT
-	@Path("/stop")
+	@GET
+	@Path("/info")
 	public Response put() {
-		if (Config.LIVE.equals(configuration.getConfig().getMode())) {
-			throw new WebApplicationException("stop e2e session is not available in a live environment", Response.Status.FORBIDDEN);
-		}
-		e2e.reset();
-		return Response.ok().build();
+		return Response.ok(new ServerInfo(App.getVersion())).build();
 	}
 
 }
-
 
 
 

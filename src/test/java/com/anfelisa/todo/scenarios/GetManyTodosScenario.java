@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2019, Annette Pohl, Koblenz, Germany
+ * Copyright (c) 2020, Annette Pohl, Koblenz, Germany
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,34 +12,29 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * generated with de.acegen 0.9.2
+ *
  */
 
 
 
 
-package de.acegen;
+package com.anfelisa.todo.scenarios;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import com.anfelisa.todo.data.GetAllTodosResponse;
 import javax.ws.rs.core.Response;
 
-@Path("/server")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-public class GetServerInfoResource {
+@SuppressWarnings("unused")
+public class GetManyTodosScenario extends AbstractGetManyTodosScenario {
 
-	public GetServerInfoResource() {
-		super();
+	@Override
+	protected void atLeastTwentyReturned(GetAllTodosResponse response) {
+		assertTrue(response.getTodoList().size() >= 20);
+		LOG.info("THEN: atLeastTwentyReturned passed");
 	}
 
-	@GET
-	@Path("/info")
-	public Response put() {
-		return Response.ok(new ServerInfo(App.getVersion())).build();
-	}
+	
 
 }
 

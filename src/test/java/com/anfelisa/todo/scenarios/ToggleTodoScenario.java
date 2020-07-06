@@ -24,10 +24,6 @@ import javax.ws.rs.core.Response;
 @SuppressWarnings("unused")
 public class ToggleTodoScenario extends AbstractToggleTodoScenario {
 
-	@Override
-	protected void verifications() {
-	}
-
 }
 
 
