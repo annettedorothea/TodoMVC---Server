@@ -24,12 +24,5 @@ server:
 
 config:
   mode: DEV
+  writeTimeline: ALWAYS
   
-email:
-  host: 
-  port: 
-  user: 
-  password: 
-  tls:
-
-
