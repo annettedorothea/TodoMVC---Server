@@ -22,7 +22,7 @@ See [TodoMVC---Client](https://github.com/annettedorothea/TodoMVC---Client) for 
 ## Replay
 
 If you want to replay scenarios and bugs in the browser you need to start a server in dev and another server in
-replay mode. You also need a second database for this server. 
+replay mode. You also need a second database for the replay-server. 
 
 Create a second yml-config file and set mode to replay:
 ```
