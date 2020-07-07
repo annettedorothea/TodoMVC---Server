@@ -19,5 +19,39 @@ See [TodoMVC---Client](https://github.com/annettedorothea/TodoMVC---Client) for 
 - Run the migrations with `db migrate <your-yml-file>.yml` as argument.
 - Start the application with the arguments `server <your-yml-file>.yml` as argument.
 
+## Replay
+
+If you want to replay scenarios and bugs in the browser you need to start a server in dev and another server in
+replay mode. You also need a second database for this server. 
+
+Create a second yml-config file and set mode to replay:
+```
+    config:
+      mode: REPLAY
+      writeTimeline: ALWAYS 
+```
+Make sure you connect to the second database.
+
+In order to save bugs and scenarios your dev-server needs to write the timeline:
+```
+    config:
+      mode: DEV
+      writeTimeline: ALWAYS 
+```
+
+## Execute the tests
+
+If you want to execute the tests you should start the server in test mode:
+
+```
+config:
+  mode: TEST
+  writeTimeline: ALWAYS
+```
+
+Please note that the database is cleared on startup of the server.
+
+When the test-server is running you can execute the tests.
+
 ## License
 [ISC](License.txt)

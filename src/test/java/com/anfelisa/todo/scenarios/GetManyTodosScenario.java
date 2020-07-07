@@ -23,9 +23,7 @@
 package com.anfelisa.todo.scenarios;
 
 import com.anfelisa.todo.data.GetAllTodosResponse;
-import javax.ws.rs.core.Response;
 
-@SuppressWarnings("unused")
 public class GetManyTodosScenario extends AbstractGetManyTodosScenario {
 
 	@Override
