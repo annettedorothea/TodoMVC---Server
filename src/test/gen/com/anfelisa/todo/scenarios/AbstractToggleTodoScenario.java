@@ -45,6 +45,8 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 
 	static final Logger LOG = LoggerFactory.getLogger(AbstractToggleTodoScenario.class);
 	
+	private Map<String, Object> extractedValues = new HashMap<String, Object>();
+	
 	private void given() throws Exception {
 		Response response;
 		String uuid;
@@ -102,7 +104,7 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 		return response;
 	}
 	
-	private void then(Response response) throws Exception {
+	private com.anfelisa.todo.data.ToggleTodoResponse then(Response response) throws Exception {
 		if (response.getStatus() == 500) {
 			String message = response.readEntity(String.class);
 			assertFail(message);
@@ -114,7 +116,13 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
+		com.anfelisa.todo.data.ToggleTodoResponse actual = null;
+		try {
+			actual = response.readEntity(com.anfelisa.todo.data.ToggleTodoResponse.class);
+		} catch (Exception x) {
+		}
 		
+		return actual;
 	}
 			
 	@Override
@@ -124,7 +132,7 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 		if (prerequisite("ToggleTodo")) {
 			Response response = when();
 
-			then(response);
+			com.anfelisa.todo.data.ToggleTodoResponse actualResponse = then(response);
 			
 			this.todoWasToggled();
 		

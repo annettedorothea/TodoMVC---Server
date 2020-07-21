@@ -45,6 +45,8 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 
 	static final Logger LOG = LoggerFactory.getLogger(AbstractGetManyTodosScenario.class);
 	
+	private Map<String, Object> extractedValues = new HashMap<String, Object>();
+	
 	private void given() throws Exception {
 		Response response;
 		String uuid;
@@ -74,6 +76,24 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 				}
 				LOG.info("GIVEN: CreateRandomTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
 				addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
+				com.anfelisa.todo.data.CreateTodoResponse responseEntity_0 = null;
+				try {
+					responseEntity_0 = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
+					
+					Object todoId = this.extractTodoId(responseEntity_0);
+					extractedValues.put("todoId", todoId);
+					LOG.info("GIVEN: extracted " + todoId.toString()  + " as todoId");
+					
+					Object createdDateTime = this.extractCreatedDateTime(responseEntity_0);
+					extractedValues.put("createdDateTime", createdDateTime);
+					LOG.info("GIVEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
+					
+					Object description = this.extractDescription(responseEntity_0);
+					extractedValues.put("description", description);
+					LOG.info("GIVEN: extracted " + description.toString()  + " as description");
+				} catch (Exception x) {
+					LOG.info("GIVEN: failed to extract values from response ", x);
+				}
 			} else {
 				LOG.info("GIVEN: prerequisite for CreateRandomTodo not met");
 			}

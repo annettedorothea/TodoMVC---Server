@@ -1,14 +1,29 @@
 HttpServer Java Dropwizard JDBI3 Liquibase
 
+
 com.anfelisa.todo
 ACE 
 	GetAllTodos<TodoList> 
 		GET "/todos/all"
 		response todoList
 	
+	GetTodo<Todo> 
+		GET "/todos/{id}"
+			pathParams id
+		response 
+			id
+			description
+			createdDateTime
+			done
+			updatedDateTime
+	
 	CreateTodo<Todo>
 		POST "/todos/create"
 		payload description
+		response 
+			id
+			createdDateTime
+			description
 		on success (Todo.create) 
 	
 	ToggleTodo<TodoToggle> 
@@ -79,6 +94,7 @@ models
 	
 scenarios 
 
+
 CreateTodo
 	WHEN CreateTodo
 		uuid "${testId}"
@@ -96,15 +112,35 @@ CreateTodo
 
 CreateRandomTodo
 	WHEN CreateTodo {
-		description: "${random} ${testId}"
+			description: "${random} ${testId}"
+		}
+		extract todoId
+		extract createdDateTime
+		extract description
+	THEN 200
+	
+	
+	
+	
+GetTodo
+	GIVEN CreateRandomTodo
+	WHEN GetTodo {
+		id: "${todoId}"
 	}
 	THEN 200
+	response shouldBe {
+		createdDateTime: "${createdDateTime}" "yyyy-MM-dd'T'HH:mm:ss.SSS",
+		description: "${description}",
+		done: false,
+		id: "${todoId}"
+	}
 
 GetManyTodos
 	GIVEN CreateRandomTodo 20x
 	WHEN GetAllTodos
 	THEN 200
 	verifications atLeastTwentyReturned
+		
 	
 ToggleTodo 
 	GIVEN CreateTodo

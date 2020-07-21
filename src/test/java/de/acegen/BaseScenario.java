@@ -49,6 +49,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anfelisa.todo.data.CreateTodoResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -263,6 +264,20 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		}
 		values.addValue(duration);
 	}
+	
+	protected Object extractDescription(CreateTodoResponse data) {
+		return data.getDescription();
+	}
+
+	protected Object extractCreatedDateTime(CreateTodoResponse data) {
+		return data.getCreatedDateTime();
+	}
+
+	protected Object extractTodoId(CreateTodoResponse data) {
+		return data.getId();
+	}
+
+	
 }
 
 

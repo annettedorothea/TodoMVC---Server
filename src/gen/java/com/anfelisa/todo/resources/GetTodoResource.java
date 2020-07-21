@@ -67,11 +67,11 @@
 	
 	import de.acegen.Resource;
 	
-	@Path("/todos/create")
+	@Path("/todos/{id}")
 	@SuppressWarnings("unused")
-	public class CreateTodoResource extends Resource {
+	public class GetTodoResource extends Resource {
 	
-		static final Logger LOG = LoggerFactory.getLogger(CreateTodoResource.class);
+		static final Logger LOG = LoggerFactory.getLogger(GetTodoResource.class);
 		
 		private PersistenceConnection persistenceConnection;
 		private CustomAppConfiguration appConfiguration;
@@ -79,7 +79,7 @@
 		private ViewProvider viewProvider;
 		private E2E e2e;
 
-	public CreateTodoResource(PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
+	public GetTodoResource(PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
 				IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
 			this.persistenceConnection = persistenceConnection;
 			this.appConfiguration = appConfiguration;
@@ -88,28 +88,29 @@
 			this.e2e = e2e;
 		}
 	
-	@POST
-	@Timed(name = "CreateTodoActionTimed")
-	@Metered(name = "CreateTodoActionMetered")
+	@GET
+	@Timed(name = "GetTodoActionTimed")
+	@Metered(name = "GetTodoActionMetered")
 	@ExceptionMetered
 	@ResponseMetered
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createTodoResource(
-			ITodoData payload)
+	public Response getTodoResource(
+			@PathParam("id") String id, 
+			@QueryParam("uuid") String uuid) 
 			throws JsonProcessingException {
-		if (payload == null) {
-			return badRequest("payload must not be null");
+		if (StringUtils.isBlank(uuid)) {
+			return badRequest("uuid must not be blank or null");
 		}
-		com.anfelisa.todo.data.ITodoData actionData = new TodoData(payload.getUuid());
+		com.anfelisa.todo.data.ITodoData actionData = new TodoData(uuid);
 		
-		actionData.setDescription(payload.getDescription());
+		actionData.setId(id);
 		
-		com.anfelisa.todo.actions.CreateTodoAction action = new com.anfelisa.todo.actions.CreateTodoAction(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e);
+		com.anfelisa.todo.actions.GetTodoAction action = new com.anfelisa.todo.actions.GetTodoAction(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e);
 		action.setActionData(actionData);
 		try {
 			action.apply();
-			return Response.ok(new com.anfelisa.todo.data.CreateTodoResponse(action.getActionData())).build();
+			return Response.ok(new com.anfelisa.todo.data.GetTodoResponse(action.getActionData())).build();
 		} catch (IllegalArgumentException x) {
 			LOG.error("bad request due to {} ", x.getMessage());
 			return badRequest(x.getMessage());

@@ -37,6 +37,7 @@ public class AppRegistration {
 	public static void registerResources(Environment environment, PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
 			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
 		environment.jersey().register(new GetAllTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
+		environment.jersey().register(new GetTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
 		environment.jersey().register(new CreateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
 		environment.jersey().register(new ToggleTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
 		environment.jersey().register(new ToggleAllResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
