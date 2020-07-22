@@ -14,9 +14,6 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-
-
-
 package de.acegen;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -50,6 +47,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.CreateTodoResponse;
+import com.anfelisa.todo.data.GetAllTodosResponse;
+import com.anfelisa.todo.models.ITodoModel;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -98,8 +97,9 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 			LOG.info("action {}", action);
 			LOG.info(
 					"{} times and performed with mean {} - standard deviation {} - median {} - percentile(10) {} - percentile(90) {} - min {} - max {}",
-					values.getN(), format(values.getMean()), format(values.getStandardDeviation()), format(values.getPercentile(50)),
-					format(values.getPercentile(10)), format(values.getPercentile(90)),	format(values.getMin()), format(values.getMax()));
+					values.getN(), format(values.getMean()), format(values.getStandardDeviation()),
+					format(values.getPercentile(50)), format(values.getPercentile(10)),
+					format(values.getPercentile(90)), format(values.getMin()), format(values.getMax()));
 		}
 	}
 
@@ -123,7 +123,7 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	public void after() {
 		handle.getHandle().close();
 	}
-	
+
 	@Test
 	public void test() throws Exception {
 		this.runTest();
@@ -196,7 +196,20 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		if (actual == null) {
 			assertIsNull(expected);
 		}
-		org.hamcrest.MatcherAssert.assertThat(actual, is(samePropertyValuesAs(expected)));
+		if (actual instanceof GetAllTodosResponse && expected instanceof GetAllTodosResponse) {
+			assertThat((GetAllTodosResponse) actual, (GetAllTodosResponse) expected);
+		} else {
+			org.hamcrest.MatcherAssert.assertThat(actual, is(samePropertyValuesAs(expected)));
+		}
+	}
+
+	private void assertThat(GetAllTodosResponse actual, GetAllTodosResponse expected) {
+		assertThat(actual.getTodoList().size(), expected.getTodoList().size());
+		for (int i = 0; i < actual.getTodoList().size(); i++) {
+			ITodoModel actualTodo = actual.getTodoList().get(i);
+			ITodoModel expectedTodo = expected.getTodoList().get(i);
+			assertThat(actualTodo, expectedTodo);
+		}
 	}
 
 	@Override
@@ -213,13 +226,17 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	protected void assertTrue(boolean value) {
 		org.junit.jupiter.api.Assertions.assertTrue(value);
 	}
-	
+
 	@Override
 	protected void assertFalse(boolean b) {
 		org.junit.jupiter.api.Assertions.assertFalse(b);
 	}
+
 	@Override
 	protected boolean prerequisite(String scenarioName) {
+		if ("GetAllTodos".equals(scenarioName) && daoProvider.getTodoDao().selectAll(handle).size() != 1) {
+			return false;
+		}
 		return true;
 	}
 
@@ -233,8 +250,7 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	}
 
 	@Override
-	protected Response callNotReplayableDataProviderPutValue(
-			String uuid, String key, Object data) {
+	protected Response callNotReplayableDataProviderPutValue(String uuid, String key, Object data) {
 		Client client = new JerseyClientBuilder().build();
 		Builder builder = client
 				.target(String.format("%s://%s:%d%s/test/not-replayable/value?uuid=" + uuid + "&key=" + key, protocol,
@@ -244,12 +260,10 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	}
 
 	@Override
-	protected Response callNotReplayableDataProviderPutSystemTime(
-			String uuid, LocalDateTime dateTime) {
+	protected Response callNotReplayableDataProviderPutSystemTime(String uuid, LocalDateTime dateTime) {
 		Client client = new JerseyClientBuilder().build();
-		Builder builder = client
-				.target(String.format(
-						"%s://%s:%d%s/test/not-replayable/system-time?uuid=" + uuid + "&system-time=" + dateTime,
+		Builder builder = client.target(
+				String.format("%s://%s:%d%s/test/not-replayable/system-time?uuid=" + uuid + "&system-time=" + dateTime,
 						protocol, host, port, rootPath))
 				.request();
 		return builder.put(Entity.json(dateTime));
@@ -264,7 +278,7 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		}
 		values.addValue(duration);
 	}
-	
+
 	protected Object extractDescription(CreateTodoResponse data) {
 		return data.getDescription();
 	}
@@ -277,13 +291,6 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		return data.getId();
 	}
 
-	
 }
 
-
-
 /******* S.D.G. *******/
-
-
-
-
