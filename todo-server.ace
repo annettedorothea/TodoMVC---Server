@@ -134,9 +134,15 @@ CreateRandomTodo
 		extract createdDateTime
 		extract description
 	THEN 200
-	
-	
-	
+		persistence todoWasCreated Todo selectByPrimaryKey (id: "${todoId}") shouldBe {
+			createdDateTime: "${createdDateTime}" "yyyy-MM-dd'T'HH:mm:ss.SSS",
+			description: "${description}",
+			done: false,
+			id: "${todoId}",
+			updatedDateTime: null
+		}
+		
+
 	
 GetTodo
 	GIVEN CreateRandomTodo
@@ -151,11 +157,20 @@ GetTodo
 		id: "${todoId}"
 	}
 
+
+
 GetManyTodos
 	GIVEN CreateRandomTodo 20x
 	WHEN GetAllTodos
 	THEN 200
 	verifications atLeastTwentyReturned
+		
+	
+GetEvenMoreTodos
+	GIVEN CreateRandomTodo 1000x
+	WHEN GetAllTodos
+	THEN 200
+	verifications atLeastThousandReturned
 		
 	
 ToggleTodo 

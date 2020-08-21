@@ -41,9 +41,9 @@ import de.acegen.ITimelineItem;
 import de.acegen.NotReplayableDataProvider;
 
 @SuppressWarnings("unused")
-public abstract class AbstractGetReallyManyTodosScenario extends BaseScenario {
+public abstract class AbstractGetEvenMoreTodosScenario extends BaseScenario {
 
-	static final Logger LOG = LoggerFactory.getLogger(AbstractGetReallyManyTodosScenario.class);
+	static final Logger LOG = LoggerFactory.getLogger(AbstractGetEvenMoreTodosScenario.class);
 	
 	private Map<String, Object> extractedValues = new HashMap<String, Object>();
 	
@@ -145,7 +145,7 @@ public abstract class AbstractGetReallyManyTodosScenario extends BaseScenario {
 	public void runTest() throws Exception {
 		given();
 			
-		if (prerequisite("GetReallyManyTodos")) {
+		if (prerequisite("GetEvenMoreTodos")) {
 			Response response = when();
 
 			com.anfelisa.todo.data.GetAllTodosResponse actualResponse = then(response);
@@ -153,7 +153,7 @@ public abstract class AbstractGetReallyManyTodosScenario extends BaseScenario {
 		
 			atLeastThousandReturned(actualResponse);
 		} else {
-			LOG.info("WHEN: prerequisite for GetReallyManyTodos not met");
+			LOG.info("WHEN: prerequisite for GetEvenMoreTodos not met");
 		}
 	}
 	
@@ -162,7 +162,7 @@ public abstract class AbstractGetReallyManyTodosScenario extends BaseScenario {
 	
 	@Override
 	protected String scenarioName() {
-		return "GetReallyManyTodos";
+		return "GetEvenMoreTodos";
 	}
 
 }
