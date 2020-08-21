@@ -41,7 +41,7 @@ In order to save bugs and scenarios your dev-server needs to write the timeline:
 
 ## Execute the tests
 
-If you want to execute the tests you should start the server in test mode:
+If you want to execute the tests you start the server in test mode:
 
 ```
 config:
