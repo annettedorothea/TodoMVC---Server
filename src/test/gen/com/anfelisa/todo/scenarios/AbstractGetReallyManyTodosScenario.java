@@ -41,9 +41,9 @@ import de.acegen.ITimelineItem;
 import de.acegen.NotReplayableDataProvider;
 
 @SuppressWarnings("unused")
-public abstract class AbstractGetManyTodosScenario extends BaseScenario {
+public abstract class AbstractGetReallyManyTodosScenario extends BaseScenario {
 
-	static final Logger LOG = LoggerFactory.getLogger(AbstractGetManyTodosScenario.class);
+	static final Logger LOG = LoggerFactory.getLogger(AbstractGetReallyManyTodosScenario.class);
 	
 	private Map<String, Object> extractedValues = new HashMap<String, Object>();
 	
@@ -52,7 +52,7 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 		String uuid;
 		long timeBeforeRequest;
 		long timeAfterRequest;
-		for (int i=0; i<20; i++) {
+		for (int i=0; i<1000; i++) {
 			if (prerequisite("CreateRandomTodo")) {
 				uuid = this.randomUUID();
 				com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
@@ -145,24 +145,24 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 	public void runTest() throws Exception {
 		given();
 			
-		if (prerequisite("GetManyTodos")) {
+		if (prerequisite("GetReallyManyTodos")) {
 			Response response = when();
 
 			com.anfelisa.todo.data.GetAllTodosResponse actualResponse = then(response);
 			
 		
-			atLeastTwentyReturned(actualResponse);
+			atLeastThousandReturned(actualResponse);
 		} else {
-			LOG.info("WHEN: prerequisite for GetManyTodos not met");
+			LOG.info("WHEN: prerequisite for GetReallyManyTodos not met");
 		}
 	}
 	
-	protected abstract void atLeastTwentyReturned(com.anfelisa.todo.data.GetAllTodosResponse response);
+	protected abstract void atLeastThousandReturned(com.anfelisa.todo.data.GetAllTodosResponse response);
 	
 	
 	@Override
 	protected String scenarioName() {
-		return "GetManyTodos";
+		return "GetReallyManyTodos";
 	}
 
 }

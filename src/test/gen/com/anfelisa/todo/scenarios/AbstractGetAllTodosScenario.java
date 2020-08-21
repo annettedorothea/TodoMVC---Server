@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.8
+ * generated with de.acegen 0.9.9
  *
  */
 
@@ -115,6 +115,7 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 		com.anfelisa.todo.data.GetAllTodosResponse actual = null;
 		try {
 			actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
+			
 		} catch (Exception x) {
 		}
 		com.anfelisa.todo.data.TodoListData expectedData = objectMapper.readValue("{" +

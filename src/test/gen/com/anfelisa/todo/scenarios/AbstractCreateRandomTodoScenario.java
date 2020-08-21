@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.8
+ * generated with de.acegen 0.9.9
  *
  */
 
@@ -89,6 +89,23 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 		com.anfelisa.todo.data.CreateTodoResponse actual = null;
 		try {
 			actual = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
+			
+			try {
+				
+				Object todoId = this.extractTodoId(actual);
+				extractedValues.put("todoId", todoId);
+				LOG.info("THEN: extracted " + todoId.toString()  + " as todoId");
+				
+				Object createdDateTime = this.extractCreatedDateTime(actual);
+				extractedValues.put("createdDateTime", createdDateTime);
+				LOG.info("THEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
+				
+				Object description = this.extractDescription(actual);
+				extractedValues.put("description", description);
+				LOG.info("THEN: extracted " + description.toString()  + " as description");
+			} catch (Exception x) {
+				LOG.info("THEN: failed to extract values from response ", x);
+			}
 		} catch (Exception x) {
 		}
 		
@@ -104,6 +121,7 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 
 			com.anfelisa.todo.data.CreateTodoResponse actualResponse = then(response);
 			
+			this.todoWasCreated();
 		
 		} else {
 			LOG.info("WHEN: prerequisite for CreateRandomTodo not met");
@@ -111,6 +129,20 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 	}
 	
 	
+	private void todoWasCreated() throws Exception {
+		com.anfelisa.todo.models.ITodoModel actual = daoProvider.getTodoDao().selectByPrimaryKey(handle, "" + this.extractedValues.get("todoId").toString() + "");
+		
+		com.anfelisa.todo.models.ITodoModel expected = objectMapper.readValue("{" +
+			"\"createdDateTime\" : \"" + LocalDateTime.parse(this.extractedValues.get("createdDateTime").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))  + "\"," + 
+				"\"description\" : \"" + this.extractedValues.get("description").toString() + "\"," + 
+				"\"done\" : false," + 
+				"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"," + 
+				"\"updatedDateTime\" : null} ",
+		com.anfelisa.todo.models.TodoModel.class);
+		assertThat(actual, expected);
+
+		LOG.info("THEN: todoWasCreated passed");
+	}
 	
 	@Override
 	protected String scenarioName() {
