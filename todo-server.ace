@@ -1,7 +1,7 @@
 HttpServer Java Dropwizard JDBI3 Liquibase
 
-
 com.anfelisa.todo
+
 ACE 
 	GetAllTodos<TodoList> 
 		GET "/todos/all"
@@ -89,7 +89,7 @@ models
 		DateTime updatedDateTime
 	}
 	
-	ClearDone {}
+	ClearDone
 	
 scenarios 
 
