@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.9
+ * generated with de.acegen 0.9.10
  *
  */
 
@@ -52,10 +52,11 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 		String uuid;
 		long timeBeforeRequest;
 		long timeAfterRequest;
+		
 		if (prerequisite("CreateTodo")) {
 			uuid = "" + this.getTestId() + "";
 			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.TodoData data_1 = objectMapper.readValue("{" +
+			com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
 				"\"uuid\" : \"" + uuid + "\"," + 
 					"\"description\" : \"todo " + this.getTestId() + "\"} ",
 			com.anfelisa.todo.data.TodoData.class);
@@ -63,7 +64,7 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 			response = 
 			this.httpPost(
 				"/todos/create", 
-				data_1,
+				data_0,
 				null
 			);
 			
@@ -79,7 +80,6 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 		} else {
 			LOG.info("GIVEN: prerequisite for CreateTodo not met");
 		}
-		
 
 	}
 	
@@ -121,6 +121,8 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 			actual = response.readEntity(com.anfelisa.todo.data.ToggleTodoResponse.class);
 			
 		} catch (Exception x) {
+			LOG.error("THEN: failed to read response", x);
+			assertFail(x.getMessage());
 		}
 		
 		return actual;
@@ -136,7 +138,7 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 			com.anfelisa.todo.data.ToggleTodoResponse actualResponse = then(response);
 			
 			this.todoWasToggled();
-		
+	
 		} else {
 			LOG.info("WHEN: prerequisite for ToggleTodo not met");
 		}
@@ -154,15 +156,15 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 				"\"updatedDateTime\" : \"2020-07-07T17:20\"} ",
 		com.anfelisa.todo.models.TodoModel.class);
 		assertThat(actual, expected);
-
+	
 		LOG.info("THEN: todoWasToggled passed");
 	}
-	
+		
 	@Override
 	protected String scenarioName() {
 		return "ToggleTodo";
 	}
-
+	
 }
 
 
@@ -170,4 +172,4 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 /******* S.D.G. *******/
 
 
-			
+

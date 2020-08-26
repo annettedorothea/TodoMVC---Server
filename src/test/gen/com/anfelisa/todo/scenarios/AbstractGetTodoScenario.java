@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.9
+ * generated with de.acegen 0.9.10
  *
  */
 
@@ -52,9 +52,10 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 		String uuid;
 		long timeBeforeRequest;
 		long timeAfterRequest;
+		
 		if (prerequisite("CreateRandomTodo")) {
 			uuid = this.randomUUID();
-			com.anfelisa.todo.data.TodoData data_1 = objectMapper.readValue("{" +
+			com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
 				"\"uuid\" : \"" + uuid + "\"," + 
 					"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"} ",
 			com.anfelisa.todo.data.TodoData.class);
@@ -62,7 +63,7 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 			response = 
 			this.httpPost(
 				"/todos/create", 
-				data_1,
+				data_0,
 				null
 			);
 			
@@ -75,19 +76,19 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 			}
 			LOG.info("GIVEN: CreateRandomTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
 			addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
-			com.anfelisa.todo.data.CreateTodoResponse responseEntity_1 = null;
+			com.anfelisa.todo.data.CreateTodoResponse responseEntity_0 = null;
 			try {
-				responseEntity_1 = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
+				responseEntity_0 = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
 				
-				Object todoId = this.extractTodoId(responseEntity_1);
+				Object todoId = this.extractTodoId(responseEntity_0);
 				extractedValues.put("todoId", todoId);
 				LOG.info("GIVEN: extracted " + todoId.toString()  + " as todoId");
 				
-				Object createdDateTime = this.extractCreatedDateTime(responseEntity_1);
+				Object createdDateTime = this.extractCreatedDateTime(responseEntity_0);
 				extractedValues.put("createdDateTime", createdDateTime);
 				LOG.info("GIVEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
 				
-				Object description = this.extractDescription(responseEntity_1);
+				Object description = this.extractDescription(responseEntity_0);
 				extractedValues.put("description", description);
 				LOG.info("GIVEN: extracted " + description.toString()  + " as description");
 			} catch (Exception x) {
@@ -96,7 +97,6 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 		} else {
 			LOG.info("GIVEN: prerequisite for CreateRandomTodo not met");
 		}
-		
 
 	}
 	
@@ -136,6 +136,8 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 			actual = response.readEntity(com.anfelisa.todo.data.GetTodoResponse.class);
 			
 		} catch (Exception x) {
+			LOG.error("THEN: failed to read response", x);
+			assertFail(x.getMessage());
 		}
 		com.anfelisa.todo.data.TodoData expectedData = objectMapper.readValue("{" +
 			"\"uuid\" : \"\"," + 
@@ -164,19 +166,19 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 
 			com.anfelisa.todo.data.GetTodoResponse actualResponse = then(response);
 			
-		
+	
 		} else {
 			LOG.info("WHEN: prerequisite for GetTodo not met");
 		}
 	}
 	
 	
-	
+		
 	@Override
 	protected String scenarioName() {
 		return "GetTodo";
 	}
-
+	
 }
 
 
@@ -184,4 +186,4 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 /******* S.D.G. *******/
 
 
-			
+

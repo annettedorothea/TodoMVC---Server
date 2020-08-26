@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.9
+ * generated with de.acegen 0.9.10
  *
  */
 
@@ -52,6 +52,7 @@ public abstract class AbstractGetEvenMoreTodosScenario extends BaseScenario {
 		String uuid;
 		long timeBeforeRequest;
 		long timeAfterRequest;
+		
 		for (int i=0; i<1000; i++) {
 			if (prerequisite("CreateRandomTodo")) {
 				uuid = this.randomUUID();
@@ -98,7 +99,6 @@ public abstract class AbstractGetEvenMoreTodosScenario extends BaseScenario {
 				LOG.info("GIVEN: prerequisite for CreateRandomTodo not met");
 			}
 		}
-			
 
 	}
 	
@@ -136,6 +136,8 @@ public abstract class AbstractGetEvenMoreTodosScenario extends BaseScenario {
 			actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
 			
 		} catch (Exception x) {
+			LOG.error("THEN: failed to read response", x);
+			assertFail(x.getMessage());
 		}
 		
 		return actual;
@@ -150,7 +152,7 @@ public abstract class AbstractGetEvenMoreTodosScenario extends BaseScenario {
 
 			com.anfelisa.todo.data.GetAllTodosResponse actualResponse = then(response);
 			
-		
+	
 			atLeastThousandReturned(actualResponse);
 		} else {
 			LOG.info("WHEN: prerequisite for GetEvenMoreTodos not met");
@@ -159,12 +161,12 @@ public abstract class AbstractGetEvenMoreTodosScenario extends BaseScenario {
 	
 	protected abstract void atLeastThousandReturned(com.anfelisa.todo.data.GetAllTodosResponse response);
 	
-	
+		
 	@Override
 	protected String scenarioName() {
 		return "GetEvenMoreTodos";
 	}
-
+	
 }
 
 
@@ -172,4 +174,4 @@ public abstract class AbstractGetEvenMoreTodosScenario extends BaseScenario {
 /******* S.D.G. *******/
 
 
-			
+

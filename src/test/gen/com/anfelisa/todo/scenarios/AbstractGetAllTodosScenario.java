@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.9
+ * generated with de.acegen 0.9.10
  *
  */
 
@@ -52,10 +52,11 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 		String uuid;
 		long timeBeforeRequest;
 		long timeAfterRequest;
+		
 		if (prerequisite("CreateTodo")) {
 			uuid = "" + this.getTestId() + "";
 			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.TodoData data_1 = objectMapper.readValue("{" +
+			com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
 				"\"uuid\" : \"" + uuid + "\"," + 
 					"\"description\" : \"todo " + this.getTestId() + "\"} ",
 			com.anfelisa.todo.data.TodoData.class);
@@ -63,7 +64,7 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 			response = 
 			this.httpPost(
 				"/todos/create", 
-				data_1,
+				data_0,
 				null
 			);
 			
@@ -79,7 +80,6 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 		} else {
 			LOG.info("GIVEN: prerequisite for CreateTodo not met");
 		}
-		
 
 	}
 	
@@ -117,6 +117,8 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 			actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
 			
 		} catch (Exception x) {
+			LOG.error("THEN: failed to read response", x);
+			assertFail(x.getMessage());
 		}
 		com.anfelisa.todo.data.TodoListData expectedData = objectMapper.readValue("{" +
 			"\"uuid\" : \"\"," + 
@@ -146,19 +148,19 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 
 			com.anfelisa.todo.data.GetAllTodosResponse actualResponse = then(response);
 			
-		
+	
 		} else {
 			LOG.info("WHEN: prerequisite for GetAllTodos not met");
 		}
 	}
 	
 	
-	
+		
 	@Override
 	protected String scenarioName() {
 		return "GetAllTodos";
 	}
-
+	
 }
 
 
@@ -166,4 +168,4 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 /******* S.D.G. *******/
 
 
-			
+

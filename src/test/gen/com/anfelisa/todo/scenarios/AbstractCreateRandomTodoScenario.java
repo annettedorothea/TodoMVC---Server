@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.9
+ * generated with de.acegen 0.9.10
  *
  */
 
@@ -52,6 +52,7 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 		String uuid;
 		long timeBeforeRequest;
 		long timeAfterRequest;
+		
 	}
 	
 	private Response when() throws Exception {
@@ -107,6 +108,8 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 				LOG.info("THEN: failed to extract values from response ", x);
 			}
 		} catch (Exception x) {
+			LOG.error("THEN: failed to read response", x);
+			assertFail(x.getMessage());
 		}
 		
 		return actual;
@@ -122,7 +125,7 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 			com.anfelisa.todo.data.CreateTodoResponse actualResponse = then(response);
 			
 			this.todoWasCreated();
-		
+	
 		} else {
 			LOG.info("WHEN: prerequisite for CreateRandomTodo not met");
 		}
@@ -140,15 +143,15 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 				"\"updatedDateTime\" : null} ",
 		com.anfelisa.todo.models.TodoModel.class);
 		assertThat(actual, expected);
-
+	
 		LOG.info("THEN: todoWasCreated passed");
 	}
-	
+		
 	@Override
 	protected String scenarioName() {
 		return "CreateRandomTodo";
 	}
-
+	
 }
 
 
@@ -156,4 +159,4 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 /******* S.D.G. *******/
 
 
-			
+

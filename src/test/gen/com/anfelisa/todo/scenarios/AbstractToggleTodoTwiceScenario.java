@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * generated with de.acegen 0.9.9
+ * generated with de.acegen 0.9.10
  *
  */
 
@@ -52,6 +52,35 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 		String uuid;
 		long timeBeforeRequest;
 		long timeAfterRequest;
+		
+		if (prerequisite("CreateTodo")) {
+			uuid = "" + this.getTestId() + "";
+			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+			com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
+				"\"uuid\" : \"" + uuid + "\"," + 
+					"\"description\" : \"todo " + this.getTestId() + "\"} ",
+			com.anfelisa.todo.data.TodoData.class);
+			timeBeforeRequest = System.currentTimeMillis();
+			response = 
+			this.httpPost(
+				"/todos/create", 
+				data_0,
+				null
+			);
+			
+			timeAfterRequest = System.currentTimeMillis();
+			if (response.getStatus() >= 400) {
+				String message = "GIVEN CreateTodo fails\n" + response.readEntity(String.class);
+				LOG.info("GIVEN: CreateTodo fails due to {} in {} ms", message, (timeAfterRequest-timeBeforeRequest));
+				addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
+				assertFail(message);
+			}
+			LOG.info("GIVEN: CreateTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
+			addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
+		} else {
+			LOG.info("GIVEN: prerequisite for CreateTodo not met");
+		}
+
 		if (prerequisite("CreateTodo")) {
 			uuid = "" + this.getTestId() + "";
 			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
@@ -79,49 +108,19 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 		} else {
 			LOG.info("GIVEN: prerequisite for CreateTodo not met");
 		}
-		
-
-		if (prerequisite("CreateTodo")) {
-			uuid = "" + this.getTestId() + "";
-			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.TodoData data_2 = objectMapper.readValue("{" +
-				"\"uuid\" : \"" + uuid + "\"," + 
-					"\"description\" : \"todo " + this.getTestId() + "\"} ",
-			com.anfelisa.todo.data.TodoData.class);
-			timeBeforeRequest = System.currentTimeMillis();
-			response = 
-			this.httpPost(
-				"/todos/create", 
-				data_2,
-				null
-			);
-			
-			timeAfterRequest = System.currentTimeMillis();
-			if (response.getStatus() >= 400) {
-				String message = "GIVEN CreateTodo fails\n" + response.readEntity(String.class);
-				LOG.info("GIVEN: CreateTodo fails due to {} in {} ms", message, (timeAfterRequest-timeBeforeRequest));
-				addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
-				assertFail(message);
-			}
-			LOG.info("GIVEN: CreateTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
-			addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
-		} else {
-			LOG.info("GIVEN: prerequisite for CreateTodo not met");
-		}
-		
 
 		if (prerequisite("ToggleTodo")) {
 			uuid = this.randomUUID();
 			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 17:20", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.TodoToggleData data_3 = objectMapper.readValue("{" +
+			com.anfelisa.todo.data.TodoToggleData data_2 = objectMapper.readValue("{" +
 				"\"uuid\" : \"" + uuid + "\"," + 
 					"\"id\" : \"" + this.getTestId() + "\"} ",
 			com.anfelisa.todo.data.TodoToggleData.class);
 			timeBeforeRequest = System.currentTimeMillis();
 			response = 
 			this.httpPut(
-				"/todos/toggle?uuid=" + data_3.getUuid() + "&id=" + data_3.getId() + "", 
-				data_3,
+				"/todos/toggle?uuid=" + data_2.getUuid() + "&id=" + data_2.getId() + "", 
+				data_2,
 				null
 			);
 			
@@ -137,7 +136,6 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 		} else {
 			LOG.info("GIVEN: prerequisite for ToggleTodo not met");
 		}
-		
 
 	}
 	
@@ -179,6 +177,8 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 			actual = response.readEntity(com.anfelisa.todo.data.ToggleTodoResponse.class);
 			
 		} catch (Exception x) {
+			LOG.error("THEN: failed to read response", x);
+			assertFail(x.getMessage());
 		}
 		
 		return actual;
@@ -194,7 +194,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 			com.anfelisa.todo.data.ToggleTodoResponse actualResponse = then(response);
 			
 			this.todoWasToggled();
-		
+	
 		} else {
 			LOG.info("WHEN: prerequisite for ToggleTodoTwice not met");
 		}
@@ -212,15 +212,15 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 				"\"updatedDateTime\" : \"2020-07-07T17:30\"} ",
 		com.anfelisa.todo.models.TodoModel.class);
 		assertThat(actual, expected);
-
+	
 		LOG.info("THEN: todoWasToggled passed");
 	}
-	
+		
 	@Override
 	protected String scenarioName() {
 		return "ToggleTodoTwice";
 	}
-
+	
 }
 
 
@@ -228,4 +228,4 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 /******* S.D.G. *******/
 
 
-			
+
