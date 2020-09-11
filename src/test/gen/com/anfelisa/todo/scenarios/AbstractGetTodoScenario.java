@@ -131,30 +131,32 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-		com.anfelisa.todo.data.GetTodoResponse actual = null;
-		try {
-			actual = response.readEntity(com.anfelisa.todo.data.GetTodoResponse.class);
-			
-		} catch (Exception x) {
-			LOG.error("THEN: failed to read response", x);
-			assertFail(x.getMessage());
-		}
-		com.anfelisa.todo.data.TodoData expectedData = objectMapper.readValue("{" +
-			"\"uuid\" : \"\"," + 
-				"\"createdDateTime\" : \"" + LocalDateTime.parse(this.extractedValues.get("createdDateTime").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))  + "\"," + 
-				"\"description\" : \"" + this.extractedValues.get("description").toString() + "\"," + 
-				"\"done\" : false," + 
-				"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"} ",
-		com.anfelisa.todo.data.TodoData.class);
-		
-		com.anfelisa.todo.data.GetTodoResponse expected = new com.anfelisa.todo.data.GetTodoResponse(expectedData);
+				com.anfelisa.todo.data.GetTodoResponse actual = null;
+				if (response.getStatus() < 400) {
+					try {
+						actual = response.readEntity(com.anfelisa.todo.data.GetTodoResponse.class);
+						
+					} catch (Exception x) {
+						LOG.error("THEN: failed to read response", x);
+						assertFail(x.getMessage());
+					}
 
+					com.anfelisa.todo.data.TodoData expectedData = objectMapper.readValue("{" +
+						"\"uuid\" : \"\"," + 
+							"\"createdDateTime\" : \"" + LocalDateTime.parse(this.extractedValues.get("createdDateTime").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))  + "\"," + 
+							"\"description\" : \"" + this.extractedValues.get("description").toString() + "\"," + 
+							"\"done\" : false," + 
+							"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"} ",
+					com.anfelisa.todo.data.TodoData.class);
+					
+					com.anfelisa.todo.data.GetTodoResponse expected = new com.anfelisa.todo.data.GetTodoResponse(expectedData);
+					
+					assertThat(actual, expected);
+					
+					LOG.info("THEN: response passed");
+				}
 
-		assertThat(actual, expected);
-		
-		LOG.info("THEN: response passed");
-		
-		return actual;
+				return actual;
 	}
 			
 	@Override

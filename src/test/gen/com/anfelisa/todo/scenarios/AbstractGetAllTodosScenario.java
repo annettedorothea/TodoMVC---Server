@@ -112,31 +112,33 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-		com.anfelisa.todo.data.GetAllTodosResponse actual = null;
-		try {
-			actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
-			
-		} catch (Exception x) {
-			LOG.error("THEN: failed to read response", x);
-			assertFail(x.getMessage());
-		}
-		com.anfelisa.todo.data.TodoListData expectedData = objectMapper.readValue("{" +
-			"\"uuid\" : \"\"," + 
-				"\"todoList\" : [ { \"createdDateTime\" : \"2020-07-07T16:30\"," + 
-				"\"description\" : \"todo " + this.getTestId() + "\"," + 
-				"\"done\" : false," + 
-				"\"id\" : \"" + this.getTestId() + "\"," + 
-				"\"updatedDateTime\" : null}]} ",
-		com.anfelisa.todo.data.TodoListData.class);
-		
-		com.anfelisa.todo.data.GetAllTodosResponse expected = new com.anfelisa.todo.data.GetAllTodosResponse(expectedData);
+				com.anfelisa.todo.data.GetAllTodosResponse actual = null;
+				if (response.getStatus() < 400) {
+					try {
+						actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
+						
+					} catch (Exception x) {
+						LOG.error("THEN: failed to read response", x);
+						assertFail(x.getMessage());
+					}
 
+					com.anfelisa.todo.data.TodoListData expectedData = objectMapper.readValue("{" +
+						"\"uuid\" : \"\"," + 
+							"\"todoList\" : [ { \"createdDateTime\" : \"2020-07-07T16:30\"," + 
+							"\"description\" : \"todo " + this.getTestId() + "\"," + 
+							"\"done\" : false," + 
+							"\"id\" : \"" + this.getTestId() + "\"," + 
+							"\"updatedDateTime\" : null}]} ",
+					com.anfelisa.todo.data.TodoListData.class);
+					
+					com.anfelisa.todo.data.GetAllTodosResponse expected = new com.anfelisa.todo.data.GetAllTodosResponse(expectedData);
+					
+					assertThat(actual, expected);
+					
+					LOG.info("THEN: response passed");
+				}
 
-		assertThat(actual, expected);
-		
-		LOG.info("THEN: response passed");
-		
-		return actual;
+				return actual;
 	}
 			
 	@Override

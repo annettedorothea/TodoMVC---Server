@@ -92,19 +92,34 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	public static void afterClass() {
 		Object[] actions = metrics.keySet().toArray();
 		Arrays.sort(actions);
+		LOG.info(padRight("action", 25) + padLeft("times", 9) + padLeft("mean", 9) + padLeft("std dev", 9)
+				+ padLeft("median", 9) + padLeft("pctl(10)", 9) + padLeft("pctl(90)", 9) + padLeft("min", 9)
+				+ padLeft("max", 9));
 		for (Object action : actions) {
 			DescriptiveStatistics values = metrics.get(action);
-			LOG.info("action {}", action);
-			LOG.info(
-					"{} times and performed with mean {} - standard deviation {} - median {} - percentile(10) {} - percentile(90) {} - min {} - max {}",
-					values.getN(), format(values.getMean()), format(values.getStandardDeviation()),
-					format(values.getPercentile(50)), format(values.getPercentile(10)),
-					format(values.getPercentile(90)), format(values.getMin()), format(values.getMax()));
+			LOG.info(padRight(action.toString(), 25) + padLeft(values.getN() + "", 9)
+					+ padLeft(format(values.getMean()), 9) + padLeft(format(values.getStandardDeviation()), 9)
+					+ padLeft(format(values.getPercentile(50)), 9)
+					+ padLeft(format(values.getPercentile(10)), 9)
+					+ padLeft(format(values.getPercentile(90)), 9) + padLeft(values.getMin(), 9)
+					+ padLeft(values.getMax(), 9));
 		}
 	}
 
+	private static String padLeft(double d, int n) {
+		return String.format("%" + n + "s", new DecimalFormat("#").format(d));
+	}
+
+	public static String padLeft(String s, int n) {
+		return String.format("%" + n + "s", s);
+	}
+
+	public static String padRight(String s, int n) {
+		return String.format("%-" + n + "s", s);
+	}
+
 	private static String format(double d) {
-		return new DecimalFormat("#.##").format(d);
+		return new DecimalFormat("0.00").format(d);
 	}
 
 	@BeforeEach

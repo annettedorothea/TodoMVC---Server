@@ -20,65 +20,35 @@
 
 
 
-package com.anfelisa.todo.models;
+package com.anfelisa.todo.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList;
 
+import de.acegen.IDataContainer;
 import de.acegen.DateTimeToStringConverter;
 import de.acegen.StringToDateTimeConverter;
 
 @SuppressWarnings("all")
-public class TodoListModel implements ITodoListModel {
-
+public class GetOrderedTodosResponse implements IGetOrderedTodosResponse {
+	
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
-
-
-	public TodoListModel() {
+	
+	public GetOrderedTodosResponse() {
 	}
-
-	public TodoListModel(
-		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList
-	) {
-		this.todoList = todoList;
+	
+	public GetOrderedTodosResponse(com.anfelisa.todo.models.ITodoListModel data) {
+		todoList = data.getTodoList();
 	}
-
+	
 	@JsonProperty
 	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
 		return this.todoList;
-	}
-	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
-		this.todoList = todoList;
-	}
-	
-
-	public static ITodoListModel generateTestData() {
-		java.util.Random random = new java.util.Random();
-		int n;
-		ITodoListModel testData = new TodoListModel();
-		List<ITodoModel> todoListList = new ArrayList();
-		n = random.nextInt(20) + 1;
-		for ( int i = 0; i < n; i++ ) {
-			todoListList.add(com.anfelisa.todo.models.TodoModel.generateTestData());
-		}
-		testData.setTodoList(todoListList);
-		return testData;
-	}
-	
-	private static String randomString(java.util.Random random) {
-		String chars = "aaaaaaabcdeeeeeeeffffghiiiiiiijkllllllmmmmnnnnnnnooooooooopqrstttuuuuuuuvxyz";
-		int n = random.nextInt(20) + 5;
-		StringBuilder sb = new StringBuilder(n);
-		for (int i = 0; i < n; i++) {
-			int index = random.nextInt(chars.length());
-			sb.append(chars.charAt(index));
-		}
-		String string  = sb.toString(); 
-		return string.substring(0,1).toUpperCase() + string.substring(1).toLowerCase();
 	}
 	
 }

@@ -41,9 +41,9 @@ import de.acegen.ITimelineItem;
 import de.acegen.NotReplayableDataProvider;
 
 @SuppressWarnings("unused")
-public abstract class AbstractCreateTodoScenario extends BaseScenario {
+public abstract class AbstractGetTestDataScenario extends BaseScenario {
 
-	static final Logger LOG = LoggerFactory.getLogger(AbstractCreateTodoScenario.class);
+	static final Logger LOG = LoggerFactory.getLogger(AbstractGetTestDataScenario.class);
 	
 	private Map<String, Object> extractedValues = new HashMap<String, Object>();
 	
@@ -56,27 +56,23 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 	}
 	
 	private Response when() throws Exception {
-		String uuid = "" + this.getTestId() + "";
-		this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-		com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
-			"\"uuid\" : \"" + uuid + "\"," + 
-				"\"description\" : \"todo " + this.getTestId() + "\"} ",
-		com.anfelisa.todo.data.TodoData.class);
+		String uuid = this.randomUUID();
+		com.anfelisa.todo.data.TodoListData data_0 = objectMapper.readValue("{ \"uuid\" : \"" + uuid + "\"}",
+		com.anfelisa.todo.data.TodoListData.class);
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
-		this.httpPost(
-			"/todos/create", 
-			data_0,
+		this.httpGet(
+			"/todos/ordered?uuid=" + data_0.getUuid() + "", 
 			null
 		);
 		
 		long timeAfterRequest = System.currentTimeMillis();
-		LOG.info("WHEN: CreateTodo finished in {} ms", (timeAfterRequest-timeBeforeRequest));
-		addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
+		LOG.info("WHEN: GetOrderedTodos finished in {} ms", (timeAfterRequest-timeBeforeRequest));
+		addToMetrics("GetOrderedTodos", (timeAfterRequest-timeBeforeRequest));
 		return response;
 	}
 	
-	private com.anfelisa.todo.data.CreateTodoResponse then(Response response) throws Exception {
+	private com.anfelisa.todo.data.GetOrderedTodosResponse then(Response response) throws Exception {
 		if (response.getStatus() == 500) {
 			String message = response.readEntity(String.class);
 			assertFail(message);
@@ -88,10 +84,10 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-				com.anfelisa.todo.data.CreateTodoResponse actual = null;
+				com.anfelisa.todo.data.GetOrderedTodosResponse actual = null;
 				if (response.getStatus() < 400) {
 					try {
-						actual = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
+						actual = response.readEntity(com.anfelisa.todo.data.GetOrderedTodosResponse.class);
 						
 					} catch (Exception x) {
 						LOG.error("THEN: failed to read response", x);
@@ -107,37 +103,24 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 	public void runTest() throws Exception {
 		given();
 			
-		if (prerequisite("CreateTodo")) {
+		if (prerequisite("GetTestData")) {
 			Response response = when();
 
-			com.anfelisa.todo.data.CreateTodoResponse actualResponse = then(response);
+			com.anfelisa.todo.data.GetOrderedTodosResponse actualResponse = then(response);
 			
-			this.todoWasCreated();
 	
+			justTakeALook(actualResponse);
 		} else {
-			LOG.info("WHEN: prerequisite for CreateTodo not met");
+			LOG.info("WHEN: prerequisite for GetTestData not met");
 		}
 	}
 	
+	protected abstract void justTakeALook(com.anfelisa.todo.data.GetOrderedTodosResponse response);
 	
-	private void todoWasCreated() throws Exception {
-		com.anfelisa.todo.models.ITodoModel actual = daoProvider.getTodoDao().selectByPrimaryKey(handle, "" + this.getTestId() + "");
-		
-		com.anfelisa.todo.models.ITodoModel expected = objectMapper.readValue("{" +
-			"\"createdDateTime\" : \"2020-07-07T16:30\"," + 
-				"\"description\" : \"todo " + this.getTestId() + "\"," + 
-				"\"done\" : false," + 
-				"\"id\" : \"" + this.getTestId() + "\"," + 
-				"\"updatedDateTime\" : null} ",
-		com.anfelisa.todo.models.TodoModel.class);
-		assertThat(actual, expected);
-	
-		LOG.info("THEN: todoWasCreated passed");
-	}
 		
 	@Override
 	protected String scenarioName() {
-		return "CreateTodo";
+		return "GetTestData";
 	}
 	
 }

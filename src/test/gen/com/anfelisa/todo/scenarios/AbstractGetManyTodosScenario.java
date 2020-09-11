@@ -131,16 +131,19 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-		com.anfelisa.todo.data.GetAllTodosResponse actual = null;
-		try {
-			actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
-			
-		} catch (Exception x) {
-			LOG.error("THEN: failed to read response", x);
-			assertFail(x.getMessage());
-		}
-		
-		return actual;
+				com.anfelisa.todo.data.GetAllTodosResponse actual = null;
+				if (response.getStatus() < 400) {
+					try {
+						actual = response.readEntity(com.anfelisa.todo.data.GetAllTodosResponse.class);
+						
+					} catch (Exception x) {
+						LOG.error("THEN: failed to read response", x);
+						assertFail(x.getMessage());
+					}
+
+				}
+
+				return actual;
 	}
 			
 	@Override

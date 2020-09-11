@@ -107,6 +107,31 @@ public class TodoModel implements ITodoModel {
 		this.updatedDateTime = updatedDateTime;
 	}
 	
+
+	public static ITodoModel generateTestData() {
+		java.util.Random random = new java.util.Random();
+		int n;
+		ITodoModel testData = new TodoModel();
+		testData.setId(randomString(random));
+		testData.setDescription(randomString(random));
+		testData.setDone(random.nextBoolean());
+		testData.setCreatedDateTime(random.nextBoolean() ? java.time.LocalDateTime.now().plusMinutes(random.nextInt(60)) : java.time.LocalDateTime.now().minusMinutes(random.nextInt(60)) );
+		testData.setUpdatedDateTime(random.nextBoolean() ? java.time.LocalDateTime.now().plusMinutes(random.nextInt(60)) : java.time.LocalDateTime.now().minusMinutes(random.nextInt(60)) );
+		return testData;
+	}
+	
+	private static String randomString(java.util.Random random) {
+		String chars = "aaaaaaabcdeeeeeeeffffghiiiiiiijkllllllmmmmnnnnnnnooooooooopqrstttuuuuuuuvxyz";
+		int n = random.nextInt(20) + 5;
+		StringBuilder sb = new StringBuilder(n);
+		for (int i = 0; i < n; i++) {
+			int index = random.nextInt(chars.length());
+			sb.append(chars.charAt(index));
+		}
+		String string  = sb.toString(); 
+		return string.substring(0,1).toUpperCase() + string.substring(1).toLowerCase();
+	}
+	
 }
 
 

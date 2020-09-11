@@ -87,32 +87,35 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-		com.anfelisa.todo.data.CreateTodoResponse actual = null;
-		try {
-			actual = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
-			
-			try {
-				
-				Object todoId = this.extractTodoId(actual);
-				extractedValues.put("todoId", todoId);
-				LOG.info("THEN: extracted " + todoId.toString()  + " as todoId");
-				
-				Object createdDateTime = this.extractCreatedDateTime(actual);
-				extractedValues.put("createdDateTime", createdDateTime);
-				LOG.info("THEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
-				
-				Object description = this.extractDescription(actual);
-				extractedValues.put("description", description);
-				LOG.info("THEN: extracted " + description.toString()  + " as description");
-			} catch (Exception x) {
-				LOG.info("THEN: failed to extract values from response ", x);
-			}
-		} catch (Exception x) {
-			LOG.error("THEN: failed to read response", x);
-			assertFail(x.getMessage());
-		}
-		
-		return actual;
+				com.anfelisa.todo.data.CreateTodoResponse actual = null;
+				if (response.getStatus() < 400) {
+					try {
+						actual = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
+						
+						try {
+							
+							Object todoId = this.extractTodoId(actual);
+							extractedValues.put("todoId", todoId);
+							LOG.info("THEN: extracted " + todoId.toString()  + " as todoId");
+							
+							Object createdDateTime = this.extractCreatedDateTime(actual);
+							extractedValues.put("createdDateTime", createdDateTime);
+							LOG.info("THEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
+							
+							Object description = this.extractDescription(actual);
+							extractedValues.put("description", description);
+							LOG.info("THEN: extracted " + description.toString()  + " as description");
+						} catch (Exception x) {
+							LOG.info("THEN: failed to extract values from response ", x);
+						}
+					} catch (Exception x) {
+						LOG.error("THEN: failed to read response", x);
+						assertFail(x.getMessage());
+					}
+
+				}
+
+				return actual;
 	}
 			
 	@Override

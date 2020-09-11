@@ -2,6 +2,8 @@ HttpServer Java Dropwizard JDBI3 Liquibase
 
 com.anfelisa.todo
 
+
+
 ACE 
 	GetAllTodos<TodoList> 
 		GET "/todos/all"
@@ -16,6 +18,11 @@ ACE
 			createdDateTime
 			done
 			updatedDateTime
+	
+	
+	GetOrderedTodos<TodoList>
+		GET "/todos/ordered"
+		response todoList
 	
 	CreateTodo<Todo>
 		POST "/todos/create"
@@ -93,7 +100,6 @@ models
 	
 scenarios 
 
-
 CreateTodo
 	WHEN CreateTodo
 		uuid "${testId}"
@@ -159,6 +165,7 @@ GetTodo
 
 
 
+
 GetManyTodos
 	GIVEN CreateRandomTodo 20x
 	WHEN GetAllTodos
@@ -204,10 +211,9 @@ ToggleTodoTwice
 			id: "${testId}",
 			updatedDateTime: "20200707 17:30" "yyyyMMdd HH:mm"
 		}
-	
-
-
-	
-	
 		
-
+GetTestData
+	WHEN GetOrderedTodos
+	THEN 200
+		verifications justTakeALook
+		

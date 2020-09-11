@@ -160,7 +160,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 		return response;
 	}
 	
-	private com.anfelisa.todo.data.ToggleTodoResponse then(Response response) throws Exception {
+	private void then(Response response) throws Exception {
 		if (response.getStatus() == 500) {
 			String message = response.readEntity(String.class);
 			assertFail(message);
@@ -172,16 +172,6 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-		com.anfelisa.todo.data.ToggleTodoResponse actual = null;
-		try {
-			actual = response.readEntity(com.anfelisa.todo.data.ToggleTodoResponse.class);
-			
-		} catch (Exception x) {
-			LOG.error("THEN: failed to read response", x);
-			assertFail(x.getMessage());
-		}
-		
-		return actual;
 	}
 			
 	@Override
@@ -191,7 +181,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 		if (prerequisite("ToggleTodoTwice")) {
 			Response response = when();
 
-			com.anfelisa.todo.data.ToggleTodoResponse actualResponse = then(response);
+			then(response);
 			
 			this.todoWasToggled();
 	
