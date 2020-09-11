@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2019, Annette Pohl, Koblenz, Germany
+ * Copyright (c) 2020, Annette Pohl, Koblenz, Germany
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -12,6 +12,9 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * generated with de.acegen 0.9.10
+ *
  */
 
 
@@ -46,8 +49,29 @@ public class TodoToggleData extends AbstractTodoToggleData implements ITodoToggl
 	public void migrateLegacyData(String json) {
 	}
 
+	public static com.anfelisa.todo.models.ITodoToggleModel generateTestData() {
+		java.util.Random random = new java.util.Random();
+		com.anfelisa.todo.models.ITodoToggleModel testData = new com.anfelisa.todo.models.TodoToggleModel();
+		testData.setId(randomString(random));
+		testData.setDone(random.nextBoolean());
+		testData.setTodoToBeToggled(com.anfelisa.todo.data.TodoData.generateTestData());
+		testData.setUpdatedDateTime(random.nextBoolean() ? java.time.LocalDateTime.now().plusMinutes(random.nextInt(60)) : java.time.LocalDateTime.now().minusMinutes(random.nextInt(60)) );
+		return testData;
+	}
+	
+	private static String randomString(java.util.Random random) {
+		String chars = "aaaaaaabcdeeeeeeeffffghiiiiiiijkllllllmmmmnnnnnnnooooooooopqrstttuuuuuuuvxyz";
+		int n = random.nextInt(20) + 5;
+		StringBuilder sb = new StringBuilder(n);
+		for (int i = 0; i < n; i++) {
+			int index = random.nextInt(chars.length());
+			sb.append(chars.charAt(index));
+		}
+		String string  = sb.toString(); 
+		return string.substring(0,1).toUpperCase() + string.substring(1).toLowerCase();
+	}
+	
 }
-
 
 
 

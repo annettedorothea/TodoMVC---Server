@@ -44,7 +44,7 @@ public class GetOrderedTodosAction extends AbstractGetOrderedTodosAction {
 
 	@Override
 	protected void loadDataForGetRequest(PersistenceHandle readonlyHandle) {
-		com.anfelisa.todo.models.ITodoListModel testData = com.anfelisa.todo.models.TodoListModel.generateTestData();
+		com.anfelisa.todo.models.ITodoListModel testData = com.anfelisa.todo.data.TodoListData.generateTestData();
 		this.actionData.setTodoList(testData.getTodoList());
 	}
 	

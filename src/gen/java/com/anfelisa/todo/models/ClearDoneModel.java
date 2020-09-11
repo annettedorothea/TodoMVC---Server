@@ -42,25 +42,6 @@ public class ClearDoneModel implements IClearDoneModel {
 	}
 
 
-	public static IClearDoneModel generateTestData() {
-		java.util.Random random = new java.util.Random();
-		int n;
-		IClearDoneModel testData = new ClearDoneModel();
-		return testData;
-	}
-	
-	private static String randomString(java.util.Random random) {
-		String chars = "aaaaaaabcdeeeeeeeffffghiiiiiiijkllllllmmmmnnnnnnnooooooooopqrstttuuuuuuuvxyz";
-		int n = random.nextInt(20) + 5;
-		StringBuilder sb = new StringBuilder(n);
-		for (int i = 0; i < n; i++) {
-			int index = random.nextInt(chars.length());
-			sb.append(chars.charAt(index));
-		}
-		String string  = sb.toString(); 
-		return string.substring(0,1).toUpperCase() + string.substring(1).toLowerCase();
-	}
-	
 }
 
 

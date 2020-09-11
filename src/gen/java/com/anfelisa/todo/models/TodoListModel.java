@@ -56,31 +56,6 @@ public class TodoListModel implements ITodoListModel {
 	}
 	
 
-	public static ITodoListModel generateTestData() {
-		java.util.Random random = new java.util.Random();
-		int n;
-		ITodoListModel testData = new TodoListModel();
-		List<ITodoModel> todoListList = new ArrayList();
-		n = random.nextInt(20) + 1;
-		for ( int i = 0; i < n; i++ ) {
-			todoListList.add(com.anfelisa.todo.models.TodoModel.generateTestData());
-		}
-		testData.setTodoList(todoListList);
-		return testData;
-	}
-	
-	private static String randomString(java.util.Random random) {
-		String chars = "aaaaaaabcdeeeeeeeffffghiiiiiiijkllllllmmmmnnnnnnnooooooooopqrstttuuuuuuuvxyz";
-		int n = random.nextInt(20) + 5;
-		StringBuilder sb = new StringBuilder(n);
-		for (int i = 0; i < n; i++) {
-			int index = random.nextInt(chars.length());
-			sb.append(chars.charAt(index));
-		}
-		String string  = sb.toString(); 
-		return string.substring(0,1).toUpperCase() + string.substring(1).toLowerCase();
-	}
-	
 }
 
 
