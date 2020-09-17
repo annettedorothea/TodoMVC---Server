@@ -99,8 +99,7 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 			DescriptiveStatistics values = metrics.get(action);
 			LOG.info(padRight(action.toString(), 25) + padLeft(values.getN() + "", 9)
 					+ padLeft(format(values.getMean()), 9) + padLeft(format(values.getStandardDeviation()), 9)
-					+ padLeft(format(values.getPercentile(50)), 9)
-					+ padLeft(format(values.getPercentile(10)), 9)
+					+ padLeft(format(values.getPercentile(50)), 9) + padLeft(format(values.getPercentile(10)), 9)
 					+ padLeft(format(values.getPercentile(90)), 9) + padLeft(values.getMin(), 9)
 					+ padLeft(values.getMax(), 9));
 		}
@@ -144,36 +143,41 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		this.runTest();
 	}
 
-	private String buidlUrl(String path) {
+	private String buildUrl(String path, String uuid) {
+		if (path.contains("?")) {
+			path += "&uuid=" + uuid;
+		} else {
+			path += "?uuid=" + uuid;
+		}
 		return String.format("%s://%s:%d%s%s", protocol, host, port, rootPath, path);
 	}
 
-	protected Response httpGet(String path, String authorization) {
-		Builder builder = client.target(buidlUrl(path)).request();
+	protected Response httpGet(String path, String authorization, String uuid) {
+		Builder builder = client.target(buildUrl(path, uuid)).request();
 		if (authorization != null) {
 			builder.header("Authorization", authorization);
 		}
 		return builder.get();
 	}
 
-	protected Response httpPost(String path, Object data, String authorization) {
-		Builder builder = client.target(buidlUrl(path)).request();
+	protected Response httpPost(String path, Object payload, String authorization, String uuid) {
+		Builder builder = client.target(buildUrl(path, uuid)).request();
 		if (authorization != null) {
 			builder.header("Authorization", authorization);
 		}
-		return builder.post(Entity.json(data));
+		return builder.post(Entity.json(payload));
 	}
 
-	protected Response httpPut(String path, Object data, String authorization) {
-		Builder builder = client.target(buidlUrl(path)).request();
+	protected Response httpPut(String path, Object payload, String authorization, String uuid) {
+		Builder builder = client.target(buildUrl(path, uuid)).request();
 		if (authorization != null) {
 			builder.header("Authorization", authorization);
 		}
-		return builder.put(Entity.json(data));
+		return builder.put(payload != null ? Entity.json(payload) : Entity.json(""));
 	}
 
-	protected Response httpDelete(String path, String authorization) {
-		Builder builder = client.target(buidlUrl(path)).request();
+	protected Response httpDelete(String path, String authorization, String uuid) {
+		Builder builder = client.target(buildUrl(path, uuid)).request();
 		if (authorization != null) {
 			builder.header("Authorization", authorization);
 		}

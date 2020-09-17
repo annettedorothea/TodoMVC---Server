@@ -22,15 +22,19 @@
 
 package com.anfelisa.todo.actions;
 
-import de.acegen.CustomAppConfiguration;
-import de.acegen.ViewProvider;
-import de.acegen.IDaoProvider;
-import de.acegen.E2E;
-import de.acegen.PersistenceConnection;
-import de.acegen.PersistenceHandle;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.anfelisa.todo.models.ITodoModel;
+
+import de.acegen.CustomAppConfiguration;
+import de.acegen.E2E;
+import de.acegen.IDaoProvider;
+import de.acegen.PersistenceConnection;
+import de.acegen.PersistenceHandle;
+import de.acegen.ViewProvider;
 
 public class GetAllTodosAction extends AbstractGetAllTodosAction {
 
@@ -44,10 +48,10 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 
 	@Override
 	protected void loadDataForGetRequest(PersistenceHandle readonlyHandle) {
-		com.anfelisa.todo.models.ITodoListModel testData = com.anfelisa.todo.data.TodoListData.generateTestData();
-		this.actionData.setTodoList(testData.getTodoList());
-		//List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle);
-		//this.actionData.setTodoList(todos);
+		//com.anfelisa.todo.models.ITodoListModel testData = com.anfelisa.todo.data.TodoListData.generateTestData();
+		//this.actionData.setTodoList(testData.getTodoList());
+		List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle);
+		this.actionData.setTodoList(todos);
 	}
 	
 	public void initActionData() {

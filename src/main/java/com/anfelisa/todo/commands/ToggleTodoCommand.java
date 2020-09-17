@@ -43,6 +43,9 @@ public class ToggleTodoCommand extends AbstractToggleTodoCommand {
 	protected void executeCommand(PersistenceHandle readonlyHandle) {
 		this.commandData.setUpdatedDateTime(this.commandData.getSystemTime());
 		ITodoModel todo = daoProvider.getTodoDao().selectById(readonlyHandle, commandData.getId());
+		if (todo == null) {
+			this.throwIllegalArgumentException("todo with id " + commandData.getId() + " does not exist.");
+		}
 		this.commandData.setTodoToBeToggled(todo);
 		this.commandData.setDone(!todo.getDone());
 		this.commandData.setOutcome(success);

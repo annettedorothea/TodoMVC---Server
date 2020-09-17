@@ -3,14 +3,13 @@ HttpServer Java Dropwizard JDBI3 Liquibase
 com.anfelisa.todo
 
 
-
 ACE 
 	GetAllTodos<TodoList> 
 		GET "/todos/all"
 		response todoList
 	
 	GetTodo<Todo> 
-		GET "/todos/{id}"
+		GET "/todo/{id}"
 			pathParams id
 		response 
 			id
@@ -148,6 +147,14 @@ CreateRandomTodo
 			updatedDateTime: null
 		}
 		
+CreateRandomTodoJson
+	WHEN CreateTodo json "{\\\"description\\\": \\\"${random} ${testId}\\\"}"
+		extract todoId
+		extract createdDateTime
+		extract description
+	THEN 200
+		persistence todoWasCreated Todo selectByPrimaryKey (id: "${todoId}") shouldBe json "{\\\"createdDateTime\\\": \\\"${createdDateTime}\\\", \\\"description\\\": \\\"${description}\\\", \\\"done\\\": false, \\\"id\\\": \\\"${todoId}\\\", \\\"updatedDateTime\\\": null }"
+		
 
 	
 GetTodo
@@ -162,6 +169,18 @@ GetTodo
 		done: false,
 		id: "${todoId}"
 	}
+	
+GetTodoJson
+	GIVEN CreateRandomTodo
+	WHEN GetTodo json "{\\\"id\\\": \\\"${todoId}\\\"}"
+	THEN 200
+	response shouldBe json "{\\\"createdDateTime\\\": \\\"${createdDateTime}\\\", \\\"description\\\": \\\"${description}\\\", \\\"done\\\": false, \\\"id\\\": \\\"${todoId}\\\" }"
+	
+DeleteTodo
+	GIVEN CreateRandomTodo
+	WHEN DeleteTodo json "{\\\"id\\\": \\\"${todoId}\\\"}"
+	THEN 200
+		persistence todoWasDeleted Todo selectByPrimaryKey (id: "${todoId}") shouldBe null
 
 
 
