@@ -26,9 +26,9 @@ import de.acegen.ITimelineItem;
 import de.acegen.NotReplayableDataProvider;
 
 @SuppressWarnings("unused")
-public abstract class AbstractGetTodoScenario extends BaseScenario {
+public abstract class AbstractGetTodoJsonScenario extends BaseScenario {
 
-	static final Logger LOG = LoggerFactory.getLogger(AbstractGetTodoScenario.class);
+	static final Logger LOG = LoggerFactory.getLogger(AbstractGetTodoJsonScenario.class);
 	
 	private Map<String, Object> extractedValues = new HashMap<String, Object>();
 	
@@ -91,9 +91,7 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 	
 	private Response when() throws Exception {
 		String uuid = this.randomUUID();
-		com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
-		"\"uuid\" : \"" + uuid + "\"," + 
-		"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"} ",
+		com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{\"id\": \"" + this.extractedValues.get("todoId").toString() + "\"}",
 				com.anfelisa.todo.data.TodoData.class);
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
@@ -131,12 +129,7 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 						assertFail(x.getMessage());
 					}
 
-					com.anfelisa.todo.data.TodoData expectedData = objectMapper.readValue("{" +
-						"\"uuid\" : \"\"," + 
-						"\"createdDateTime\" : \"" + LocalDateTime.parse(this.extractedValues.get("createdDateTime").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))  + "\"," + 
-						"\"description\" : \"" + this.extractedValues.get("description").toString() + "\"," + 
-						"\"done\" : false," + 
-						"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"} ",
+					com.anfelisa.todo.data.TodoData expectedData = objectMapper.readValue("{\"createdDateTime\": \"" + this.extractedValues.get("createdDateTime").toString() + "\", \"description\": \"" + this.extractedValues.get("description").toString() + "\", \"done\": false, \"id\": \"" + this.extractedValues.get("todoId").toString() + "\" }",
 					com.anfelisa.todo.data.TodoData.class);
 					
 					com.anfelisa.todo.data.GetTodoResponse expected = new com.anfelisa.todo.data.GetTodoResponse(expectedData);
@@ -153,14 +146,14 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 	public void runTest() throws Exception {
 		given();
 			
-		if (prerequisite("GetTodo")) {
+		if (prerequisite("GetTodoJson")) {
 			Response response = when();
 
 			com.anfelisa.todo.data.GetTodoResponse actualResponse = then(response);
 			
 	
 		} else {
-			LOG.info("WHEN: prerequisite for GetTodo not met");
+			LOG.info("WHEN: prerequisite for GetTodoJson not met");
 		}
 	}
 	
@@ -168,7 +161,7 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 		
 	@Override
 	protected String scenarioName() {
-		return "GetTodo";
+		return "GetTodoJson";
 	}
 	
 }

@@ -20,12 +20,28 @@ import de.acegen.DateTimeToStringConverter;
 import de.acegen.StringToDateTimeConverter;
 
 @SuppressWarnings("all")
-public class DeleteTodoResponse implements IDeleteTodoResponse {
+public class UpdateTodoPayload implements IUpdateTodoPayload {
 	
-	public DeleteTodoResponse() {
+	private String id;
+	
+	private String description;
+	
+	public UpdateTodoPayload() {
 	}
 	
-	public DeleteTodoResponse(com.anfelisa.todo.models.ITodoIdModel data) {
+	public UpdateTodoPayload(com.anfelisa.todo.models.ITodoModel data) {
+		id = data.getId();
+		description = data.getDescription();
+	}
+	
+	@JsonProperty
+	public String getId() {
+		return this.id;
+	}
+	
+	@JsonProperty
+	public String getDescription() {
+		return this.description;
 	}
 	
 }

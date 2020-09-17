@@ -7,7 +7,11 @@
 
 package com.anfelisa.todo.data;
 
-public interface IDeleteTodoResponse {
+public interface IUpdateTodoPayload {
+	String getId();
+	
+	String getDescription();
+	
 
 }
 

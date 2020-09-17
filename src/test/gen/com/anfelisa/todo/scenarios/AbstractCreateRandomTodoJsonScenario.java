@@ -26,9 +26,9 @@ import de.acegen.ITimelineItem;
 import de.acegen.NotReplayableDataProvider;
 
 @SuppressWarnings("unused")
-public abstract class AbstractCreateTodoScenario extends BaseScenario {
+public abstract class AbstractCreateRandomTodoJsonScenario extends BaseScenario {
 
-	static final Logger LOG = LoggerFactory.getLogger(AbstractCreateTodoScenario.class);
+	static final Logger LOG = LoggerFactory.getLogger(AbstractCreateRandomTodoJsonScenario.class);
 	
 	private Map<String, Object> extractedValues = new HashMap<String, Object>();
 	
@@ -41,14 +41,10 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 	}
 	
 	private Response when() throws Exception {
-		String uuid = "" + this.getTestId() + "";
-		this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-		com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{" +
-			"\"description\" : \"todo " + this.getTestId() + "\"} ",
+		String uuid = this.randomUUID();
+		com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{\"description\": \"" + this.randomString() + " " + this.getTestId() + "\"}",
 				com.anfelisa.todo.data.CreateTodoPayload.class);
-		com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
-		"\"uuid\" : \"" + uuid + "\"," + 
-		"\"description\" : \"todo " + this.getTestId() + "\"} ",
+		com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{\"description\": \"" + this.randomString() + " " + this.getTestId() + "\"}",
 				com.anfelisa.todo.data.TodoData.class);
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
@@ -82,6 +78,22 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 					try {
 						actual = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
 						
+						try {
+							
+							Object todoId = this.extractTodoId(actual);
+							extractedValues.put("todoId", todoId);
+							LOG.info("THEN: extracted " + todoId.toString()  + " as todoId");
+							
+							Object createdDateTime = this.extractCreatedDateTime(actual);
+							extractedValues.put("createdDateTime", createdDateTime);
+							LOG.info("THEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
+							
+							Object description = this.extractDescription(actual);
+							extractedValues.put("description", description);
+							LOG.info("THEN: extracted " + description.toString()  + " as description");
+						} catch (Exception x) {
+							LOG.info("THEN: failed to extract values from response ", x);
+						}
 					} catch (Exception x) {
 						LOG.error("THEN: failed to read response", x);
 						assertFail(x.getMessage());
@@ -96,7 +108,7 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 	public void runTest() throws Exception {
 		given();
 			
-		if (prerequisite("CreateTodo")) {
+		if (prerequisite("CreateRandomTodoJson")) {
 			Response response = when();
 
 			com.anfelisa.todo.data.CreateTodoResponse actualResponse = then(response);
@@ -104,20 +116,15 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 			this.todoWasCreated();
 	
 		} else {
-			LOG.info("WHEN: prerequisite for CreateTodo not met");
+			LOG.info("WHEN: prerequisite for CreateRandomTodoJson not met");
 		}
 	}
 	
 	
 	private void todoWasCreated() throws Exception {
-		com.anfelisa.todo.models.ITodoModel actual = daoProvider.getTodoDao().selectByPrimaryKey(handle, "" + this.getTestId() + "");
+		com.anfelisa.todo.models.ITodoModel actual = daoProvider.getTodoDao().selectByPrimaryKey(handle, "" + this.extractedValues.get("todoId").toString() + "");
 		
-		com.anfelisa.todo.models.ITodoModel expected = objectMapper.readValue("{" +
-			"\"createdDateTime\" : \"2020-07-07T16:30\"," + 
-			"\"description\" : \"todo " + this.getTestId() + "\"," + 
-			"\"done\" : false," + 
-			"\"id\" : \"" + this.getTestId() + "\"," + 
-			"\"updatedDateTime\" : null} ",
+		com.anfelisa.todo.models.ITodoModel expected = objectMapper.readValue("{\"createdDateTime\": \"" + this.extractedValues.get("createdDateTime").toString() + "\", \"description\": \"" + this.extractedValues.get("description").toString() + "\", \"done\": false, \"id\": \"" + this.extractedValues.get("todoId").toString() + "\", \"updatedDateTime\": null }",
 		com.anfelisa.todo.models.TodoModel.class);
 		assertThat(actual, expected);
 	
@@ -126,7 +133,7 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 		
 	@Override
 	protected String scenarioName() {
-		return "CreateTodo";
+		return "CreateRandomTodoJson";
 	}
 	
 }

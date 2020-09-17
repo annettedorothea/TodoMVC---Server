@@ -26,9 +26,9 @@ import de.acegen.ITimelineItem;
 import de.acegen.NotReplayableDataProvider;
 
 @SuppressWarnings("unused")
-public abstract class AbstractGetTodoScenario extends BaseScenario {
+public abstract class AbstractDeleteTodoScenario extends BaseScenario {
 
-	static final Logger LOG = LoggerFactory.getLogger(AbstractGetTodoScenario.class);
+	static final Logger LOG = LoggerFactory.getLogger(AbstractDeleteTodoScenario.class);
 	
 	private Map<String, Object> extractedValues = new HashMap<String, Object>();
 	
@@ -91,25 +91,23 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 	
 	private Response when() throws Exception {
 		String uuid = this.randomUUID();
-		com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
-		"\"uuid\" : \"" + uuid + "\"," + 
-		"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"} ",
-				com.anfelisa.todo.data.TodoData.class);
+		com.anfelisa.todo.data.TodoIdData data_0 = objectMapper.readValue("{\"id\": \"" + this.extractedValues.get("todoId").toString() + "\"}",
+				com.anfelisa.todo.data.TodoIdData.class);
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
-		this.httpGet(
-			"/todo/" + data_0.getId() + "", 
+		this.httpDelete(
+			"/todos/delete?id=" + data_0.getId() + "", 
 			null,
 			uuid
 		);
 		
 		long timeAfterRequest = System.currentTimeMillis();
-		LOG.info("WHEN: GetTodo finished in {} ms", (timeAfterRequest-timeBeforeRequest));
-		addToMetrics("GetTodo", (timeAfterRequest-timeBeforeRequest));
+		LOG.info("WHEN: DeleteTodo finished in {} ms", (timeAfterRequest-timeBeforeRequest));
+		addToMetrics("DeleteTodo", (timeAfterRequest-timeBeforeRequest));
 		return response;
 	}
 	
-	private com.anfelisa.todo.data.GetTodoResponse then(Response response) throws Exception {
+	private void then(Response response) throws Exception {
 		if (response.getStatus() == 500) {
 			String message = response.readEntity(String.class);
 			assertFail(message);
@@ -121,54 +119,36 @@ public abstract class AbstractGetTodoScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-				com.anfelisa.todo.data.GetTodoResponse actual = null;
-				if (response.getStatus() < 400) {
-					try {
-						actual = response.readEntity(com.anfelisa.todo.data.GetTodoResponse.class);
-						
-					} catch (Exception x) {
-						LOG.error("THEN: failed to read response", x);
-						assertFail(x.getMessage());
-					}
-
-					com.anfelisa.todo.data.TodoData expectedData = objectMapper.readValue("{" +
-						"\"uuid\" : \"\"," + 
-						"\"createdDateTime\" : \"" + LocalDateTime.parse(this.extractedValues.get("createdDateTime").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))  + "\"," + 
-						"\"description\" : \"" + this.extractedValues.get("description").toString() + "\"," + 
-						"\"done\" : false," + 
-						"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"} ",
-					com.anfelisa.todo.data.TodoData.class);
-					
-					com.anfelisa.todo.data.GetTodoResponse expected = new com.anfelisa.todo.data.GetTodoResponse(expectedData);
-					
-					assertThat(actual, expected);
-					
-					LOG.info("THEN: response passed");
-				}
-
-				return actual;
 	}
 			
 	@Override
 	public void runTest() throws Exception {
 		given();
 			
-		if (prerequisite("GetTodo")) {
+		if (prerequisite("DeleteTodo")) {
 			Response response = when();
 
-			com.anfelisa.todo.data.GetTodoResponse actualResponse = then(response);
+			then(response);
 			
+			this.todoWasDeleted();
 	
 		} else {
-			LOG.info("WHEN: prerequisite for GetTodo not met");
+			LOG.info("WHEN: prerequisite for DeleteTodo not met");
 		}
 	}
 	
 	
+	private void todoWasDeleted() throws Exception {
+		com.anfelisa.todo.models.ITodoModel actual = daoProvider.getTodoDao().selectByPrimaryKey(handle, "" + this.extractedValues.get("todoId").toString() + "");
+		
+		assertIsNull(actual);
+	
+		LOG.info("THEN: todoWasDeleted passed");
+	}
 		
 	@Override
 	protected String scenarioName() {
-		return "GetTodo";
+		return "DeleteTodo";
 	}
 	
 }
