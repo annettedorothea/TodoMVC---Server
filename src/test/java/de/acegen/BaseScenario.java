@@ -41,6 +41,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -54,6 +55,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 @RunWith(JUnitPlatform.class)
+@ExtendWith(TestLogger.class)
 public abstract class BaseScenario extends AbstractBaseScenario {
 
 	static final Logger LOG = LoggerFactory.getLogger(BaseScenario.class);
@@ -78,10 +80,13 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	public static void beforeClass() throws Exception {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
 				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		YamlConfiguration config = mapper.readValue(new File("test.yml"), YamlConfiguration.class);
+		YamlConfiguration config = mapper.readValue(new File("dev.yml"), YamlConfiguration.class);
 		port = Integer.parseInt(config.getServer().getApplicationConnectors()[0].getPort());
 		protocol = config.getServer().getApplicationConnectors()[0].getType();
 		rootPath = config.getServer().getRootPath();
+		if (rootPath.charAt(rootPath.length() - 1) == '/') {
+			rootPath = rootPath.substring(0, rootPath.length() - 1);
+		}
 		jdbi = Jdbi.create(config.getDatabase().getUrl());
 		if (metrics == null) {
 			metrics = new HashMap<>();
@@ -127,7 +132,6 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		handle = new PersistenceHandle(jdbi.open());
 		testId = randomString();
 		client = new JerseyClientBuilder().build();
-		LOG.info("testId {}", testId);
 		LOG.info("*********************************************************************************");
 		LOG.info("********   {} test id {}", this.scenarioName(), testId);
 		LOG.info("*********************************************************************************");
@@ -144,6 +148,9 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	}
 
 	private String buildUrl(String path, String uuid) {
+		if (path.charAt(0) != '/') {
+			path = "/" + path;
+		}
 		if (path.contains("?")) {
 			path += "&uuid=" + uuid;
 		} else {
@@ -269,22 +276,21 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	}
 
 	@Override
-	protected Response callNotReplayableDataProviderPutValue(String uuid, String key, Object data) {
+	protected Response callNonDeterministicDataProviderPutValue(String uuid, String key, Object data) {
 		Client client = new JerseyClientBuilder().build();
 		Builder builder = client
-				.target(String.format("%s://%s:%d%s/test/not-replayable/value?uuid=" + uuid + "&key=" + key, protocol,
-						host, port, rootPath))
+				.target(String.format("%s://%s:%d%s/test/non-deterministic/value?uuid=" + uuid + "&key=" + key,
+						protocol, host, port, rootPath))
 				.request();
 		return builder.put(Entity.json(data));
 	}
 
 	@Override
-	protected Response callNotReplayableDataProviderPutSystemTime(String uuid, LocalDateTime dateTime) {
+	protected Response callNonDeterministicDataProviderPutSystemTime(String uuid, LocalDateTime dateTime) {
 		Client client = new JerseyClientBuilder().build();
-		Builder builder = client.target(
-				String.format("%s://%s:%d%s/test/not-replayable/system-time?uuid=" + uuid + "&system-time=" + dateTime,
-						protocol, host, port, rootPath))
-				.request();
+		Builder builder = client.target(String.format(
+				"%s://%s:%d%s/test/non-deterministic/system-time?uuid=" + uuid + "&system-time=" + dateTime, protocol,
+				host, port, rootPath)).request();
 		return builder.put(Entity.json(dateTime));
 	}
 

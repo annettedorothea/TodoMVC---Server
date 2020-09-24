@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import com.anfelisa.todo.models.ITodoModel;
 
 import de.acegen.CustomAppConfiguration;
-import de.acegen.E2E;
 import de.acegen.IDaoProvider;
 import de.acegen.PersistenceConnection;
 import de.acegen.PersistenceHandle;
@@ -41,8 +40,8 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 	static final Logger LOG = LoggerFactory.getLogger(GetAllTodosAction.class);
 
 	public GetAllTodosAction(PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, 
-			ViewProvider viewProvider, E2E e2e) {
-		super(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e);
+			ViewProvider viewProvider) {
+		super(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 	}
 
 

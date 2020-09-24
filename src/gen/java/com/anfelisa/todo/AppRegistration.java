@@ -11,7 +11,6 @@ import io.dropwizard.setup.Environment;
 import de.acegen.PersistenceConnection;
 import de.acegen.CustomAppConfiguration;
 import de.acegen.IDaoProvider;
-import de.acegen.E2E;
 import de.acegen.ViewProvider;
 
 import com.anfelisa.todo.resources.*;
@@ -20,16 +19,16 @@ import com.anfelisa.todo.resources.*;
 public class AppRegistration {
 
 	public static void registerResources(Environment environment, PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
-			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
-		environment.jersey().register(new GetAllTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new GetTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new GetOrderedTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new CreateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new ToggleTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new ToggleAllResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new UpdateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new DeleteTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
-		environment.jersey().register(new ClearDoneResource(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e));
+			IDaoProvider daoProvider, ViewProvider viewProvider) {
+		environment.jersey().register(new GetAllTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new GetTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new GetOrderedTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new CreateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new ToggleTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new ToggleAllResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new UpdateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new DeleteTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new ClearDoneResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 	}
 	
 	public static void registerConsumers(ViewProvider viewProvider, String mode) {

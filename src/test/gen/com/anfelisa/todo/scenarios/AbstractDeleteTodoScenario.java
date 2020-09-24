@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import de.acegen.BaseScenario;
 import de.acegen.ITimelineItem;
-import de.acegen.NotReplayableDataProvider;
+import de.acegen.NonDeterministicDataProvider;
 
 @SuppressWarnings("unused")
 public abstract class AbstractDeleteTodoScenario extends BaseScenario {
@@ -50,7 +50,7 @@ public abstract class AbstractDeleteTodoScenario extends BaseScenario {
 			timeBeforeRequest = System.currentTimeMillis();
 			response = 
 			this.httpPost(
-				"/todos/create", 
+				"todos/create", 
 			 	payload_0,
 				null,
 				uuid
@@ -96,7 +96,7 @@ public abstract class AbstractDeleteTodoScenario extends BaseScenario {
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
 		this.httpDelete(
-			"/todos/delete?id=" + data_0.getId() + "", 
+			"todos/delete?id=" + data_0.getId() + "", 
 			null,
 			uuid
 		);

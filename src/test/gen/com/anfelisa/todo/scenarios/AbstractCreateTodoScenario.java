@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import de.acegen.BaseScenario;
 import de.acegen.ITimelineItem;
-import de.acegen.NotReplayableDataProvider;
+import de.acegen.NonDeterministicDataProvider;
 
 @SuppressWarnings("unused")
 public abstract class AbstractCreateTodoScenario extends BaseScenario {
@@ -42,7 +42,7 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 	
 	private Response when() throws Exception {
 		String uuid = "" + this.getTestId() + "";
-		this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+		this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
 		com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{" +
 			"\"description\" : \"todo " + this.getTestId() + "\"} ",
 				com.anfelisa.todo.data.CreateTodoPayload.class);
@@ -53,7 +53,7 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
 		this.httpPost(
-			"/todos/create", 
+			"todos/create", 
 		 	payload_0,
 			null,
 			uuid

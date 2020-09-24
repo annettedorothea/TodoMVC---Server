@@ -15,14 +15,13 @@ import org.slf4j.LoggerFactory;
 import org.apache.commons.lang3.StringUtils;
 
 import de.acegen.CustomAppConfiguration;
-import de.acegen.E2E;
 import de.acegen.HttpMethod;
 import de.acegen.ICommand;
 import de.acegen.IDaoProvider;
 import de.acegen.IDataContainer;
 import de.acegen.ITimelineItem;
 import de.acegen.ViewProvider;
-import de.acegen.NotReplayableDataProvider;
+import de.acegen.NonDeterministicDataProvider;
 import de.acegen.PersistenceConnection;
 import de.acegen.WriteAction;
 
@@ -36,9 +35,9 @@ public abstract class AbstractToggleAllAction extends WriteAction<IToggleAllData
 	static final Logger LOG = LoggerFactory.getLogger(AbstractToggleAllAction.class);
 	
 	public AbstractToggleAllAction(PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
-			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
+			IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super("com.anfelisa.todo.actions.ToggleAllAction", persistenceConnection, appConfiguration, daoProvider,
-						viewProvider, e2e);
+						viewProvider);
 	}
 
 	@Override
@@ -47,20 +46,10 @@ public abstract class AbstractToggleAllAction extends WriteAction<IToggleAllData
 	}
 	
 	@Override
-	protected void initActionDataFrom(ITimelineItem timelineItem) {
-		IDataContainer originalData = AceDataFactory.createAceData(timelineItem.getName(), timelineItem.getData());
-		IToggleAllData originalActionData = (IToggleAllData)originalData;
-		this.actionData.setSystemTime(originalActionData.getSystemTime());
-	}
-
-
-	@Override
-	protected void initActionDataFromNotReplayableDataProvider() {
-		LocalDateTime systemTime = NotReplayableDataProvider.consumeSystemTime(this.actionData.getUuid());
+	protected void initActionDataFromNonDeterministicDataProvider() {
+		LocalDateTime systemTime = NonDeterministicDataProvider.consumeSystemTime(this.actionData.getUuid());
 		if (systemTime != null) {
 			this.actionData.setSystemTime(systemTime);
-		} else {
-			this.actionData.setSystemTime(LocalDateTime.now());
 		}
 	}
 

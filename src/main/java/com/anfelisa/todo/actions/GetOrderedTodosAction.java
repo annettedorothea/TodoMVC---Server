@@ -22,23 +22,22 @@
 
 package com.anfelisa.todo.actions;
 
-import de.acegen.CustomAppConfiguration;
-import de.acegen.ViewProvider;
-import de.acegen.IDaoProvider;
-import de.acegen.E2E;
-import de.acegen.PersistenceConnection;
-import de.acegen.PersistenceHandle;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.acegen.CustomAppConfiguration;
+import de.acegen.IDaoProvider;
+import de.acegen.PersistenceConnection;
+import de.acegen.PersistenceHandle;
+import de.acegen.ViewProvider;
 
 public class GetOrderedTodosAction extends AbstractGetOrderedTodosAction {
 
 	static final Logger LOG = LoggerFactory.getLogger(GetOrderedTodosAction.class);
 
 	public GetOrderedTodosAction(PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, 
-			ViewProvider viewProvider, E2E e2e) {
-		super(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e);
+			ViewProvider viewProvider) {
+		super(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 	}
 
 

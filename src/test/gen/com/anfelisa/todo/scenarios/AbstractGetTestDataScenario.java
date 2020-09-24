@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import de.acegen.BaseScenario;
 import de.acegen.ITimelineItem;
-import de.acegen.NotReplayableDataProvider;
+import de.acegen.NonDeterministicDataProvider;
 
 @SuppressWarnings("unused")
 public abstract class AbstractGetTestDataScenario extends BaseScenario {
@@ -48,7 +48,7 @@ public abstract class AbstractGetTestDataScenario extends BaseScenario {
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
 		this.httpGet(
-			"/todos/ordered", 
+			"todos/ordered", 
 			null,
 			uuid
 		);

@@ -26,7 +26,6 @@
 	import org.apache.commons.lang3.StringUtils;
 	
 	import de.acegen.CustomAppConfiguration;
-	import de.acegen.E2E;
 	import de.acegen.IDaoProvider;
 	import de.acegen.IDataContainer;
 	import de.acegen.ViewProvider;
@@ -34,7 +33,7 @@
 	import de.acegen.PersistenceHandle;
 	import de.acegen.ReadAction;
 	import de.acegen.ITimelineItem;
-	import de.acegen.NotReplayableDataProvider;
+	import de.acegen.NonDeterministicDataProvider;
 	
 
 	import com.codahale.metrics.annotation.Timed;
@@ -54,7 +53,7 @@
 	
 	import de.acegen.Resource;
 	
-	@Path("/todo/{id}")
+	@Path("todo/{id}")
 	@SuppressWarnings("unused")
 	public class GetTodoResource extends Resource {
 	
@@ -64,15 +63,13 @@
 		private CustomAppConfiguration appConfiguration;
 		private IDaoProvider daoProvider;
 		private ViewProvider viewProvider;
-		private E2E e2e;
 
 	public GetTodoResource(PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
-				IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
+				IDaoProvider daoProvider, ViewProvider viewProvider) {
 			this.persistenceConnection = persistenceConnection;
 			this.appConfiguration = appConfiguration;
 			this.daoProvider = daoProvider;
 			this.viewProvider = viewProvider;
-			this.e2e = e2e;
 		}
 	
 	@GET
@@ -93,7 +90,7 @@
 		
 		actionData.setId(id);
 		
-		com.anfelisa.todo.actions.GetTodoAction action = new com.anfelisa.todo.actions.GetTodoAction(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e);
+		com.anfelisa.todo.actions.GetTodoAction action = new com.anfelisa.todo.actions.GetTodoAction(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 		action.setActionData(actionData);
 		try {
 			action.apply();

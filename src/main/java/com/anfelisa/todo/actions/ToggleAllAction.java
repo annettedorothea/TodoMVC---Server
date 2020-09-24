@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.acegen.CustomAppConfiguration;
-import de.acegen.E2E;
 import de.acegen.IDaoProvider;
 import de.acegen.PersistenceConnection;
 import de.acegen.ViewProvider;
@@ -33,8 +32,8 @@ public class ToggleAllAction extends AbstractToggleAllAction {
 	static final Logger LOG = LoggerFactory.getLogger(ToggleAllAction.class);
 
 	public ToggleAllAction(PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, IDaoProvider daoProvider, 
-			ViewProvider viewProvider, E2E e2e) {
-		super(persistenceConnection, appConfiguration, daoProvider, viewProvider, e2e);
+			ViewProvider viewProvider) {
+		super(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 	}
 
 

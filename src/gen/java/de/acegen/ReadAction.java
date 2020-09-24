@@ -18,45 +18,33 @@ public abstract class ReadAction<T extends IDataContainer> extends Action<T> {
 	private PersistenceConnection persistenceConnection;
 	protected CustomAppConfiguration appConfiguration;
 	protected IDaoProvider daoProvider;
-	private E2E e2e;
 	
 	public ReadAction(String actionName, PersistenceConnection persistenceConnection, CustomAppConfiguration appConfiguration, 
-			IDaoProvider daoProvider, ViewProvider viewProvider, E2E e2e) {
+			IDaoProvider daoProvider, ViewProvider viewProvider) {
 		super(actionName);
 		this.persistenceConnection = persistenceConnection;
 		this.appConfiguration = appConfiguration;
 		this.daoProvider = daoProvider;
-		this.e2e = e2e;
 	}
 
 	protected abstract void loadDataForGetRequest(PersistenceHandle readonlyHandle);
 	
-	protected abstract void initActionDataFrom(ITimelineItem timelineItem);
-
-	protected abstract void initActionDataFromNotReplayableDataProvider();
-
+	protected abstract void initActionDataFromNonDeterministicDataProvider();
 
 	public void apply() {
 		DatabaseHandle databaseHandle = new DatabaseHandle(persistenceConnection.getJdbi(), appConfiguration);
 		databaseHandle.beginTransaction();
 		try {
-			if (Config.DEV.equals(appConfiguration.getConfig().getMode())
-					|| Config.LIVE.equals(appConfiguration.getConfig().getMode())
-					|| Config.TEST.equals(appConfiguration.getConfig().getMode())) {
-				if (!daoProvider.getAceDao().checkUuid(this.actionData.getUuid())) {
-					databaseHandle.rollbackTransaction();
-					LOG.warn("duplicate request {} {} ", actionName, this.actionData.getUuid());
-					databaseHandle.rollbackTransaction();
-					return;
-				}
-				this.actionData.setSystemTime(LocalDateTime.now());
-				this.initActionData();
-			} else if (Config.REPLAY.equals(appConfiguration.getConfig().getMode())) {
-				ITimelineItem timelineItem = e2e.selectAction(this.actionData.getUuid());
-				initActionDataFrom(timelineItem);
+			if (!daoProvider.getAceDao().checkUuid(this.actionData.getUuid())) {
+				databaseHandle.rollbackTransaction();
+				LOG.warn("duplicate request {} {} ", actionName, this.actionData.getUuid());
+				databaseHandle.rollbackTransaction();
+				return;
 			}
-			if (Config.TEST.equals(appConfiguration.getConfig().getMode())) {
-				initActionDataFromNotReplayableDataProvider();
+			this.actionData.setSystemTime(LocalDateTime.now());
+			this.initActionData();
+			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
+				initActionDataFromNonDeterministicDataProvider();
 			}
 			this.loadDataForGetRequest(databaseHandle.getReadonlyHandle());
 			

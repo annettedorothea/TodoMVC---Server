@@ -61,10 +61,10 @@ public abstract class AbstractBaseScenario {
 
 	protected abstract boolean prerequisite(String scenarioName);
 	
-	protected abstract Response callNotReplayableDataProviderPutValue(
+	protected abstract Response callNonDeterministicDataProviderPutValue(
 				String uuid, String key, Object data);
 				
-	protected abstract Response callNotReplayableDataProviderPutSystemTime(
+	protected abstract Response callNonDeterministicDataProviderPutSystemTime(
 				String uuid, LocalDateTime dateTime);
 				
 	protected abstract void addToMetrics(String action, Long duration);

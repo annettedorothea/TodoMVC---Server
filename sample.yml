@@ -23,6 +23,6 @@ server:
       port: 8097
 
 config:
-  mode: DEV | REPLAY | LIVE | TEST
+  mode: DEV | LIVE
   writeTimeline: ALWAYS | ON_ERROR | NEVER
   

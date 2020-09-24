@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import de.acegen.BaseScenario;
 import de.acegen.ITimelineItem;
-import de.acegen.NotReplayableDataProvider;
+import de.acegen.NonDeterministicDataProvider;
 
 @SuppressWarnings("unused")
 public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
@@ -40,7 +40,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 		
 		if (prerequisite("CreateTodo")) {
 			uuid = "" + this.getTestId() + "";
-			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
 			com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{" +
 				"\"description\" : \"todo " + this.getTestId() + "\"} ",
 					com.anfelisa.todo.data.CreateTodoPayload.class);
@@ -51,7 +51,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 			timeBeforeRequest = System.currentTimeMillis();
 			response = 
 			this.httpPost(
-				"/todos/create", 
+				"todos/create", 
 			 	payload_0,
 				null,
 				uuid
@@ -72,7 +72,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 
 		if (prerequisite("CreateTodo")) {
 			uuid = "" + this.getTestId() + "";
-			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
 			com.anfelisa.todo.data.CreateTodoPayload payload_1 = objectMapper.readValue("{" +
 				"\"description\" : \"todo " + this.getTestId() + "\"} ",
 					com.anfelisa.todo.data.CreateTodoPayload.class);
@@ -83,7 +83,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 			timeBeforeRequest = System.currentTimeMillis();
 			response = 
 			this.httpPost(
-				"/todos/create", 
+				"todos/create", 
 			 	payload_1,
 				null,
 				uuid
@@ -104,7 +104,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 
 		if (prerequisite("ToggleTodo")) {
 			uuid = this.randomUUID();
-			this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 17:20", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 17:20", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
 			com.anfelisa.todo.data.TodoToggleData data_2 = objectMapper.readValue("{" +
 			"\"uuid\" : \"" + uuid + "\"," + 
 			"\"id\" : \"" + this.getTestId() + "\"} ",
@@ -112,7 +112,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 			timeBeforeRequest = System.currentTimeMillis();
 			response = 
 			this.httpPut(
-				"/todos/toggle?id=" + data_2.getId() + "", 
+				"todos/toggle?id=" + data_2.getId() + "", 
 			 	null,
 				null,
 				uuid
@@ -135,7 +135,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 	
 	private Response when() throws Exception {
 		String uuid = this.randomUUID();
-		this.callNotReplayableDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 17:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+		this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 17:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
 		com.anfelisa.todo.data.TodoToggleData data_0 = objectMapper.readValue("{" +
 		"\"uuid\" : \"" + uuid + "\"," + 
 		"\"id\" : \"" + this.getTestId() + "\"} ",
@@ -143,7 +143,7 @@ public abstract class AbstractToggleTodoTwiceScenario extends BaseScenario {
 		long timeBeforeRequest = System.currentTimeMillis();
 		Response response = 
 		this.httpPut(
-			"/todos/toggle?id=" + data_0.getId() + "", 
+			"todos/toggle?id=" + data_0.getId() + "", 
 		 	null,
 			null,
 			uuid
