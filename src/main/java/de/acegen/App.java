@@ -51,6 +51,7 @@ public class App extends Application<CustomAppConfiguration> {
 				return configuration.getDataSourceFactory();
 			}
 		});
+		bootstrap.addCommand(new EventReplayCommand(this));
 	}
 
 	@Override
@@ -66,10 +67,6 @@ public class App extends Application<CustomAppConfiguration> {
 
 		String mode = configuration.getConfig().getMode();
 		if (Config.DEV.equals(mode)) {
-			LOG.warn("You are running in DEV mode and the database is going to be cleared.");
-			PersistenceHandle handle = new PersistenceHandle(jdbi.open());
-			daoProvider.truncateAllViews(handle);
-			handle.getHandle().close();
 			environment.jersey().register(new NonDeterministicDataProviderResource());
 			LOG.warn("NonDeterministicDataProvider was made available as API endpoint. This is a security risk.");
 		}
@@ -85,7 +82,7 @@ public class App extends Application<CustomAppConfiguration> {
 
 		AppRegistration.registerResources(environment, new PersistenceConnection(jdbi), configuration, daoProvider,
 				viewProvider);
-		AppRegistration.registerConsumers(viewProvider, mode);
+		AppRegistration.registerConsumers(viewProvider);
 
 		configureCors(environment);
 	}

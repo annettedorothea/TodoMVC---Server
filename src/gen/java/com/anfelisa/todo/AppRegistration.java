@@ -31,7 +31,7 @@ public class AppRegistration {
 		environment.jersey().register(new ClearDoneResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 	}
 	
-	public static void registerConsumers(ViewProvider viewProvider, String mode) {
+	public static void registerConsumers(ViewProvider viewProvider) {
 		viewProvider.addConsumer("com.anfelisa.todo.events.CreateTodoSuccessEvent", (dataContainer, handle) -> {
 			viewProvider.todoView.create((com.anfelisa.todo.data.TodoData) dataContainer, handle);
 		});

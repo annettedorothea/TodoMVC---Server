@@ -9,8 +9,8 @@ public class AppRegistration {
 		com.anfelisa.todo.AppRegistration.registerResources(environment, persistenceConnection, appConfiguration, daoProvider, viewProvider);
 	}
 
-	public static void registerConsumers(ViewProvider viewProvider, String mode) {
-		com.anfelisa.todo.AppRegistration.registerConsumers(viewProvider, mode);
+	public static void registerConsumers(ViewProvider viewProvider) {
+		com.anfelisa.todo.AppRegistration.registerConsumers(viewProvider);
 	}
 }
 

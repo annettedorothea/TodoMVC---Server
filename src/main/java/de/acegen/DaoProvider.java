@@ -8,7 +8,6 @@ public class DaoProvider extends AbstractDaoProvider {
 
 	@Override
 	public void truncateAllViews(PersistenceHandle handle) {
-		aceDao.truncateTimelineTable(handle);
 		todoDao.truncate(handle);
 	}
 

@@ -17,7 +17,7 @@
 		public static final String ON_ERROR = "ON_ERROR";
 		public static final String NEVER = "NEVER";
 		
-		private String mode = LIVE;
+		private String mode = DEV;
 		
 		private String writeTimeline = ON_ERROR;
 	

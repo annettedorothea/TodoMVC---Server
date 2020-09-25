@@ -74,4 +74,10 @@
 
 	</changeSet>
 
+	<changeSet id="004" author="annette">
+
+		<dropTable tableName="tododonehistory" />
+
+	</changeSet>
+
 </databaseChangeLog>
