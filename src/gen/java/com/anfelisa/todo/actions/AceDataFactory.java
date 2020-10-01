@@ -38,11 +38,6 @@ public class AceDataFactory {
 				data.migrateLegacyData(json);
 				return data;
 			}
-			if (className.equals("com.anfelisa.todo.actions.GetOrderedTodosAction")) {
-				TodoListData data = mapper.readValue(json, TodoListData.class);
-				data.migrateLegacyData(json);
-				return data;
-			}
 			if (className.equals("com.anfelisa.todo.actions.CreateTodoAction") ||
 					className.equals("com.anfelisa.todo.commands.CreateTodoCommand") ||
 					className.equals("com.anfelisa.todo.events.CreateTodoSuccessEvent")

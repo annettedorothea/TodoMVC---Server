@@ -1,0 +1,30 @@
+HttpServer Java 
+
+com.anfelisa.todo.get.all
+
+scenarios
+
+	GetAllTodos
+		GIVEN com.anfelisa.todo.create.CreateTodo
+		WHEN com.anfelisa.todo.GetAllTodos
+		THEN 200
+			response shouldBe {
+				todoList: [
+					{
+						createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+						description: "todo ${testId}",
+						done: false,
+						id: "${testId}",
+						updatedDateTime: null
+					}
+				]
+			}
+
+
+	GetManyTodos
+		GIVEN com.anfelisa.todo.create.CreateTodo 20x
+		WHEN com.anfelisa.todo.GetAllTodos
+		THEN 200
+		verifications atLeastTwentyReturned
+			
+		

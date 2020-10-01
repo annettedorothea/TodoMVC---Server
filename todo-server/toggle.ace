@@ -1,0 +1,38 @@
+HttpServer Java 
+
+com.anfelisa.todo.toggle
+
+scenarios
+	
+	ToggleTodo 
+		GIVEN com.anfelisa.todo.create.CreateTodo
+		WHEN com.anfelisa.todo.ToggleTodo 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" {
+				id: "${testId}"
+			}
+		THEN 200
+			persistence todoIsDone Todo selectByPrimaryKey (id: "${testId}") shouldBe {
+				createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+				description: "todo ${testId}",
+				done: true,
+				id: "${testId}",
+				updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+			}
+	
+	ToggleTodoTwice 
+		GIVEN 
+			com.anfelisa.todo.create.CreateTodo
+			ToggleTodo
+		WHEN com.anfelisa.todo.ToggleTodo 
+			systemTime "20200707 17:30" "yyyyMMdd HH:mm" {
+				id: "${testId}"
+			}
+		THEN 200
+			persistence todoWasToggled Todo selectByPrimaryKey (id: "${testId}") shouldBe {
+				createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+				description: "todo ${testId}",
+				done: false,
+				id: "${testId}",
+				updatedDateTime: "20200707 17:30" "yyyyMMdd HH:mm"
+			}
+			

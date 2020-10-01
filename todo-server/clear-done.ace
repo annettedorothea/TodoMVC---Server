@@ -1,0 +1,23 @@
+HttpServer Java 
+
+com.anfelisa.todo.clear.done
+
+scenarios
+	
+	ClearDone 
+		GIVEN 
+			com.anfelisa.todo.toggle.ToggleTodo 
+			com.anfelisa.todo.create.CreateSecondTodo excludeGIVEN
+		WHEN com.anfelisa.todo.ClearDone 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+		THEN 200
+			persistence 
+				todoWasDeleted Todo selectByPrimaryKey (id: "${testId}") shouldBe null
+		
+				secondTodoWasNotDeleted Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
+					createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+					description: "todo 2 ${testId}",
+					done: false,
+					id: "${testId}_2",
+					updatedDateTime: null
+				}

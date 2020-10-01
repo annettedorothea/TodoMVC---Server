@@ -21,17 +21,13 @@ See [TodoMVC---Client](https://github.com/annettedorothea/TodoMVC---Client) for 
 
 ## Execute the tests
 
-If you want to execute the tests you start the server in dev mode:
+If you want to execute the tests you need to start the server in dev mode:
 
 ```
 config:
   mode: DEV
   writeTimeline: ALWAYS
 ```
-
-Please note that the database is cleared on startup of the server.
-
-When the test-server is running you can execute the tests.
 
 ## License
 [ISC](License.txt)

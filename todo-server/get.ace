@@ -1,0 +1,26 @@
+HttpServer Java 
+
+com.anfelisa.todo.get
+
+scenarios
+
+	GetTodo
+		GIVEN com.anfelisa.todo.create.CreateTodo
+		WHEN com.anfelisa.todo.GetTodo {
+			id: "${todoId}"
+		}
+		THEN 200
+		response shouldBe {
+			createdDateTime: "${createdDateTime}" "yyyy-MM-dd'T'HH:mm",
+			description: "${description}",
+			done: false,
+			id: "${todoId}"
+		}
+		
+	GetTodoJson
+		GIVEN com.anfelisa.todo.create.CreateTodo
+		WHEN com.anfelisa.todo.GetTodo json "{\\\"id\\\": \\\"${todoId}\\\"}"
+		THEN 200
+		response shouldBe json "{\\\"createdDateTime\\\": \\\"${createdDateTime}\\\", \\\"description\\\": \\\"${description}\\\", \\\"done\\\": false, \\\"id\\\": \\\"${todoId}\\\" }"
+		
+	

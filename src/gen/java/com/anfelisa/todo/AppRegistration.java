@@ -22,7 +22,6 @@ public class AppRegistration {
 			IDaoProvider daoProvider, ViewProvider viewProvider) {
 		environment.jersey().register(new GetAllTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new GetTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
-		environment.jersey().register(new GetOrderedTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new CreateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new ToggleTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new ToggleAllResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));

@@ -1,0 +1,22 @@
+HttpServer Java 
+
+com.anfelisa.todo.delete
+
+scenarios
+
+	DeleteTodo
+		GIVEN com.anfelisa.todo.create.CreateRandomTodo
+		WHEN com.anfelisa.todo.DeleteTodo {
+				id : "${todoId}"
+			}
+		THEN 200
+			persistence todoWasDeleted Todo selectByPrimaryKey (id: "${todoId}") shouldBe null
+
+	DeleteTodoJson
+		GIVEN com.anfelisa.todo.create.CreateRandomTodo
+		WHEN com.anfelisa.todo.DeleteTodo json "{\\\"id\\\": \\\"${todoId}\\\"}"
+		THEN 200
+			persistence todoWasDeleted Todo selectByPrimaryKey (id: "${todoId}") shouldBe null
+	
+	
+

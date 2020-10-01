@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.acegen</groupId>
   <artifactId>todo</artifactId>
-  <version>0.6.2</version>
+  <version>0.6.3</version>
   <build>
     <plugins>
       <plugin>
@@ -84,10 +84,6 @@
           <artifactId>junit-platform-engine</artifactId>
           <groupId>org.junit.platform</groupId>
         </exclusion>
-        <exclusion>
-          <artifactId>junit-jupiter-api</artifactId>
-          <groupId>org.junit.jupiter</groupId>
-        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -106,6 +102,26 @@
         </exclusion>
         <exclusion>
           <artifactId>junit-platform-suite-api</artifactId>
+          <groupId>org.junit.platform</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>apiguardian-api</artifactId>
+          <groupId>org.apiguardian</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.5.2</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>opentest4j</artifactId>
+          <groupId>org.opentest4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>junit-platform-commons</artifactId>
           <groupId>org.junit.platform</groupId>
         </exclusion>
         <exclusion>

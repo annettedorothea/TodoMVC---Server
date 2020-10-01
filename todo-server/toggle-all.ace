@@ -1,0 +1,76 @@
+HttpServer Java 
+
+com.anfelisa.todo.toggle.all
+
+scenarios
+	
+	ToggleAllWhenNoneIsDoneExpectAllToBeDone 
+		GIVEN com.anfelisa.todo.create.CreateSecondTodo
+		WHEN com.anfelisa.todo.ToggleAll 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+		THEN 200
+			persistence 
+				todoIsDone Todo selectByPrimaryKey (id: "${testId}") shouldBe {
+					createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+					description: "todo ${testId}",
+					done: true,
+					id: "${testId}",
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+				}
+		
+				secondTodoIsDone Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
+					createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+					description: "todo 2 ${testId}",
+					done: true,
+					id: "${testId}_2",
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+				}
+	
+	ToggleAllWhenOneIsDoneExpectAllToBeDone 
+		GIVEN 
+			com.anfelisa.todo.create.CreateSecondTodo
+			com.anfelisa.todo.toggle.ToggleTodo
+		WHEN com.anfelisa.todo.ToggleAll 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+		THEN 200
+			persistence 
+				todoIsDone Todo selectByPrimaryKey (id: "${testId}") shouldBe {
+					createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+					description: "todo ${testId}",
+					done: true,
+					id: "${testId}",
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+				}
+		
+				secondTodoIsDone Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
+					createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+					description: "todo 2 ${testId}",
+					done: true,
+					id: "${testId}_2",
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+				}
+	
+	ToggleAllWhenAllAreDoneExpectAllToBeOpen 
+		GIVEN 
+			com.anfelisa.todo.create.CreateSecondTodo
+			ToggleAllWhenNoneIsDoneExpectAllToBeDone
+		WHEN com.anfelisa.todo.ToggleAll 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+		THEN 200
+			persistence 
+				todoIsOpen Todo selectByPrimaryKey (id: "${testId}") shouldBe {
+					createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+					description: "todo ${testId}",
+					done: false,
+					id: "${testId}",
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+				}
+		
+				secondTodoIsOpen Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
+					createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
+					description: "todo 2 ${testId}",
+					done: false,
+					id: "${testId}_2",
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+				}
+	
