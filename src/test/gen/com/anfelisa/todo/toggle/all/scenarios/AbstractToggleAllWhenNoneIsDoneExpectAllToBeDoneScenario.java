@@ -169,6 +169,8 @@ public abstract class AbstractToggleAllWhenNoneIsDoneExpectAllToBeDoneScenario e
 			this.todoIsDone();
 			this.secondTodoIsDone();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for ToggleAllWhenNoneIsDoneExpectAllToBeDone not met");
 		}

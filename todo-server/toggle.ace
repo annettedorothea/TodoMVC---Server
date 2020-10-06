@@ -22,7 +22,7 @@ scenarios
 	ToggleTodoTwice 
 		GIVEN 
 			com.anfelisa.todo.create.CreateTodo
-			ToggleTodo
+			ToggleTodo excludeGIVEN
 		WHEN com.anfelisa.todo.ToggleTodo 
 			systemTime "20200707 17:30" "yyyyMMdd HH:mm" {
 				id: "${testId}"

@@ -22,7 +22,7 @@ scenarios
 
 
 	GetManyTodos
-		GIVEN com.anfelisa.todo.create.CreateTodo 20x
+		GIVEN com.anfelisa.todo.create.CreateRandomTodo 20x
 		WHEN com.anfelisa.todo.GetAllTodos
 		THEN 200
 		verifications atLeastTwentyReturned

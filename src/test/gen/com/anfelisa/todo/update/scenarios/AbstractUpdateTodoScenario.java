@@ -142,6 +142,8 @@ public abstract class AbstractUpdateTodoScenario extends BaseScenario {
 			
 			this.todoDescriptionWasUpdated();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for UpdateTodo not met");
 		}

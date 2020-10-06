@@ -153,6 +153,8 @@ public abstract class AbstractCreateSecondTodoScenario extends BaseScenario {
 			
 			this.todoWasCreated();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for CreateSecondTodo not met");
 		}

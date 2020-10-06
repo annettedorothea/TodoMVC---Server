@@ -134,6 +134,8 @@ public abstract class AbstractDeleteTodoScenario extends BaseScenario {
 			
 			this.todoWasDeleted();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for DeleteTodo not met");
 		}

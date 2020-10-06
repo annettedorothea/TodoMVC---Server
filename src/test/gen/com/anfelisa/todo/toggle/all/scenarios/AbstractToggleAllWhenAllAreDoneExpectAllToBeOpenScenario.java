@@ -120,92 +120,10 @@ public abstract class AbstractToggleAllWhenAllAreDoneExpectAllToBeOpenScenario e
 			LOG.info("GIVEN: prerequisite for CreateSecondTodo not met");
 		}
 
-		if (prerequisite("CreateTodo")) {
-			uuid = "" + this.getTestId() + "";
-			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.CreateTodoPayload payload_2 = objectMapper.readValue("{" +
-				"\"description\" : \"todo " + this.getTestId() + "\"} ",
-					com.anfelisa.todo.data.CreateTodoPayload.class);
-			com.anfelisa.todo.data.TodoData data_2 = objectMapper.readValue("{" +
-			"\"uuid\" : \"" + uuid + "\"," + 
-			"\"description\" : \"todo " + this.getTestId() + "\"} ",
-					com.anfelisa.todo.data.TodoData.class);
-			timeBeforeRequest = System.currentTimeMillis();
-			response = 
-			this.httpPost(
-				"todos/create", 
-			 	payload_2,
-				null,
-				uuid
-			);
-			
-			timeAfterRequest = System.currentTimeMillis();
-			if (response.getStatus() >= 400) {
-				String message = "GIVEN CreateTodo fails\n" + response.readEntity(String.class);
-				LOG.info("GIVEN: CreateTodo fails due to {} in {} ms", message, (timeAfterRequest-timeBeforeRequest));
-				addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
-				assertFail(message);
-			}
-			LOG.info("GIVEN: CreateTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
-			addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
-			com.anfelisa.todo.data.CreateTodoResponse responseEntity_2 = null;
-			try {
-				responseEntity_2 = response.readEntity(com.anfelisa.todo.data.CreateTodoResponse.class);
-				
-				Object todoId = this.extractTodoId(responseEntity_2);
-				extractedValues.put("todoId", todoId);
-				LOG.info("GIVEN: extracted " + todoId.toString()  + " as todoId");
-				
-				Object createdDateTime = this.extractCreatedDateTime(responseEntity_2);
-				extractedValues.put("createdDateTime", createdDateTime);
-				LOG.info("GIVEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
-				
-				Object description = this.extractDescription(responseEntity_2);
-				extractedValues.put("description", description);
-				LOG.info("GIVEN: extracted " + description.toString()  + " as description");
-			} catch (Exception x) {
-				LOG.info("GIVEN: failed to extract values from response ", x);
-			}
-		} else {
-			LOG.info("GIVEN: prerequisite for CreateTodo not met");
-		}
-
-		if (prerequisite("CreateSecondTodo")) {
-			uuid = "" + this.getTestId() + "_2";
-			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.CreateTodoPayload payload_3 = objectMapper.readValue("{" +
-				"\"description\" : \"todo 2 " + this.getTestId() + "\"} ",
-					com.anfelisa.todo.data.CreateTodoPayload.class);
-			com.anfelisa.todo.data.TodoData data_3 = objectMapper.readValue("{" +
-			"\"uuid\" : \"" + uuid + "\"," + 
-			"\"description\" : \"todo 2 " + this.getTestId() + "\"} ",
-					com.anfelisa.todo.data.TodoData.class);
-			timeBeforeRequest = System.currentTimeMillis();
-			response = 
-			this.httpPost(
-				"todos/create", 
-			 	payload_3,
-				null,
-				uuid
-			);
-			
-			timeAfterRequest = System.currentTimeMillis();
-			if (response.getStatus() >= 400) {
-				String message = "GIVEN CreateSecondTodo fails\n" + response.readEntity(String.class);
-				LOG.info("GIVEN: CreateSecondTodo fails due to {} in {} ms", message, (timeAfterRequest-timeBeforeRequest));
-				addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
-				assertFail(message);
-			}
-			LOG.info("GIVEN: CreateSecondTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
-			addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
-		} else {
-			LOG.info("GIVEN: prerequisite for CreateSecondTodo not met");
-		}
-
 		if (prerequisite("ToggleAllWhenNoneIsDoneExpectAllToBeDone")) {
 			uuid = this.randomUUID();
 			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 17:20", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.ToggleAllData data_4 = objectMapper.readValue("{" +
+			com.anfelisa.todo.data.ToggleAllData data_2 = objectMapper.readValue("{" +
 			"\"uuid\" : \"" + uuid + "\" }",
 			com.anfelisa.todo.data.ToggleAllData.class);
 			timeBeforeRequest = System.currentTimeMillis();
@@ -279,6 +197,8 @@ public abstract class AbstractToggleAllWhenAllAreDoneExpectAllToBeOpenScenario e
 			this.todoIsOpen();
 			this.secondTodoIsOpen();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for ToggleAllWhenAllAreDoneExpectAllToBeOpen not met");
 		}

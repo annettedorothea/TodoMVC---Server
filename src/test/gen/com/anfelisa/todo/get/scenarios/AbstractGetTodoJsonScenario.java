@@ -153,6 +153,8 @@ public abstract class AbstractGetTodoJsonScenario extends BaseScenario {
 			com.anfelisa.todo.data.GetTodoResponse actualResponse = then(response);
 			
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for GetTodoJson not met");
 		}

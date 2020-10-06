@@ -132,6 +132,8 @@ public abstract class AbstractDeleteTodoJsonScenario extends BaseScenario {
 			
 			this.todoWasDeleted();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for DeleteTodoJson not met");
 		}

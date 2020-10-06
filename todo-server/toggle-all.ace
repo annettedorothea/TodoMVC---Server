@@ -29,7 +29,7 @@ scenarios
 	ToggleAllWhenOneIsDoneExpectAllToBeDone 
 		GIVEN 
 			com.anfelisa.todo.create.CreateSecondTodo
-			com.anfelisa.todo.toggle.ToggleTodo
+			com.anfelisa.todo.toggle.ToggleTodo excludeGIVEN
 		WHEN com.anfelisa.todo.ToggleAll 
 			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
 		THEN 200
@@ -53,7 +53,7 @@ scenarios
 	ToggleAllWhenAllAreDoneExpectAllToBeOpen 
 		GIVEN 
 			com.anfelisa.todo.create.CreateSecondTodo
-			ToggleAllWhenNoneIsDoneExpectAllToBeDone
+			ToggleAllWhenNoneIsDoneExpectAllToBeDone excludeGIVEN
 		WHEN com.anfelisa.todo.ToggleAll 
 			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
 		THEN 200

@@ -39,15 +39,14 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 		long timeAfterRequest;
 		
 		for (int i=0; i<20; i++) {
-			if (prerequisite("CreateTodo")) {
-				uuid = "" + this.getTestId() + "";
-				this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+			if (prerequisite("CreateRandomTodo")) {
+				uuid = this.randomUUID();
 				com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{" +
-					"\"description\" : \"todo " + this.getTestId() + "\"} ",
+					"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"} ",
 						com.anfelisa.todo.data.CreateTodoPayload.class);
 				com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
 				"\"uuid\" : \"" + uuid + "\"," + 
-				"\"description\" : \"todo " + this.getTestId() + "\"} ",
+				"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"} ",
 						com.anfelisa.todo.data.TodoData.class);
 				timeBeforeRequest = System.currentTimeMillis();
 				response = 
@@ -60,12 +59,12 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 				
 				timeAfterRequest = System.currentTimeMillis();
 				if (response.getStatus() >= 400) {
-					String message = "GIVEN CreateTodo fails\n" + response.readEntity(String.class);
-					LOG.info("GIVEN: CreateTodo fails due to {} in {} ms", message, (timeAfterRequest-timeBeforeRequest));
+					String message = "GIVEN CreateRandomTodo fails\n" + response.readEntity(String.class);
+					LOG.info("GIVEN: CreateRandomTodo fails due to {} in {} ms", message, (timeAfterRequest-timeBeforeRequest));
 					addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
 					assertFail(message);
 				}
-				LOG.info("GIVEN: CreateTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
+				LOG.info("GIVEN: CreateRandomTodo success in {} ms", (timeAfterRequest-timeBeforeRequest));
 				addToMetrics("CreateTodo", (timeAfterRequest-timeBeforeRequest));
 				com.anfelisa.todo.data.CreateTodoResponse responseEntity_0 = null;
 				try {
@@ -86,7 +85,7 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 					LOG.info("GIVEN: failed to extract values from response ", x);
 				}
 			} else {
-				LOG.info("GIVEN: prerequisite for CreateTodo not met");
+				LOG.info("GIVEN: prerequisite for CreateRandomTodo not met");
 			}
 		}
 
@@ -149,6 +148,8 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 			
 	
 			atLeastTwentyReturned(actualResponse);
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for GetManyTodos not met");
 		}

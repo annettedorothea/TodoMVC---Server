@@ -119,6 +119,8 @@ public abstract class AbstractCreateTodoScenario extends BaseScenario {
 			
 			this.todoWasCreated();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for CreateTodo not met");
 		}

@@ -115,6 +115,8 @@ public abstract class AbstractCreateRandomTodoJsonScenario extends BaseScenario 
 			
 			this.todoWasCreated();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for CreateRandomTodoJson not met");
 		}

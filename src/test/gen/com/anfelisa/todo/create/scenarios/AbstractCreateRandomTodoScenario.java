@@ -118,6 +118,8 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 			
 			this.todoWasCreated();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for CreateRandomTodo not met");
 		}

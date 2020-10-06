@@ -137,6 +137,8 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 			
 			this.todoIsDone();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for ToggleTodo not met");
 		}

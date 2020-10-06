@@ -197,6 +197,8 @@ public abstract class AbstractClearDoneScenario extends BaseScenario {
 			this.todoWasDeleted();
 			this.secondTodoWasNotDeleted();
 	
+			
+			response.close();
 		} else {
 			LOG.info("WHEN: prerequisite for ClearDone not met");
 		}
