@@ -31,10 +31,10 @@ public abstract class Command<T extends IDataContainer> implements ICommand {
 	protected abstract void executeCommand(PersistenceHandle readonlyHandle);
 
 	public void execute(PersistenceHandle readonlyHandle, PersistenceHandle timelineHandle) {
-		this.executeCommand(readonlyHandle);
 		if (appConfiguration.getConfig().writeTimeline()) {
 			daoProvider.getAceDao().addCommandToTimeline(this, timelineHandle);
 		}
+		this.executeCommand(readonlyHandle);
 	}
 
 	public IDataContainer getCommandData() {

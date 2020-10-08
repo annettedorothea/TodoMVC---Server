@@ -42,13 +42,15 @@ public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
 				databaseHandle.rollbackTransaction();
 				return;
 			}
+
+			if (appConfiguration.getConfig().writeTimeline()) {
+				daoProvider.getAceDao().addActionToTimeline(this, databaseHandle.getTimelineHandle());
+			}
+
 			this.actionData.setSystemTime(LocalDateTime.now());
 			this.initActionData();
 			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
 				initActionDataFromNonDeterministicDataProvider();
-			}
-			if (appConfiguration.getConfig().writeTimeline()) {
-				daoProvider.getAceDao().addActionToTimeline(this, databaseHandle.getTimelineHandle());
 			}
 			
 			ICommand command = this.getCommand();

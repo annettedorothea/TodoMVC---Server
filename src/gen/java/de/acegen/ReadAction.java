@@ -41,6 +41,11 @@ public abstract class ReadAction<T extends IDataContainer> extends Action<T> {
 				databaseHandle.rollbackTransaction();
 				return;
 			}
+			
+			if (appConfiguration.getConfig().writeTimeline()) {
+				daoProvider.getAceDao().addActionToTimeline(this, databaseHandle.getTimelineHandle());
+			}
+
 			this.actionData.setSystemTime(LocalDateTime.now());
 			this.initActionData();
 			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
@@ -48,9 +53,6 @@ public abstract class ReadAction<T extends IDataContainer> extends Action<T> {
 			}
 			this.loadDataForGetRequest(databaseHandle.getReadonlyHandle());
 			
-			if (appConfiguration.getConfig().writeTimeline()) {
-				daoProvider.getAceDao().addActionToTimeline(this, databaseHandle.getTimelineHandle());
-			}
 			databaseHandle.commitTransaction();
 		} catch (IllegalArgumentException x) {
 			LOG.error(actionName + " IllegalArgumentException {} ", x.getMessage());
