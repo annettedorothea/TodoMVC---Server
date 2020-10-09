@@ -20,8 +20,8 @@ public abstract class Resource {
 		return Response.status(Response.Status.BAD_REQUEST).entity(message).build();
 	}
 	
-	protected Response unauthorized() {
-		return Response.status(Response.Status.UNAUTHORIZED).build();
+	protected Response unauthorized(String message) {
+		return Response.status(Response.Status.UNAUTHORIZED).entity(message).build();
 	}
 	
 	protected Response internalServerError(Exception x) {
