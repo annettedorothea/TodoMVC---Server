@@ -47,8 +47,6 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 
 	@Override
 	protected void loadDataForGetRequest(PersistenceHandle readonlyHandle) {
-		//com.anfelisa.todo.models.ITodoListModel testData = com.anfelisa.todo.data.TodoListData.generateTestData();
-		//this.actionData.setTodoList(testData.getTodoList());
 		List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle);
 		this.actionData.setTodoList(todos);
 	}
