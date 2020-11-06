@@ -7,10 +7,6 @@
 
 package com.anfelisa.todo.toggle.scenarios;
 
-import com.anfelisa.todo.data.ToggleTodoResponse;
-import javax.ws.rs.core.Response;
-
-@SuppressWarnings("unused")
 public class ToggleTodoTwiceScenario extends AbstractToggleTodoTwiceScenario {
 
 	

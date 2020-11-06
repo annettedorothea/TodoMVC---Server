@@ -7,8 +7,7 @@
 
 package com.anfelisa.todo.clear.done.scenarios;
 
-import com.anfelisa.todo.data.ToggleAllResponse;
-import javax.ws.rs.core.Response;
+import de.acegen.HttpResponse;
 
 @SuppressWarnings("unused")
 public class ClearDoneScenario extends AbstractClearDoneScenario {

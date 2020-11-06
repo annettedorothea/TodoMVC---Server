@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -29,11 +30,21 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.AfterAll;
@@ -50,6 +61,7 @@ import org.slf4j.LoggerFactory;
 import com.anfelisa.todo.data.CreateTodoResponse;
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.models.ITodoModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -147,48 +159,104 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		this.runTest();
 	}
 
+	protected <T> HttpResponse<T> httpGet(String path, String authorization, String uuid, Class<T> entityType) {
+		final HttpGet httpGet = new HttpGet(buildUrl(path, uuid));
+		addHeaders(httpGet, authorization);
+		return execute(httpGet, entityType);
+	}
+
+	protected <T> HttpResponse<T> httpPost(String path, Object payload, String authorization, String uuid,
+			Class<T> entityType) {
+		final HttpPost httpPost = new HttpPost(buildUrl(path, uuid));
+		addHeaders(httpPost, authorization);
+		addEntity(httpPost, payload);
+		return execute(httpPost, entityType);
+	}
+
+	protected <T> HttpResponse<T> httpPut(String path, Object payload, String authorization, String uuid,
+			Class<T> entityType) {
+		final HttpPut httpPut = new HttpPut(buildUrl(path, uuid));
+		addHeaders(httpPut, authorization);
+		addEntity(httpPut, payload);
+		return execute(httpPut, entityType);
+	}
+
+	protected <T> HttpResponse<T> httpDelete(String path, String authorization, String uuid, Class<T> entityType) {
+		final HttpDelete httpDelete = new HttpDelete(buildUrl(path, uuid));
+		addHeaders(httpDelete, authorization);
+		return execute(httpDelete, entityType);
+	}
+
 	private String buildUrl(String path, String uuid) {
-		if (path.charAt(0) != '/') {
-			path = "/" + path;
-		}
-		if (path.contains("?")) {
-			path += "&uuid=" + uuid;
-		} else {
-			path += "?uuid=" + uuid;
+		if (StringUtils.isNotBlank(uuid)) {
+			if (path.contains("?")) {
+				path += "&uuid=" + uuid;
+			} else {
+				path += "?uuid=" + uuid;
+			}
 		}
 		return String.format("%s://%s:%d%s%s", protocol, host, port, rootPath, path);
 	}
 
-	protected Response httpGet(String path, String authorization, String uuid) {
-		Builder builder = client.target(buildUrl(path, uuid)).request();
+	private void addHeaders(HttpUriRequest request, String authorization) {
+		request.setHeader("Accept", "application/json");
+		request.setHeader("Content-type", "application/json");
 		if (authorization != null) {
-			builder.header("Authorization", authorization);
+			request.addHeader("Authorization", authorization);
 		}
-		return builder.get();
 	}
 
-	protected Response httpPost(String path, Object payload, String authorization, String uuid) {
-		Builder builder = client.target(buildUrl(path, uuid)).request();
-		if (authorization != null) {
-			builder.header("Authorization", authorization);
+	private void addEntity(HttpUriRequest request, Object payload) {
+		try {
+			String json = "";
+			if (payload instanceof String) {
+				json = payload.toString();
+			} else {
+				json = objectMapper.writeValueAsString(payload);
+			}
+			StringEntity httpEntity = new StringEntity(json);
+			request.setEntity(httpEntity);
+		} catch (JsonProcessingException e) {
+			LOG.error("failed to write entity", e);
 		}
-		return builder.post(Entity.json(payload));
 	}
 
-	protected Response httpPut(String path, Object payload, String authorization, String uuid) {
-		Builder builder = client.target(buildUrl(path, uuid)).request();
-		if (authorization != null) {
-			builder.header("Authorization", authorization);
+	private <T> HttpResponse<T> execute(HttpUriRequest request, Class<T> entityType) {
+		try (final CloseableHttpClient httpclient = HttpClients.createDefault()) {
+			long timeBeforeRequest = System.currentTimeMillis();
+			final HttpClientResponseHandler<HttpResponse<T>> responseHandler = new HttpClientResponseHandler<HttpResponse<T>>() {
+				@Override
+				public HttpResponse<T> handleResponse(final ClassicHttpResponse response) throws IOException {
+					long timeAfterRequest = System.currentTimeMillis();
+					return createHttpResponse(response, entityType, timeAfterRequest - timeBeforeRequest);
+				}
+			};
+			return httpclient.execute(request, responseHandler);
+		} catch (IOException e) {
+			return new HttpResponse<T>(null, e.getMessage(), -1, 0L);
 		}
-		return builder.put(payload != null ? Entity.json(payload) : Entity.json(""));
 	}
 
-	protected Response httpDelete(String path, String authorization, String uuid) {
-		Builder builder = client.target(buildUrl(path, uuid)).request();
-		if (authorization != null) {
-			builder.header("Authorization", authorization);
+	private <T> HttpResponse<T> createHttpResponse(ClassicHttpResponse response, Class<T> entityType, long duration) {
+		int statusCode = response.getCode();
+		String statusMessage = null;
+		T entity = null;
+		final int status = response.getCode();
+		final HttpEntity httpEntity = response.getEntity();
+		try {
+			if (httpEntity != null) {
+				if (status >= 400) {
+					statusMessage = httpEntity != null ? EntityUtils.toString(httpEntity) : null;
+				} else {
+					String json = httpEntity != null ? EntityUtils.toString(httpEntity) : null;
+					entity = objectMapper.readValue(json, entityType);
+				}
+			}
+			response.close();
+		} catch (final Exception x) {
+			statusMessage = x.getMessage();
 		}
-		return builder.delete();
+		return new HttpResponse<T>(entity, statusMessage, statusCode, duration);
 	}
 
 	protected String randomString() {
@@ -276,22 +344,15 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	}
 
 	@Override
-	protected Response callNonDeterministicDataProviderPutValue(String uuid, String key, Object data) {
-		Client client = new JerseyClientBuilder().build();
-		Builder builder = client
-				.target(String.format("%s://%s:%d%s/test/non-deterministic/value?uuid=" + uuid + "&key=" + key,
-						protocol, host, port, rootPath))
-				.request();
-		return builder.put(Entity.json(data));
+	protected HttpResponse<Object> callNonDeterministicDataProviderPutValue(String uuid, String key, Object data) {
+		return this.httpPut("/test/non-deterministic/value?uuid=" + uuid + "&key=" + key, data, null, null,
+				Object.class);
 	}
 
 	@Override
-	protected Response callNonDeterministicDataProviderPutSystemTime(String uuid, LocalDateTime dateTime) {
-		Client client = new JerseyClientBuilder().build();
-		Builder builder = client.target(String.format(
-				"%s://%s:%d%s/test/non-deterministic/system-time?uuid=" + uuid + "&system-time=" + dateTime, protocol,
-				host, port, rootPath)).request();
-		return builder.put(Entity.json(dateTime));
+	protected HttpResponse<Object> callNonDeterministicDataProviderPutSystemTime(String uuid, LocalDateTime dateTime) {
+		return this.httpPut("/test/non-deterministic/system-time?uuid=" + uuid + "&system-time=" + dateTime, null, null,
+				null, Object.class);
 	}
 
 	@Override

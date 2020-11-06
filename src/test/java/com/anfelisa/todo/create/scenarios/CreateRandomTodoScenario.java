@@ -7,10 +7,6 @@
 
 package com.anfelisa.todo.create.scenarios;
 
-import com.anfelisa.todo.data.CreateTodoResponse;
-import javax.ws.rs.core.Response;
-
-@SuppressWarnings("unused")
 public class CreateRandomTodoScenario extends AbstractCreateRandomTodoScenario {
 
 	

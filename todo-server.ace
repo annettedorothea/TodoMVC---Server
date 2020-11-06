@@ -9,7 +9,7 @@ ACE
 		response todoList
 	
 	GetTodo<Todo> 
-		GET "todo/{id}"
+		GET "/todo/{id}"
 			pathParams id
 		response 
 			id
@@ -19,7 +19,7 @@ ACE
 			updatedDateTime
 	
 	CreateTodo<Todo>
-		POST "todos/create"
+		POST "/todos/create"
 		payload description
 		response 
 			id
@@ -28,26 +28,26 @@ ACE
 		on success (Todo.create) 
 	
 	ToggleTodo<TodoToggle> 
-		PUT "todos/toggle" 
+		PUT "/todos/toggle" 
 		queryParams id
 		on success ( Todo.toggle )
 	
 	ToggleAll<ToggleAll>
-		PUT "todos/toggle-all" 
+		PUT "/todos/toggle-all" 
 		on success ( Todo.toggleAll )
 	
 	UpdateTodo<Todo>
-		PUT "todos/update" 
+		PUT "/todos/update" 
 		payload id description  
 		on success (Todo.update)
 	
 	DeleteTodo<TodoId> 
-		DELETE "todos/delete" 
+		DELETE "/todos/delete" 
 		queryParams id 
 		on success (Todo.delete)
 	
 	ClearDone<ClearDone> 
-		DELETE "todos/clear-done" 
+		DELETE "/todos/clear-done" 
 		on success (Todo.clearDone) 
 		
 views 

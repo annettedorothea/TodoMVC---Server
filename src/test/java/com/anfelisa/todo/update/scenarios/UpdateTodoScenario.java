@@ -7,10 +7,6 @@
 
 package com.anfelisa.todo.update.scenarios;
 
-import com.anfelisa.todo.data.UpdateTodoResponse;
-import javax.ws.rs.core.Response;
-
-@SuppressWarnings("unused")
 public class UpdateTodoScenario extends AbstractUpdateTodoScenario {
 
 	

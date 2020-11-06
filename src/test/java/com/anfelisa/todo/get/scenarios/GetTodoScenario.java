@@ -7,7 +7,6 @@
 
 package com.anfelisa.todo.get.scenarios;
 
-@SuppressWarnings("unused")
 public class GetTodoScenario extends AbstractGetTodoScenario {
 
 	
