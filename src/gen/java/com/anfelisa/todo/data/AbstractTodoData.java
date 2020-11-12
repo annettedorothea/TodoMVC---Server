@@ -38,13 +38,16 @@ public abstract class AbstractTodoData extends AbstractData implements ITodoData
 	
 	private java.time.LocalDateTime updatedDateTime;
 	
+	private String categoryId;
+	
 
 	public AbstractTodoData(
 		@JsonProperty("id") String id,
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("createdDateTime") java.time.LocalDateTime createdDateTime,
-		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime
+		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime,
+		@JsonProperty("categoryId") String categoryId
 ,		@JsonProperty("uuid") String uuid
 	) {
 		super(uuid);
@@ -53,6 +56,7 @@ public abstract class AbstractTodoData extends AbstractData implements ITodoData
 		this.done = done;
 		this.createdDateTime = createdDateTime;
 		this.updatedDateTime = updatedDateTime;
+		this.categoryId = categoryId;
 	}
 
 	public AbstractTodoData( String uuid ) {
@@ -120,6 +124,18 @@ public abstract class AbstractTodoData extends AbstractData implements ITodoData
 	}
 	public ITodoData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
+		return this;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+	public ITodoData withCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 		return this;
 	}
 	

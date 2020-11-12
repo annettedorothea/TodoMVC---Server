@@ -80,6 +80,7 @@ public class ToggleAllResource extends Resource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response toggleAllResource(
+			@QueryParam("categoryId") String categoryId, 
 			@QueryParam("uuid") String uuid) 
 			throws JsonProcessingException {
 		if (StringUtils.isBlank(uuid)) {
@@ -87,6 +88,7 @@ public class ToggleAllResource extends Resource {
 		}
 		try {
 			com.anfelisa.todo.data.IToggleAllData actionData = new ToggleAllData(uuid);
+			actionData.setCategoryId(categoryId);
 			
 			com.anfelisa.todo.actions.ToggleAllAction action = new com.anfelisa.todo.actions.ToggleAllAction(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 			action.setActionData(actionData);

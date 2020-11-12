@@ -19,7 +19,8 @@ public class ToggleAllMapper implements RowMapper<IToggleAllModel> {
 		return new ToggleAllModel(
 			r.getBoolean("done"),
 			null,
-			r.getTimestamp("updatedDateTime") != null ? r.getTimestamp("updatedDateTime").toLocalDateTime() : null
+			r.getTimestamp("updatedDateTime") != null ? r.getTimestamp("updatedDateTime").toLocalDateTime() : null,
+			r.getString("categoryId")
 		);
 	}
 }

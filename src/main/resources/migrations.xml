@@ -80,4 +80,27 @@
 
 	</changeSet>
 
+	<changeSet id="005" author="annette">
+
+		<createTable tableName="category">
+			<column name="categoryid" type="character varying">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+		</createTable>
+
+		<insert tableName="category">
+			<column name="categoryid" value="defaultCategory" />
+		</insert>
+
+		<addColumn tableName="todo">
+			<column name="categoryid" type="character varying"
+				defaultValue="defaultCategory">
+				<constraints nullable="false"
+					references="category(categoryid)" deleteCascade="true"
+					foreignKeyName="fk_todo_categoryid" />
+			</column>
+		</addColumn>
+
+	</changeSet>
+
 </databaseChangeLog>

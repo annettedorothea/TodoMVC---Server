@@ -24,16 +24,24 @@ public class CreateTodoPayload implements ICreateTodoPayload {
 	
 	private String description;
 	
+	private String categoryId;
+	
 	public CreateTodoPayload() {
 	}
 	
 	public CreateTodoPayload(com.anfelisa.todo.models.ITodoModel data) {
 		description = data.getDescription();
+		categoryId = data.getCategoryId();
 	}
 	
 	@JsonProperty
 	public String getDescription() {
 		return this.description;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
 	}
 	
 }

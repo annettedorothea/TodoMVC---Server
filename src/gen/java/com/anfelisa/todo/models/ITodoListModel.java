@@ -17,6 +17,9 @@ public interface ITodoListModel {
 	java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList();
 	void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList);
 	
+	String getCategoryId();
+	void setCategoryId(String categoryId);
+	
 	
 }
 

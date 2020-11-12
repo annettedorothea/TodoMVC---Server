@@ -22,14 +22,18 @@ public class TodoListModel implements ITodoListModel {
 
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
 
+	private String categoryId;
+
 
 	public TodoListModel() {
 	}
 
 	public TodoListModel(
-		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList
+		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList,
+		@JsonProperty("categoryId") String categoryId
 	) {
 		this.todoList = todoList;
+		this.categoryId = categoryId;
 	}
 
 	@JsonProperty
@@ -38,6 +42,14 @@ public class TodoListModel implements ITodoListModel {
 	}
 	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
 		this.todoList = todoList;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 	
 

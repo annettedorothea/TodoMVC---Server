@@ -23,6 +23,7 @@ public class AppRegistration {
 		environment.jersey().register(new GetAllTodosResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new GetTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new CreateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
+		environment.jersey().register(new CreateCategoryResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new ToggleTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new ToggleAllResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
 		environment.jersey().register(new UpdateTodoResource(persistenceConnection, appConfiguration, daoProvider, viewProvider));
@@ -33,6 +34,10 @@ public class AppRegistration {
 	public static void registerConsumers(ViewProvider viewProvider) {
 		viewProvider.addConsumer("com.anfelisa.todo.events.CreateTodoSuccessEvent", (dataContainer, handle) -> {
 			viewProvider.todoView.create((com.anfelisa.todo.data.TodoData) dataContainer, handle);
+		});
+		
+		viewProvider.addConsumer("com.anfelisa.todo.events.CreateCategorySuccessEvent", (dataContainer, handle) -> {
+			viewProvider.categoryView.create((com.anfelisa.todo.data.CategoryData) dataContainer, handle);
 		});
 		
 		viewProvider.addConsumer("com.anfelisa.todo.events.ToggleTodoSuccessEvent", (dataContainer, handle) -> {

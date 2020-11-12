@@ -26,6 +26,8 @@ public interface ITodoData extends ITodoModel, IDataContainer {
 	
 	ITodoData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
+	ITodoData withCategoryId(String categoryId);
+	
 	
 }
 

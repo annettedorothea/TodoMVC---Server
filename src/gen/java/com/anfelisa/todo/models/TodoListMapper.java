@@ -17,7 +17,8 @@ public class TodoListMapper implements RowMapper<ITodoListModel> {
 	
 	public ITodoListModel map(ResultSet r, StatementContext ctx) throws SQLException {
 		return new TodoListModel(
-			null
+			null,
+			r.getString("categoryId")
 		);
 	}
 }

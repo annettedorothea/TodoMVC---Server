@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.IToggleAllData;
+import com.anfelisa.todo.models.ICategoryModel;
 import com.anfelisa.todo.models.ITodoModel;
 
 import de.acegen.CustomAppConfiguration;
@@ -44,8 +45,12 @@ public class ToggleAllCommand extends AbstractToggleAllCommand {
 
 	@Override
 	protected void executeCommand(PersistenceHandle readonlyHandle) {
+		ICategoryModel categoryModel = daoProvider.getCategoryDao().selectByCategoryId(readonlyHandle, commandData.getCategoryId());
+		if (categoryModel == null) {
+			this.throwIllegalArgumentException("category " + commandData.getCategoryId() + " does not exist.");
+		}
 		this.commandData.setUpdatedDateTime(this.commandData.getSystemTime());
-		List<ITodoModel> todos = daoProvider.getTodoDao().selectAll(readonlyHandle);
+		List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOfCategory(readonlyHandle, commandData.getCategoryId());
 		List<ITodoModel> open = new ArrayList<>();
 		boolean allAreDone = true;
 		for (ITodoModel todo : todos) {

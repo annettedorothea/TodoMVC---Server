@@ -28,6 +28,8 @@ public class CreateTodoResponse implements ICreateTodoResponse {
 	
 	private String description;
 	
+	private String categoryId;
+	
 	public CreateTodoResponse() {
 	}
 	
@@ -35,6 +37,7 @@ public class CreateTodoResponse implements ICreateTodoResponse {
 		id = data.getId();
 		createdDateTime = data.getCreatedDateTime();
 		description = data.getDescription();
+		categoryId = data.getCategoryId();
 	}
 	
 	@JsonProperty
@@ -52,6 +55,11 @@ public class CreateTodoResponse implements ICreateTodoResponse {
 	@JsonProperty
 	public String getDescription() {
 		return this.description;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
 	}
 	
 }

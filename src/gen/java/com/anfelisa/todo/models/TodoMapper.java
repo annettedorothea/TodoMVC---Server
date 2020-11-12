@@ -21,7 +21,8 @@ public class TodoMapper implements RowMapper<ITodoModel> {
 			r.getString("description"),
 			r.getBoolean("done"),
 			r.getTimestamp("createdDateTime") != null ? r.getTimestamp("createdDateTime").toLocalDateTime() : null,
-			r.getTimestamp("updatedDateTime") != null ? r.getTimestamp("updatedDateTime").toLocalDateTime() : null
+			r.getTimestamp("updatedDateTime") != null ? r.getTimestamp("updatedDateTime").toLocalDateTime() : null,
+			r.getString("categoryId")
 		);
 	}
 }

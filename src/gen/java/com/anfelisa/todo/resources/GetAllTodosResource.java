@@ -80,6 +80,7 @@ public class GetAllTodosResource extends Resource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getAllTodosResource(
+			@QueryParam("categoryId") String categoryId, 
 			@QueryParam("uuid") String uuid) 
 			throws JsonProcessingException {
 		if (StringUtils.isBlank(uuid)) {
@@ -87,6 +88,7 @@ public class GetAllTodosResource extends Resource {
 		}
 		try {
 			com.anfelisa.todo.data.ITodoListData actionData = new TodoListData(uuid);
+			actionData.setCategoryId(categoryId);
 			
 			com.anfelisa.todo.actions.GetAllTodosAction action = new com.anfelisa.todo.actions.GetAllTodosAction(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 			action.setActionData(actionData);

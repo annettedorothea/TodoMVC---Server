@@ -34,17 +34,21 @@ public abstract class AbstractToggleAllData extends AbstractData implements ITog
 	
 	private java.time.LocalDateTime updatedDateTime;
 	
+	private String categoryId;
+	
 
 	public AbstractToggleAllData(
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("todosToBeToggled") java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled,
-		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime
+		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime,
+		@JsonProperty("categoryId") String categoryId
 ,		@JsonProperty("uuid") String uuid
 	) {
 		super(uuid);
 		this.done = done;
 		this.todosToBeToggled = todosToBeToggled;
 		this.updatedDateTime = updatedDateTime;
+		this.categoryId = categoryId;
 	}
 
 	public AbstractToggleAllData( String uuid ) {
@@ -86,6 +90,18 @@ public abstract class AbstractToggleAllData extends AbstractData implements ITog
 	}
 	public IToggleAllData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
+		return this;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+	public IToggleAllData withCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 		return this;
 	}
 	

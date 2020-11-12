@@ -29,6 +29,9 @@ public interface ITodoModel {
 	java.time.LocalDateTime getUpdatedDateTime();
 	void setUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
+	String getCategoryId();
+	void setCategoryId(String categoryId);
+	
 	
 }
 

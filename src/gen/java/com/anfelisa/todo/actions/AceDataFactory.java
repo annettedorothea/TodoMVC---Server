@@ -46,6 +46,14 @@ public class AceDataFactory {
 				data.migrateLegacyData(json);
 				return data;
 			}
+			if (className.equals("com.anfelisa.todo.actions.CreateCategoryAction") ||
+					className.equals("com.anfelisa.todo.commands.CreateCategoryCommand") ||
+					className.equals("com.anfelisa.todo.events.CreateCategorySuccessEvent")
+			) {
+				CategoryData data = mapper.readValue(json, CategoryData.class);
+				data.migrateLegacyData(json);
+				return data;
+			}
 			if (className.equals("com.anfelisa.todo.actions.ToggleTodoAction") ||
 					className.equals("com.anfelisa.todo.commands.ToggleTodoCommand") ||
 					className.equals("com.anfelisa.todo.events.ToggleTodoSuccessEvent")

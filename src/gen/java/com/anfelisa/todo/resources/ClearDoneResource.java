@@ -80,6 +80,7 @@ public class ClearDoneResource extends Resource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response clearDoneResource(
+			@QueryParam("categoryId") String categoryId, 
 			@QueryParam("uuid") String uuid) 
 			throws JsonProcessingException {
 		if (StringUtils.isBlank(uuid)) {
@@ -87,6 +88,7 @@ public class ClearDoneResource extends Resource {
 		}
 		try {
 			com.anfelisa.todo.data.IClearDoneData actionData = new ClearDoneData(uuid);
+			actionData.setCategoryId(categoryId);
 			
 			com.anfelisa.todo.actions.ClearDoneAction action = new com.anfelisa.todo.actions.ClearDoneAction(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 			action.setActionData(actionData);

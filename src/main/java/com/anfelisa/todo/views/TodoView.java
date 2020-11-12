@@ -39,7 +39,7 @@ public class TodoView implements ITodoView {
 	}
 
 	public void clearDone(IClearDoneData data, PersistenceHandle handle) {
-		daoProvider.getTodoDao().deleteDone(handle);
+		daoProvider.getTodoDao().deleteDone(handle, data.getCategoryId());
 	}
 
 }

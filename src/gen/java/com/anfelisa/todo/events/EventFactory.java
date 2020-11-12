@@ -39,6 +39,12 @@ public class EventFactory {
 				CreateTodoSuccessEvent event = new CreateTodoSuccessEvent(data, daoProvider, viewProvider, appConfiguration);
 				return event;
 			}
+			if (eventClass.equals("com.anfelisa.todo.events.CreateCategorySuccessEvent")) {
+				CategoryData data = mapper.readValue(json, CategoryData.class);
+				data.migrateLegacyData(json);
+				CreateCategorySuccessEvent event = new CreateCategorySuccessEvent(data, daoProvider, viewProvider, appConfiguration);
+				return event;
+			}
 			if (eventClass.equals("com.anfelisa.todo.events.ToggleTodoSuccessEvent")) {
 				TodoToggleData data = mapper.readValue(json, TodoToggleData.class);
 				data.migrateLegacyData(json);
@@ -81,6 +87,10 @@ public class EventFactory {
 
 		if (eventClass.equals("com.anfelisa.todo.events.CreateTodoSuccessEvent")) {
 			return new CreateTodoSuccessEvent((TodoData)data, daoProvider, viewProvider, appConfiguration);
+		}
+
+		if (eventClass.equals("com.anfelisa.todo.events.CreateCategorySuccessEvent")) {
+			return new CreateCategorySuccessEvent((CategoryData)data, daoProvider, viewProvider, appConfiguration);
 		}
 
 		if (eventClass.equals("com.anfelisa.todo.events.ToggleTodoSuccessEvent")) {

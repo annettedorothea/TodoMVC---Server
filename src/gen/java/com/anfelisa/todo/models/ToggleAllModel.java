@@ -26,6 +26,8 @@ public class ToggleAllModel implements IToggleAllModel {
 
 	private java.time.LocalDateTime updatedDateTime;
 
+	private String categoryId;
+
 
 	public ToggleAllModel() {
 	}
@@ -33,11 +35,13 @@ public class ToggleAllModel implements IToggleAllModel {
 	public ToggleAllModel(
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("todosToBeToggled") java.util.List<com.anfelisa.todo.models.ITodoModel> todosToBeToggled,
-		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime
+		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime,
+		@JsonProperty("categoryId") String categoryId
 	) {
 		this.done = done;
 		this.todosToBeToggled = todosToBeToggled;
 		this.updatedDateTime = updatedDateTime;
+		this.categoryId = categoryId;
 	}
 
 	@JsonProperty
@@ -64,6 +68,14 @@ public class ToggleAllModel implements IToggleAllModel {
 	}
 	public void setUpdatedDateTime(java.time.LocalDateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 	
 

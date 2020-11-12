@@ -27,6 +27,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anfelisa.todo.models.ICategoryModel;
 import com.anfelisa.todo.models.ITodoModel;
 
 import de.acegen.CustomAppConfiguration;
@@ -47,12 +48,14 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 
 	@Override
 	protected void loadDataForGetRequest(PersistenceHandle readonlyHandle) {
-		List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle);
-		this.actionData.setTodoList(todos);
+		ICategoryModel categoryModel = daoProvider.getCategoryDao().selectByCategoryId(readonlyHandle, actionData.getCategoryId());
+		if (categoryModel != null) {
+			List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle, actionData.getCategoryId());
+			this.actionData.setTodoList(todos);
+		}
 	}
 	
 	public void initActionData() {
-		// init not replayable data here
 	}
 
 }

@@ -1,0 +1,5 @@
+<createTable tableName="category">
+	<column name="categoryid" type="character varying">
+		<constraints primaryKey="true" nullable="false"  />
+	</column>
+</createTable>

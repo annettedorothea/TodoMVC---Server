@@ -39,7 +39,6 @@ public class CreateTodoAction extends AbstractCreateTodoAction {
 
 	
 	public void initActionData() {
-		// init not replayable data here
 	}
 
 }

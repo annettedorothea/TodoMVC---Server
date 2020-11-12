@@ -22,6 +22,8 @@ public interface IToggleAllData extends IToggleAllModel, IDataContainer {
 	
 	IToggleAllData withUpdatedDateTime(java.time.LocalDateTime updatedDateTime);
 	
+	IToggleAllData withCategoryId(String categoryId);
+	
 	
 }
 

@@ -2,10 +2,10 @@ HttpServer Java Dropwizard JDBI3 Liquibase
 
 com.anfelisa.todo
 
-
 ACE 
 	GetAllTodos<TodoList> 
 		GET "/todos/all"
+			queryParams categoryId
 		response todoList
 	
 	GetTodo<Todo> 
@@ -20,12 +20,20 @@ ACE
 	
 	CreateTodo<Todo>
 		POST "/todos/create"
-		payload description
+		payload 
+			description
+			categoryId
 		response 
 			id
 			createdDateTime
 			description
+			categoryId
 		on success (Todo.create) 
+	
+	CreateCategory<Category>
+		POST "/category/create"
+		payload categoryId
+		on success (Category.create) 
 	
 	ToggleTodo<TodoToggle> 
 		PUT "/todos/toggle" 
@@ -34,6 +42,7 @@ ACE
 	
 	ToggleAll<ToggleAll>
 		PUT "/todos/toggle-all" 
+		queryParams categoryId
 		on success ( Todo.toggleAll )
 	
 	UpdateTodo<Todo>
@@ -48,6 +57,7 @@ ACE
 	
 	ClearDone<ClearDone> 
 		DELETE "/todos/clear-done" 
+		queryParams categoryId
 		on success (Todo.clearDone) 
 		
 views 
@@ -59,6 +69,10 @@ views
 		update(Todo)
 		clearDone(ClearDone)
 	}
+	
+	Category {
+		create(Category)
+	}
 
 models 
 	persistent Todo {
@@ -67,10 +81,15 @@ models
 		NotNull Boolean done
 		DateTime createdDateTime
 		DateTime updatedDateTime
+		NotNull String categoryId references Category.categoryId
+	}
+	persistent Category {
+		Unique PrimaryKey NotNull String categoryId
 	}
 	
 	TodoList {
 		List Todo todoList
+		String categoryId
 	}
 	
 	TodoId {
@@ -88,8 +107,11 @@ models
 		NotNull Boolean done
 		List Todo todosToBeToggled
 		DateTime updatedDateTime
+		String categoryId
 	}
 	
-	ClearDone
+	ClearDone {
+		String categoryId
+	}
 	
 	

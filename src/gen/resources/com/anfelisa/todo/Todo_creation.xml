@@ -14,4 +14,7 @@
 	<column name="updateddatetime" type="timestamp with time zone">
 		<constraints    />
 	</column>
+	<column name="categoryid" type="character varying">
+		<constraints  nullable="false"  references="category(categoryid)" deleteCascade="true" foreignKeyName="fk_todo_categoryid" />
+	</column>
 </createTable>

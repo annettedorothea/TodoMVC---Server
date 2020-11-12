@@ -30,6 +30,8 @@ public class TodoModel implements ITodoModel {
 
 	private java.time.LocalDateTime updatedDateTime;
 
+	private String categoryId;
+
 
 	public TodoModel() {
 	}
@@ -39,13 +41,15 @@ public class TodoModel implements ITodoModel {
 		@JsonProperty("description") String description,
 		@JsonProperty("done") Boolean done,
 		@JsonProperty("createdDateTime") java.time.LocalDateTime createdDateTime,
-		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime
+		@JsonProperty("updatedDateTime") java.time.LocalDateTime updatedDateTime,
+		@JsonProperty("categoryId") String categoryId
 	) {
 		this.id = id;
 		this.description = description;
 		this.done = done;
 		this.createdDateTime = createdDateTime;
 		this.updatedDateTime = updatedDateTime;
+		this.categoryId = categoryId;
 	}
 
 	@JsonProperty
@@ -90,6 +94,14 @@ public class TodoModel implements ITodoModel {
 	}
 	public void setUpdatedDateTime(java.time.LocalDateTime updatedDateTime) {
 		this.updatedDateTime = updatedDateTime;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 	
 

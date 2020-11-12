@@ -14,6 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(as=ClearDoneModel.class)
 public interface IClearDoneModel {
 
+	String getCategoryId();
+	void setCategoryId(String categoryId);
+	
 	
 }
 

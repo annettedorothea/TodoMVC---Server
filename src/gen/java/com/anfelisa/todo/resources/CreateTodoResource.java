@@ -92,6 +92,7 @@ public class CreateTodoResource extends Resource {
 		try {
 			com.anfelisa.todo.data.ITodoData actionData = new TodoData(uuid);
 			actionData.setDescription(payload.getDescription());
+			actionData.setCategoryId(payload.getCategoryId());
 			
 			com.anfelisa.todo.actions.CreateTodoAction action = new com.anfelisa.todo.actions.CreateTodoAction(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 			action.setActionData(actionData);

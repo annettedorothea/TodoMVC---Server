@@ -28,14 +28,33 @@ public abstract class AbstractClearDoneData extends AbstractData implements ICle
 	
 	static final Logger LOG = LoggerFactory.getLogger(AbstractClearDoneData.class);
 	
+	private String categoryId;
+	
 
 	public AbstractClearDoneData(
-		@JsonProperty("uuid") String uuid
+		@JsonProperty("categoryId") String categoryId
+,		@JsonProperty("uuid") String uuid
 	) {
+		super(uuid);
+		this.categoryId = categoryId;
+	}
+
+	public AbstractClearDoneData( String uuid ) {
 		super(uuid);
 	}
 
-
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+	public IClearDoneData withCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+		return this;
+	}
+	
 	
 	
 }

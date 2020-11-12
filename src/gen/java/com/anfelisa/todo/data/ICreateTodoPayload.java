@@ -10,6 +10,8 @@ package com.anfelisa.todo.data;
 public interface ICreateTodoPayload {
 	String getDescription();
 	
+	String getCategoryId();
+	
 
 }
 

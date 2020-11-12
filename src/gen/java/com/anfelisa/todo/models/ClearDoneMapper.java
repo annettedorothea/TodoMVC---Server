@@ -17,6 +17,7 @@ public class ClearDoneMapper implements RowMapper<IClearDoneModel> {
 	
 	public IClearDoneModel map(ResultSet r, StatementContext ctx) throws SQLException {
 		return new ClearDoneModel(
+			r.getString("categoryId")
 		);
 	}
 }

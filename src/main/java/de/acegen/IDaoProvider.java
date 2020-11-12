@@ -1,5 +1,6 @@
 package de.acegen;
 
+import com.anfelisa.todo.models.CategoryDao;
 import com.anfelisa.todo.models.TodoDao;
 
 public interface IDaoProvider {
@@ -9,6 +10,8 @@ public interface IDaoProvider {
 	AceDao getAceDao();
 	
 	TodoDao getTodoDao();
+
+	CategoryDao getCategoryDao();
 
 }
 

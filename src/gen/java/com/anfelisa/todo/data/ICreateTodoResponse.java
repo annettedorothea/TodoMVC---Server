@@ -14,6 +14,8 @@ public interface ICreateTodoResponse {
 	
 	String getDescription();
 	
+	String getCategoryId();
+	
 
 }
 

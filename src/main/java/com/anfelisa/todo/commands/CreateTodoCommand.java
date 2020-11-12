@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.ITodoData;
+import com.anfelisa.todo.models.ICategoryModel;
 
 import de.acegen.CustomAppConfiguration;
 import de.acegen.IDaoProvider;
@@ -40,6 +41,10 @@ public class CreateTodoCommand extends AbstractCreateTodoCommand {
 
 	@Override
 	protected void executeCommand(PersistenceHandle readonlyHandle) {
+		ICategoryModel categoryModel = daoProvider.getCategoryDao().selectByCategoryId(readonlyHandle, commandData.getCategoryId());
+		if (categoryModel == null) {
+			this.throwIllegalArgumentException("category " + commandData.getCategoryId() + " does not exist.");
+		}
 		this.commandData.setDone(false);
 		this.commandData.setCreatedDateTime(this.commandData.getSystemTime());
 		this.commandData.setId(this.commandData.getUuid());

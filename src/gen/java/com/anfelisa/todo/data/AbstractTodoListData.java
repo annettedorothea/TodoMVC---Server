@@ -30,13 +30,17 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	
 	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
 	
+	private String categoryId;
+	
 
 	public AbstractTodoListData(
-		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList
+		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList,
+		@JsonProperty("categoryId") String categoryId
 ,		@JsonProperty("uuid") String uuid
 	) {
 		super(uuid);
 		this.todoList = todoList;
+		this.categoryId = categoryId;
 	}
 
 	public AbstractTodoListData( String uuid ) {
@@ -52,6 +56,18 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	}
 	public ITodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
 		this.todoList = todoList;
+		return this;
+	}
+	
+	@JsonProperty
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+	public ITodoListData withCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 		return this;
 	}
 	

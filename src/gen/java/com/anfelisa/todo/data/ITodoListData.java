@@ -18,6 +18,8 @@ public interface ITodoListData extends ITodoListModel, IDataContainer {
 	
 	ITodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList);
 	
+	ITodoListData withCategoryId(String categoryId);
+	
 	
 }
 

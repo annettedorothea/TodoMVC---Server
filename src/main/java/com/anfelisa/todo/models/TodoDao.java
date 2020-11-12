@@ -3,15 +3,14 @@ package com.anfelisa.todo.models;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jdbi.v3.core.statement.PreparedBatch;
 import org.jdbi.v3.core.statement.Update;
-import org.joda.time.DateTime;
 
 import com.anfelisa.todo.data.IToggleAllData;
 
 import de.acegen.PersistenceHandle;
 
 public class TodoDao extends AbstractTodoDao {
+	
 	public void toggleTodo(PersistenceHandle handle, ITodoToggleModel model) {
 		Update statement = handle.getHandle()
 				.createUpdate("UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime WHERE id = :id");
@@ -30,24 +29,16 @@ public class TodoDao extends AbstractTodoDao {
 		statement.execute();
 	}
 
-	public List<ITodoModel> selectAllOrderedByCreatedDate(PersistenceHandle handle) {
-		return handle.getHandle().createQuery("SELECT * FROM public.todo order by createddatetime")
-				.map(new TodoMapper()).list();
+	public List<ITodoModel> selectAllOrderedByCreatedDate(PersistenceHandle handle, String categoryId) {
+		return handle.getHandle()
+				.createQuery("SELECT * FROM public.todo where categoryid = :categoryid order by createddatetime")
+				.bind("categoryid", categoryId).map(new TodoMapper()).list();
 	}
 
-	public void deleteDone(PersistenceHandle handle) {
-		Update statement = handle.getHandle().createUpdate("DELETE FROM public.todo WHERE done = true");
+	public void deleteDone(PersistenceHandle handle, String categoryId) {
+		Update statement = handle.getHandle().createUpdate("DELETE FROM public.todo WHERE done = true and categoryid = :categoryid")
+				.bind("categoryid", categoryId);
 		statement.execute();
-	}
-
-	public List<ITodoModel> selectDoneOrderedByCreatedDate(PersistenceHandle handle) {
-		return handle.getHandle().createQuery("SELECT * FROM public.todo WHERE done = true order by createddatetime")
-				.map(new TodoMapper()).list();
-	}
-
-	public List<ITodoModel> selectOpenOrderedByCreatedDate(PersistenceHandle handle) {
-		return handle.getHandle().createQuery("SELECT * FROM public.todo WHERE done = false order by createddatetime")
-				.map(new TodoMapper()).list();
 	}
 
 	public void toggleAll(PersistenceHandle handle, IToggleAllData dataContainer) {
@@ -61,19 +52,11 @@ public class TodoDao extends AbstractTodoDao {
 		statement.execute();
 	}
 
-	public Integer insert(PersistenceHandle handle, DateTime now) {
-
-		PreparedBatch pb = handle.getHandle().prepareBatch(
-				"INSERT INTO public.todo (id, description, done, createddatetime, updateddatetime) VALUES ( :id, :description, :done, :createddatetime, :updateddatetime) RETURNING id");
-		for (int i = 0; i < 1000000; i++) {
-			if (i % 1000 == 0) {
-				System.out.println("i " + i);
-			}
-			pb.add().bind("id", i + 2).bind("description", "TODO" + i).bind("done", false).bind("createddatetime", now)
-					.bind("updateddatetime", now);
-		}
-		System.out.println("prepare data");
-		return pb.execute().length;
+	public List<ITodoModel> selectAllOfCategory(PersistenceHandle handle, String categoryId) {
+		return handle.getHandle().createQuery(
+				"SELECT id, description, done, createddatetime, updateddatetime, categoryid FROM \"todo\" WHERE categoryid = :categoryid")
+				.bind("categoryid", categoryId)
+				.map(new TodoMapper()).list();
 	}
 
 }
