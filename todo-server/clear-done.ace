@@ -9,7 +9,9 @@ scenarios
 			com.anfelisa.todo.toggle.ToggleTodo 
 			com.anfelisa.todo.create.CreateSecondTodo excludeGIVEN
 		WHEN com.anfelisa.todo.ClearDone 
-			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" {
+				categoryId: "category_${testId}"
+			}
 		THEN 200
 			persistence 
 				todoWasDeleted Todo selectByPrimaryKey (id: "${testId}") shouldBe null
@@ -19,5 +21,6 @@ scenarios
 					description: "todo 2 ${testId}",
 					done: false,
 					id: "${testId}_2",
-					updatedDateTime: null
+					updatedDateTime: null,
+					categoryId: "category_${testId}"
 				}

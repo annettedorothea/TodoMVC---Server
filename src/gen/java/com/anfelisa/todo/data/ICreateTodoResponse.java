@@ -8,14 +8,6 @@
 package com.anfelisa.todo.data;
 
 public interface ICreateTodoResponse {
-	String getId();
-	
-	java.time.LocalDateTime getCreatedDateTime();
-	
-	String getDescription();
-	
-	String getCategoryId();
-	
 
 }
 

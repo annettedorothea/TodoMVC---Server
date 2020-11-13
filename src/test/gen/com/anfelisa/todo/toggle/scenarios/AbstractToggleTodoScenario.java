@@ -32,49 +32,63 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 	private void given() throws Exception {
 		String uuid;
 		
-		if (prerequisite("CreateTodo")) {
-			uuid = "" + this.getTestId() + "";
-			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
-			com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{" +
-				"\"description\" : \"todo " + this.getTestId() + "\"} ",
-					com.anfelisa.todo.data.CreateTodoPayload.class);
-			com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
+		if (prerequisite("CreateCategory")) {
+			uuid = this.randomUUID();
+			com.anfelisa.todo.data.CreateCategoryPayload payload_0 = objectMapper.readValue("{" +
+				"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.CreateCategoryPayload.class);
+			com.anfelisa.todo.data.CategoryData data_0 = objectMapper.readValue("{" +
 			"\"uuid\" : \"" + uuid + "\"," + 
-			"\"description\" : \"todo " + this.getTestId() + "\"} ",
-					com.anfelisa.todo.data.TodoData.class);
-			HttpResponse<com.anfelisa.todo.data.CreateTodoResponse> response_0 = 
+			"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.CategoryData.class);
+			HttpResponse<Object> response_0 = 
 			this.httpPost(
-				"/todos/create", 
+				"/category/create", 
 			 	payload_0,
 				null,
 				uuid,
-				com.anfelisa.todo.data.CreateTodoResponse.class
+				null
 			);
 			
 			if (response_0.getStatusCode() >= 400) {
-				String message = "GIVEN CreateTodo fails\n" + response_0.getStatusMessage();
-				LOG.error("GIVEN: CreateTodo fails due to {} in {} ms", message, response_0.getDuration());
+				String message = "GIVEN CreateCategory fails\n" + response_0.getStatusMessage();
+				LOG.error("GIVEN: CreateCategory fails due to {} in {} ms", message, response_0.getDuration());
 				assertFail(message);
 			}
-			LOG.info("GIVEN: CreateTodo success in {} ms", response_0.getDuration());
-			addToMetrics("CreateTodo", response_0.getDuration());
-			com.anfelisa.todo.data.CreateTodoResponse responseEntity_0 = null;
-			try {
-				
-				Object todoId = this.extractTodoId(response_0.getEntity());
-				extractedValues.put("todoId", todoId);
-				LOG.info("GIVEN: extracted " + todoId.toString()  + " as todoId");
-				
-				Object createdDateTime = this.extractCreatedDateTime(response_0.getEntity());
-				extractedValues.put("createdDateTime", createdDateTime);
-				LOG.info("GIVEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
-				
-				Object description = this.extractDescription(response_0.getEntity());
-				extractedValues.put("description", description);
-				LOG.info("GIVEN: extracted " + description.toString()  + " as description");
-			} catch (Exception x) {
-				LOG.error("GIVEN: failed to extract values from response ", x);
+			LOG.info("GIVEN: CreateCategory success in {} ms", response_0.getDuration());
+			addToMetrics("CreateCategory", response_0.getDuration());
+		} else {
+			LOG.info("GIVEN: prerequisite for CreateCategory not met");
+		}
+
+		if (prerequisite("CreateTodo")) {
+			uuid = "" + this.getTestId() + "";
+			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+			com.anfelisa.todo.data.CreateTodoPayload payload_1 = objectMapper.readValue("{" +
+				"\"description\" : \"todo " + this.getTestId() + "\"," + 
+				"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.CreateTodoPayload.class);
+			com.anfelisa.todo.data.TodoData data_1 = objectMapper.readValue("{" +
+			"\"uuid\" : \"" + uuid + "\"," + 
+			"\"description\" : \"todo " + this.getTestId() + "\"," + 
+			"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.TodoData.class);
+			HttpResponse<Object> response_1 = 
+			this.httpPost(
+				"/todos/create", 
+			 	payload_1,
+				null,
+				uuid,
+				null
+			);
+			
+			if (response_1.getStatusCode() >= 400) {
+				String message = "GIVEN CreateTodo fails\n" + response_1.getStatusMessage();
+				LOG.error("GIVEN: CreateTodo fails due to {} in {} ms", message, response_1.getDuration());
+				assertFail(message);
 			}
+			LOG.info("GIVEN: CreateTodo success in {} ms", response_1.getDuration());
+			addToMetrics("CreateTodo", response_1.getDuration());
 		} else {
 			LOG.info("GIVEN: prerequisite for CreateTodo not met");
 		}
@@ -143,7 +157,8 @@ public abstract class AbstractToggleTodoScenario extends BaseScenario {
 			"\"description\" : \"todo " + this.getTestId() + "\"," + 
 			"\"done\" : true," + 
 			"\"id\" : \"" + this.getTestId() + "\"," + 
-			"\"updatedDateTime\" : \"2020-07-07T17:20\"} ",
+			"\"updatedDateTime\" : \"2020-07-07T17:20\"," + 
+			"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
 		com.anfelisa.todo.models.TodoModel.class);
 		assertThat(actual, expected);
 	

@@ -5,21 +5,22 @@ com.anfelisa.todo.create
 scenarios
 
 	CreateTodo
+		GIVEN 
+			com.anfelisa.todo.createcategory.CreateCategory
 		WHEN com.anfelisa.todo.CreateTodo
 			uuid "${testId}"
 			systemTime "20200707 16:30" "yyyyMMdd HH:mm" {
-				description: "todo ${testId}"
+				description: "todo ${testId}",
+				categoryId: "category_${testId}"
 			}
-			extract todoId
-			extract createdDateTime
-			extract description
 		THEN 200
 			persistence todoWasCreated Todo selectByPrimaryKey (id: "${testId}") shouldBe {
 				createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
 				description: "todo ${testId}",
 				done: false,
 				id: "${testId}",
-				updatedDateTime: null
+				updatedDateTime: null,
+				categoryId: "category_${testId}"
 			}
 			
 	CreateSecondTodo
@@ -27,7 +28,8 @@ scenarios
 		WHEN com.anfelisa.todo.CreateTodo
 			uuid "${testId}_2"
 			systemTime "20200707 16:30" "yyyyMMdd HH:mm" {
-				description: "todo 2 ${testId}"
+				description: "todo 2 ${testId}",
+				categoryId: "category_${testId}"
 			}
 		THEN 200
 			persistence todoWasCreated Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
@@ -35,31 +37,17 @@ scenarios
 				description: "todo 2 ${testId}",
 				done: false,
 				id: "${testId}_2",
-				updatedDateTime: null
+				updatedDateTime: null,
+				categoryId: "category_${testId}"
 			}
 			
 	CreateRandomTodo
+		GIVEN 
+			com.anfelisa.todo.createcategory.CreateCategory
 		WHEN com.anfelisa.todo.CreateTodo {
-				description: "${random} ${testId}"
+				description: "${random} ${testId}",
+				categoryId: "category_${testId}"
 			}
-			extract todoId
-			extract createdDateTime
-			extract description
 		THEN 200
-			persistence todoWasCreated Todo selectByPrimaryKey (id: "${todoId}") shouldBe {
-				createdDateTime: "${createdDateTime}" "yyyy-MM-dd'T'HH:mm:ss.SSS",
-				description: "${description}",
-				done: false,
-				id: "${todoId}",
-				updatedDateTime: null
-			}
-			
-	CreateRandomTodoJson
-		WHEN com.anfelisa.todo.CreateTodo json "{\\\"description\\\": \\\"${random} ${testId}\\\"}"
-			extract todoId
-			extract createdDateTime
-			extract description
-		THEN 200
-			persistence todoWasCreated Todo selectByPrimaryKey (id: "${todoId}") shouldBe json "{\\\"createdDateTime\\\": \\\"${createdDateTime}\\\", \\\"description\\\": \\\"${description}\\\", \\\"done\\\": false, \\\"id\\\": \\\"${todoId}\\\", \\\"updatedDateTime\\\": null }"
 			
 	

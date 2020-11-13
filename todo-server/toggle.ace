@@ -16,7 +16,8 @@ scenarios
 				description: "todo ${testId}",
 				done: true,
 				id: "${testId}",
-				updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+				updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm",
+				categoryId: "category_${testId}"
 			}
 	
 	ToggleTodoTwice 
@@ -33,6 +34,7 @@ scenarios
 				description: "todo ${testId}",
 				done: false,
 				id: "${testId}",
-				updatedDateTime: "20200707 17:30" "yyyyMMdd HH:mm"
+				updatedDateTime: "20200707 17:30" "yyyyMMdd HH:mm",
+				categoryId: "category_${testId}"
 			}
 			

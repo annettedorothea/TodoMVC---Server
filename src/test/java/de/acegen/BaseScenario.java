@@ -55,10 +55,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anfelisa.todo.data.CreateTodoResponse;
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.models.ITodoModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -70,7 +70,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 @ExtendWith(TestLogger.class)
 public abstract class BaseScenario extends AbstractBaseScenario {
 
-	static final Logger LOG = LoggerFactory.getLogger(BaseScenario.class);
+	static Logger LOG;
 
 	private static Jdbi jdbi;
 
@@ -90,6 +90,9 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 
 	@BeforeAll
 	public static void beforeClass() throws Exception {
+		LOG = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+		LOG.setLevel(Level.INFO);
+
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
 				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		YamlConfiguration config = mapper.readValue(new File("dev.yml"), YamlConfiguration.class);
@@ -363,18 +366,6 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 			metrics.put(action, values);
 		}
 		values.addValue(duration);
-	}
-
-	protected Object extractDescription(CreateTodoResponse data) {
-		return data.getDescription();
-	}
-
-	protected Object extractCreatedDateTime(CreateTodoResponse data) {
-		return data.getCreatedDateTime();
-	}
-
-	protected Object extractTodoId(CreateTodoResponse data) {
-		return data.getId();
 	}
 
 }

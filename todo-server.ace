@@ -8,24 +8,9 @@ ACE
 			queryParams categoryId
 		response todoList
 	
-	GetTodo<Todo> 
-		GET "/todo/{id}"
-			pathParams id
-		response 
-			id
-			description
-			createdDateTime
-			done
-			updatedDateTime
-	
 	CreateTodo<Todo>
 		POST "/todos/create"
 		payload 
-			description
-			categoryId
-		response 
-			id
-			createdDateTime
 			description
 			categoryId
 		on success (Todo.create) 

@@ -6,7 +6,9 @@ scenarios
 
 	GetAllTodos
 		GIVEN com.anfelisa.todo.create.CreateTodo
-		WHEN com.anfelisa.todo.GetAllTodos
+		WHEN com.anfelisa.todo.GetAllTodos {
+			categoryId: "category_${testId}"
+		}
 		THEN 200
 			response shouldBe {
 				todoList: [
@@ -23,7 +25,9 @@ scenarios
 
 	GetManyTodos
 		GIVEN com.anfelisa.todo.create.CreateRandomTodo 20x
-		WHEN com.anfelisa.todo.GetAllTodos
+		WHEN com.anfelisa.todo.GetAllTodos {
+			categoryId: "category_${testId}"
+		}
 		THEN 200
 		verifications atLeastTwentyReturned
 			

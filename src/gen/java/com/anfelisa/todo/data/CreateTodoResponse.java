@@ -22,44 +22,10 @@ import de.acegen.StringToDateTimeConverter;
 @SuppressWarnings("all")
 public class CreateTodoResponse implements ICreateTodoResponse {
 	
-	private String id;
-	
-	private java.time.LocalDateTime createdDateTime;
-	
-	private String description;
-	
-	private String categoryId;
-	
 	public CreateTodoResponse() {
 	}
 	
 	public CreateTodoResponse(com.anfelisa.todo.models.ITodoModel data) {
-		id = data.getId();
-		createdDateTime = data.getCreatedDateTime();
-		description = data.getDescription();
-		categoryId = data.getCategoryId();
-	}
-	
-	@JsonProperty
-	public String getId() {
-		return this.id;
-	}
-	
-	@JsonProperty
-	@JsonSerialize(converter = DateTimeToStringConverter.class)
-	@JsonDeserialize(converter = StringToDateTimeConverter.class)
-	public java.time.LocalDateTime getCreatedDateTime() {
-		return this.createdDateTime;
-	}
-	
-	@JsonProperty
-	public String getDescription() {
-		return this.description;
-	}
-	
-	@JsonProperty
-	public String getCategoryId() {
-		return this.categoryId;
 	}
 	
 }

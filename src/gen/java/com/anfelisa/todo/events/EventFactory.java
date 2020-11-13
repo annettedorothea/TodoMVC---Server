@@ -84,7 +84,6 @@ public class EventFactory {
 
 	public static IEvent createEvent(String eventClass, IDataContainer data, IDaoProvider daoProvider, ViewProvider viewProvider, CustomAppConfiguration appConfiguration) {
 
-
 		if (eventClass.equals("com.anfelisa.todo.events.CreateTodoSuccessEvent")) {
 			return new CreateTodoSuccessEvent((TodoData)data, daoProvider, viewProvider, appConfiguration);
 		}

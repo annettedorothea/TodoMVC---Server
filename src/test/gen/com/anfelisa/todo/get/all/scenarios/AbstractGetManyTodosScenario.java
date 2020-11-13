@@ -32,49 +32,63 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 	private void given() throws Exception {
 		String uuid;
 		
+		if (prerequisite("CreateCategory")) {
+			uuid = this.randomUUID();
+			com.anfelisa.todo.data.CreateCategoryPayload payload_0 = objectMapper.readValue("{" +
+				"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.CreateCategoryPayload.class);
+			com.anfelisa.todo.data.CategoryData data_0 = objectMapper.readValue("{" +
+			"\"uuid\" : \"" + uuid + "\"," + 
+			"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.CategoryData.class);
+			HttpResponse<Object> response_0 = 
+			this.httpPost(
+				"/category/create", 
+			 	payload_0,
+				null,
+				uuid,
+				null
+			);
+			
+			if (response_0.getStatusCode() >= 400) {
+				String message = "GIVEN CreateCategory fails\n" + response_0.getStatusMessage();
+				LOG.error("GIVEN: CreateCategory fails due to {} in {} ms", message, response_0.getDuration());
+				assertFail(message);
+			}
+			LOG.info("GIVEN: CreateCategory success in {} ms", response_0.getDuration());
+			addToMetrics("CreateCategory", response_0.getDuration());
+		} else {
+			LOG.info("GIVEN: prerequisite for CreateCategory not met");
+		}
+
 		for (int i=0; i<20; i++) {
 			if (prerequisite("CreateRandomTodo")) {
 				uuid = this.randomUUID();
-				com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{" +
-					"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"} ",
+				com.anfelisa.todo.data.CreateTodoPayload payload_1 = objectMapper.readValue("{" +
+					"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"," + 
+					"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
 						com.anfelisa.todo.data.CreateTodoPayload.class);
-				com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
+				com.anfelisa.todo.data.TodoData data_1 = objectMapper.readValue("{" +
 				"\"uuid\" : \"" + uuid + "\"," + 
-				"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"} ",
+				"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"," + 
+				"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
 						com.anfelisa.todo.data.TodoData.class);
-				HttpResponse<com.anfelisa.todo.data.CreateTodoResponse> response_0 = 
+				HttpResponse<Object> response_1 = 
 				this.httpPost(
 					"/todos/create", 
-				 	payload_0,
+				 	payload_1,
 					null,
 					uuid,
-					com.anfelisa.todo.data.CreateTodoResponse.class
+					null
 				);
 				
-				if (response_0.getStatusCode() >= 400) {
-					String message = "GIVEN CreateRandomTodo fails\n" + response_0.getStatusMessage();
-					LOG.error("GIVEN: CreateRandomTodo fails due to {} in {} ms", message, response_0.getDuration());
+				if (response_1.getStatusCode() >= 400) {
+					String message = "GIVEN CreateRandomTodo fails\n" + response_1.getStatusMessage();
+					LOG.error("GIVEN: CreateRandomTodo fails due to {} in {} ms", message, response_1.getDuration());
 					assertFail(message);
 				}
-				LOG.info("GIVEN: CreateRandomTodo success in {} ms", response_0.getDuration());
-				addToMetrics("CreateTodo", response_0.getDuration());
-				com.anfelisa.todo.data.CreateTodoResponse responseEntity_0 = null;
-				try {
-					
-					Object todoId = this.extractTodoId(response_0.getEntity());
-					extractedValues.put("todoId_" + i, todoId);
-					LOG.info("GIVEN: extracted " + todoId.toString()  + " as todoId_" + i);
-					
-					Object createdDateTime = this.extractCreatedDateTime(response_0.getEntity());
-					extractedValues.put("createdDateTime_" + i, createdDateTime);
-					LOG.info("GIVEN: extracted " + createdDateTime.toString()  + " as createdDateTime_" + i);
-					
-					Object description = this.extractDescription(response_0.getEntity());
-					extractedValues.put("description_" + i, description);
-					LOG.info("GIVEN: extracted " + description.toString()  + " as description_" + i);
-				} catch (Exception x) {
-					LOG.error("GIVEN: failed to extract values from response ", x);
-				}
+				LOG.info("GIVEN: CreateRandomTodo success in {} ms", response_1.getDuration());
+				addToMetrics("CreateTodo", response_1.getDuration());
 			} else {
 				LOG.info("GIVEN: prerequisite for CreateRandomTodo not met");
 			}
@@ -85,11 +99,12 @@ public abstract class AbstractGetManyTodosScenario extends BaseScenario {
 	private HttpResponse<com.anfelisa.todo.data.GetAllTodosResponse> when() throws Exception {
 		String uuid = this.randomUUID();
 		com.anfelisa.todo.data.TodoListData data_0 = objectMapper.readValue("{" +
-		"\"uuid\" : \"" + uuid + "\" }",
-		com.anfelisa.todo.data.TodoListData.class);
+		"\"uuid\" : \"" + uuid + "\"," + 
+		"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+				com.anfelisa.todo.data.TodoListData.class);
 		HttpResponse<com.anfelisa.todo.data.GetAllTodosResponse> response = 
 		this.httpGet(
-			"/todos/all", 
+			"/todos/all?categoryId=" + data_0.getCategoryId() + "", 
 			null,
 			uuid,
 			com.anfelisa.todo.data.GetAllTodosResponse.class

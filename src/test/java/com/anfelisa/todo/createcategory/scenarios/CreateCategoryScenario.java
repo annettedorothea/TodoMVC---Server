@@ -5,21 +5,17 @@
 
 
 
-package com.anfelisa.todo.data;
+package com.anfelisa.todo.createcategory.scenarios;
 
-public interface IGetTodoResponse {
-	String getId();
-	
-	String getDescription();
-	
-	java.time.LocalDateTime getCreatedDateTime();
-	
-	Boolean getDone();
-	
-	java.time.LocalDateTime getUpdatedDateTime();
+import com.anfelisa.todo.data.CreateCategoryResponse;
+
+@SuppressWarnings("unused")
+public class CreateCategoryScenario extends AbstractCreateCategoryScenario {
+
 	
 
 }
+
 
 
 

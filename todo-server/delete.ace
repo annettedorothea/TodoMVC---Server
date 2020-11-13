@@ -5,18 +5,12 @@ com.anfelisa.todo.delete
 scenarios
 
 	DeleteTodo
-		GIVEN com.anfelisa.todo.create.CreateRandomTodo
+		GIVEN com.anfelisa.todo.create.CreateTodo
 		WHEN com.anfelisa.todo.DeleteTodo {
-				id : "${todoId}"
+				id : "${testId}"
 			}
 		THEN 200
-			persistence todoWasDeleted Todo selectByPrimaryKey (id: "${todoId}") shouldBe null
+			persistence todoWasDeleted Todo selectByPrimaryKey (id: "${testId}") shouldBe null
 
-	DeleteTodoJson
-		GIVEN com.anfelisa.todo.create.CreateRandomTodo
-		WHEN com.anfelisa.todo.DeleteTodo json "{\\\"id\\\": \\\"${todoId}\\\"}"
-		THEN 200
-			persistence todoWasDeleted Todo selectByPrimaryKey (id: "${todoId}") shouldBe null
-	
 	
 

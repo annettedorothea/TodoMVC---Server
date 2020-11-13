@@ -32,24 +32,55 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 	private void given() throws Exception {
 		String uuid;
 		
+		if (prerequisite("CreateCategory")) {
+			uuid = this.randomUUID();
+			com.anfelisa.todo.data.CreateCategoryPayload payload_0 = objectMapper.readValue("{" +
+				"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.CreateCategoryPayload.class);
+			com.anfelisa.todo.data.CategoryData data_0 = objectMapper.readValue("{" +
+			"\"uuid\" : \"" + uuid + "\"," + 
+			"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
+					com.anfelisa.todo.data.CategoryData.class);
+			HttpResponse<Object> response_0 = 
+			this.httpPost(
+				"/category/create", 
+			 	payload_0,
+				null,
+				uuid,
+				null
+			);
+			
+			if (response_0.getStatusCode() >= 400) {
+				String message = "GIVEN CreateCategory fails\n" + response_0.getStatusMessage();
+				LOG.error("GIVEN: CreateCategory fails due to {} in {} ms", message, response_0.getDuration());
+				assertFail(message);
+			}
+			LOG.info("GIVEN: CreateCategory success in {} ms", response_0.getDuration());
+			addToMetrics("CreateCategory", response_0.getDuration());
+		} else {
+			LOG.info("GIVEN: prerequisite for CreateCategory not met");
+		}
+
 	}
 	
-	private HttpResponse<com.anfelisa.todo.data.CreateTodoResponse> when() throws Exception {
+	private HttpResponse<Object> when() throws Exception {
 		String uuid = this.randomUUID();
 		com.anfelisa.todo.data.CreateTodoPayload payload_0 = objectMapper.readValue("{" +
-			"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"} ",
+			"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"," + 
+			"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
 				com.anfelisa.todo.data.CreateTodoPayload.class);
 		com.anfelisa.todo.data.TodoData data_0 = objectMapper.readValue("{" +
 		"\"uuid\" : \"" + uuid + "\"," + 
-		"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"} ",
+		"\"description\" : \"" + this.randomString() + " " + this.getTestId() + "\"," + 
+		"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",
 				com.anfelisa.todo.data.TodoData.class);
-		HttpResponse<com.anfelisa.todo.data.CreateTodoResponse> response = 
+		HttpResponse<Object> response = 
 		this.httpPost(
 			"/todos/create", 
 		 	payload_0,
 			null,
 			uuid,
-			com.anfelisa.todo.data.CreateTodoResponse.class
+			null
 		);
 		
 		LOG.info("WHEN: CreateTodo finished in {} ms", response.getDuration());
@@ -59,7 +90,7 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 		return response;
 	}
 	
-	private com.anfelisa.todo.data.CreateTodoResponse then(HttpResponse<com.anfelisa.todo.data.CreateTodoResponse> response) throws Exception {
+	private void then(HttpResponse<Object> response) throws Exception {
 		if (response.getStatusCode() == 500) {
 			LOG.error("THEN: status " + response.getStatusCode() + " failed: " + response.getStatusMessage());
 			assertFail(response.getStatusMessage());
@@ -71,35 +102,6 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 			LOG.info("THEN: status 200 passed");
 		}
 		
-				com.anfelisa.todo.data.CreateTodoResponse actual = null;
-				if (response.getStatusCode() < 400) {
-					try {
-						actual = response.getEntity();
-						
-						try {
-							
-							Object todoId = this.extractTodoId(actual);
-							extractedValues.put("todoId", todoId);
-							LOG.info("THEN: extracted " + todoId.toString()  + " as todoId");
-							
-							Object createdDateTime = this.extractCreatedDateTime(actual);
-							extractedValues.put("createdDateTime", createdDateTime);
-							LOG.info("THEN: extracted " + createdDateTime.toString()  + " as createdDateTime");
-							
-							Object description = this.extractDescription(actual);
-							extractedValues.put("description", description);
-							LOG.info("THEN: extracted " + description.toString()  + " as description");
-						} catch (Exception x) {
-							LOG.info("THEN: failed to extract values from response ", x);
-						}
-					} catch (Exception x) {
-						LOG.error("THEN: failed to read response", x);
-						assertFail(x.getMessage());
-					}
-
-				}
-
-				return actual;
 	}
 			
 	@Override
@@ -107,11 +109,10 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 		given();
 			
 		if (prerequisite("CreateRandomTodo")) {
-			HttpResponse<com.anfelisa.todo.data.CreateTodoResponse> response = when();
+			HttpResponse<Object> response = when();
 
-			com.anfelisa.todo.data.CreateTodoResponse actualResponse = then(response);
+			then(response);
 			
-			this.todoWasCreated();
 	
 		} else {
 			LOG.info("WHEN: prerequisite for CreateRandomTodo not met");
@@ -119,20 +120,6 @@ public abstract class AbstractCreateRandomTodoScenario extends BaseScenario {
 	}
 	
 	
-	private void todoWasCreated() throws Exception {
-		com.anfelisa.todo.models.ITodoModel actual = daoProvider.getTodoDao().selectByPrimaryKey(handle, "" + this.extractedValues.get("todoId").toString() + "");
-		
-		com.anfelisa.todo.models.ITodoModel expected = objectMapper.readValue("{" +
-			"\"createdDateTime\" : \"" + LocalDateTime.parse(this.extractedValues.get("createdDateTime").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))  + "\"," + 
-			"\"description\" : \"" + this.extractedValues.get("description").toString() + "\"," + 
-			"\"done\" : false," + 
-			"\"id\" : \"" + this.extractedValues.get("todoId").toString() + "\"," + 
-			"\"updatedDateTime\" : null} ",
-		com.anfelisa.todo.models.TodoModel.class);
-		assertThat(actual, expected);
-	
-		LOG.info("THEN: todoWasCreated passed");
-	}
 		
 	@Override
 	protected String scenarioName() {

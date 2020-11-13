@@ -7,7 +7,9 @@ scenarios
 	ToggleAllWhenNoneIsDoneExpectAllToBeDone 
 		GIVEN com.anfelisa.todo.create.CreateSecondTodo
 		WHEN com.anfelisa.todo.ToggleAll 
-			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" {
+				categoryId: "category_${testId}"
+			}
 		THEN 200
 			persistence 
 				todoIsDone Todo selectByPrimaryKey (id: "${testId}") shouldBe {
@@ -15,7 +17,8 @@ scenarios
 					description: "todo ${testId}",
 					done: true,
 					id: "${testId}",
-					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm",
+					categoryId: "category_${testId}"
 				}
 		
 				secondTodoIsDone Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
@@ -23,7 +26,8 @@ scenarios
 					description: "todo 2 ${testId}",
 					done: true,
 					id: "${testId}_2",
-					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm",
+					categoryId: "category_${testId}"
 				}
 	
 	ToggleAllWhenOneIsDoneExpectAllToBeDone 
@@ -31,7 +35,9 @@ scenarios
 			com.anfelisa.todo.create.CreateSecondTodo
 			com.anfelisa.todo.toggle.ToggleTodo excludeGIVEN
 		WHEN com.anfelisa.todo.ToggleAll 
-			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" {
+				categoryId: "category_${testId}"
+			}
 		THEN 200
 			persistence 
 				todoIsDone Todo selectByPrimaryKey (id: "${testId}") shouldBe {
@@ -39,7 +45,8 @@ scenarios
 					description: "todo ${testId}",
 					done: true,
 					id: "${testId}",
-					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm",
+					categoryId: "category_${testId}"
 				}
 		
 				secondTodoIsDone Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
@@ -47,7 +54,8 @@ scenarios
 					description: "todo 2 ${testId}",
 					done: true,
 					id: "${testId}_2",
-					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm",
+					categoryId: "category_${testId}"
 				}
 	
 	ToggleAllWhenAllAreDoneExpectAllToBeOpen 
@@ -55,7 +63,9 @@ scenarios
 			com.anfelisa.todo.create.CreateSecondTodo
 			ToggleAllWhenNoneIsDoneExpectAllToBeDone excludeGIVEN
 		WHEN com.anfelisa.todo.ToggleAll 
-			systemTime "20200707 17:20" "yyyyMMdd HH:mm" 
+			systemTime "20200707 17:20" "yyyyMMdd HH:mm" {
+				categoryId: "category_${testId}"
+			}
 		THEN 200
 			persistence 
 				todoIsOpen Todo selectByPrimaryKey (id: "${testId}") shouldBe {
@@ -63,7 +73,8 @@ scenarios
 					description: "todo ${testId}",
 					done: false,
 					id: "${testId}",
-					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm",
+					categoryId: "category_${testId}"
 				}
 		
 				secondTodoIsOpen Todo selectByPrimaryKey (id: "${testId}_2") shouldBe {
@@ -71,6 +82,7 @@ scenarios
 					description: "todo 2 ${testId}",
 					done: false,
 					id: "${testId}_2",
-					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm"
+					updatedDateTime: "20200707 17:20" "yyyyMMdd HH:mm",
+					categoryId: "category_${testId}"
 				}
 	

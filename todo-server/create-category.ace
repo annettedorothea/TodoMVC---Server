@@ -1,0 +1,14 @@
+HttpServer Java 
+
+com.anfelisa.todo.createcategory
+
+scenarios
+
+	CreateCategory
+		WHEN com.anfelisa.todo.CreateCategory {
+				categoryId: "category_${testId}"
+			}
+		THEN 200
+			persistence categoryWasCreated Category selectByPrimaryKey (categoryId: "category_${testId}") shouldBe {
+				categoryId: "category_${testId}"
+			}

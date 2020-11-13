@@ -97,7 +97,7 @@ public class CreateTodoResource extends Resource {
 			com.anfelisa.todo.actions.CreateTodoAction action = new com.anfelisa.todo.actions.CreateTodoAction(persistenceConnection, appConfiguration, daoProvider, viewProvider);
 			action.setActionData(actionData);
 			action.apply();
-			return Response.ok(new com.anfelisa.todo.data.CreateTodoResponse(action.getActionData())).build();
+			return ok();
 		} catch (IllegalArgumentException x) {
 			LOG.error("bad request due to {} ", x.getMessage());
 			return badRequest(x.getMessage());
