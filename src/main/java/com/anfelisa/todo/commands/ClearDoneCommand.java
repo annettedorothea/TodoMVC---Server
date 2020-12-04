@@ -45,7 +45,7 @@ public class ClearDoneCommand extends AbstractClearDoneCommand {
 		if (categoryModel == null) {
 			this.throwIllegalArgumentException("category " + commandData.getCategoryId() + " does not exist.");
 		}
-		this.commandData.setOutcome(success);
+		this.addSuccessOutcome();
 	}
 
 }

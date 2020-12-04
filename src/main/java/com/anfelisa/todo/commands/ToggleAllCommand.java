@@ -65,7 +65,7 @@ public class ToggleAllCommand extends AbstractToggleAllCommand {
 		} else {
 			this.commandData.setTodosToBeToggled(open);
 		}
-		this.commandData.setOutcome(success);
+		this.addSuccessOutcome();
 	}
 
 }

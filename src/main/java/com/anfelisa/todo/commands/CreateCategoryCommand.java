@@ -28,7 +28,7 @@ public class CreateCategoryCommand extends AbstractCreateCategoryCommand {
 
 	@Override
 	protected void executeCommand(PersistenceHandle readonlyHandle) {
-		this.commandData.setOutcome(success);
+		this.addSuccessOutcome();
 	}
 
 }

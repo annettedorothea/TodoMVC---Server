@@ -41,7 +41,7 @@ public class UpdateTodoCommand extends AbstractUpdateTodoCommand {
 	@Override
 	protected void executeCommand(PersistenceHandle readonlyHandle) {
 		this.commandData.setUpdatedDateTime(this.commandData.getSystemTime());
-		this.commandData.setOutcome(success);
+		this.addSuccessOutcome();
 	}
 
 }

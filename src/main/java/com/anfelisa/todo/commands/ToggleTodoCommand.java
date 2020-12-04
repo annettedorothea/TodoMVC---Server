@@ -48,7 +48,7 @@ public class ToggleTodoCommand extends AbstractToggleTodoCommand {
 		}
 		this.commandData.setTodoToBeToggled(todo);
 		this.commandData.setDone(!todo.getDone());
-		this.commandData.setOutcome(success);
+		this.addSuccessOutcome();
 	}
 
 }
