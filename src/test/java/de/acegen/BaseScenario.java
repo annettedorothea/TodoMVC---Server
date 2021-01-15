@@ -102,7 +102,7 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 		if (rootPath.charAt(rootPath.length() - 1) == '/') {
 			rootPath = rootPath.substring(0, rootPath.length() - 1);
 		}
-		jdbi = Jdbi.create(config.getDatabase().getUrl());
+		jdbi = Jdbi.create(config.getDatabase().getUrl(), config.getDatabase().getUser(), config.getDatabase().getPassword());
 		if (metrics == null) {
 			metrics = new HashMap<>();
 		}
