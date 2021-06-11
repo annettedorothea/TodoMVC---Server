@@ -16,7 +16,7 @@ public class TodoDao extends AbstractTodoDao {
 		params.put("id", model.getId());
 		params.put("done", model.getDone());
 		params.put("updateddatetime", model.getUpdatedDateTime());
-		update(handle, "UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime WHERE id = :id", params);
+		update(handle, "UPDATE todo SET done = :done, updateddatetime = :updateddatetime WHERE id = :id", params);
 	}
 
 	public void updateById(PersistenceHandle handle, ITodoModel todoModel) {
@@ -24,19 +24,19 @@ public class TodoDao extends AbstractTodoDao {
 		params.put("id", todoModel.getId());
 		params.put("description", todoModel.getDescription());
 		params.put("updateddatetime", todoModel.getUpdatedDateTime());
-		update(handle, "UPDATE public.todo SET description = :description, updateddatetime = :updateddatetime WHERE id = :id", params);
+		update(handle, "UPDATE todo SET description = :description, updateddatetime = :updateddatetime WHERE id = :id", params);
 	}
 
 	public List<ITodoModel> selectAllOrderedByCreatedDate(PersistenceHandle handle, String categoryId) {
 		Map<String, Object> params = new HashMap<String, Object> ();
 		params.put("categoryid", categoryId);
-		return selectList(handle, "SELECT * FROM public.todo where categoryid = :categoryid order by createddatetime", params, new TodoMapper());
+		return selectList(handle, "SELECT * FROM todo where categoryid = :categoryid order by createddatetime", params, new TodoMapper());
 	}
 
 	public void deleteDone(PersistenceHandle handle, String categoryId) {
 		Map<String, Object> params = new HashMap<String, Object> ();
 		params.put("categoryid", categoryId);
-		update(handle, "DELETE FROM public.todo WHERE done = true and categoryid = :categoryid", params);
+		update(handle, "DELETE FROM todo WHERE done = true and categoryid = :categoryid", params);
 	}
 
 	public void toggleAll(PersistenceHandle handle, IToggleAllData dataContainer) {
@@ -46,7 +46,7 @@ public class TodoDao extends AbstractTodoDao {
 		params.put("done", dataContainer.getDone());
 		params.put("idlist", idList);
 		params.put("updateddatetime", dataContainer.getUpdatedDateTime());
-		update(handle, "UPDATE public.todo SET done = :done, updateddatetime = :updateddatetime where id in (<idlist>)", params);
+		update(handle, "UPDATE todo SET done = :done, updateddatetime = :updateddatetime where id in (<idlist>)", params);
 	}
 
 	public List<ITodoModel> selectAllOfCategory(PersistenceHandle handle, String categoryId) {

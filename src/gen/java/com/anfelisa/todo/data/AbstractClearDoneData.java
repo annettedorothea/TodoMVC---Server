@@ -60,6 +60,7 @@ public abstract class AbstractClearDoneData extends AbstractData implements ICle
 	public IClearDoneData deepCopy() {
 		IClearDoneData copy = new ClearDoneData(this.getUuid());
 		copy.setCategoryId(this.getCategoryId());
+		copy.setSystemTime(this.getSystemTime());
 		return copy;
 	}
 

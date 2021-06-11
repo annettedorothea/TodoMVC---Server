@@ -149,6 +149,7 @@ public abstract class AbstractTodoData extends AbstractData implements ITodoData
 		copy.setCreatedDateTime(this.getCreatedDateTime());
 		copy.setUpdatedDateTime(this.getUpdatedDateTime());
 		copy.setCategoryId(this.getCategoryId());
+		copy.setSystemTime(this.getSystemTime());
 		return copy;
 	}
 

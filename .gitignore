@@ -1,9 +1,5 @@
-dev.yml
-replay.yml
 .settings
 bin
 target
+todo.db
 live.yml
-replay-live.yml
-test.yml
-scenario.yml

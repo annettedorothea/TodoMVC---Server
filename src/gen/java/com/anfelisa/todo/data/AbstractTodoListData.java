@@ -81,6 +81,7 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 		}
 		copy.setTodoList(todoListCopy);
 		copy.setCategoryId(this.getCategoryId());
+		copy.setSystemTime(this.getSystemTime());
 		return copy;
 	}
 

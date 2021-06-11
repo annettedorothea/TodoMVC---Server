@@ -15,61 +15,39 @@ public class DatabaseHandle {
 
 	static final Logger LOG = LoggerFactory.getLogger(DatabaseHandle.class);
 
-	private PersistenceHandle writeHandle;
-	private PersistenceHandle readonlyHandle;
-	private PersistenceHandle timelineHandle;
+	private PersistenceHandle handle;
 
 	public DatabaseHandle(Jdbi jdbi, CustomAppConfiguration appConfiguration) {
 		super();
-		this.writeHandle = new PersistenceHandle(jdbi.open().setReadOnly(false));
-		this.readonlyHandle = new PersistenceHandle(jdbi.open().setReadOnly(true));
-		if (appConfiguration.getConfig().writeTimeline()) {
-			this.timelineHandle = new PersistenceHandle(jdbi.open().setReadOnly(false));
-		}
+		this.handle = new PersistenceHandle(jdbi.open().setReadOnly(false));
 	}
 
 	synchronized public void beginTransaction() {
-		writeHandle.getHandle().begin();
-		readonlyHandle.getHandle().begin();
-		if (timelineHandle != null) {
-			timelineHandle.getHandle().begin();
-		}
+		handle.getHandle().begin();
 	}
 
 	synchronized public void commitTransaction() {
-		writeHandle.getHandle().commit();
-		readonlyHandle.getHandle().rollback();
-		if (timelineHandle != null) {
-			timelineHandle.getHandle().commit();
-		}
+		handle.getHandle().commit();
 	}
 
 	synchronized public void rollbackTransaction() {
-		writeHandle.getHandle().rollback();
-		readonlyHandle.getHandle().rollback();
-		if (timelineHandle != null) {
-			timelineHandle.getHandle().commit();
-		}
+		handle.getHandle().rollback();
 	}
 
 	synchronized public void close() {
-		writeHandle.getHandle().close();
-		readonlyHandle.getHandle().close();
-		if (timelineHandle != null) {
-			timelineHandle.getHandle().close();
-		}
+		handle.getHandle().close();
 	}
 
 	public PersistenceHandle getHandle() {
-		return writeHandle;
+		return handle;
 	}
 
 	public PersistenceHandle getReadonlyHandle() {
-		return readonlyHandle;
+		return handle;
 	}
 
 	public PersistenceHandle getTimelineHandle() {
-		return timelineHandle;
+		return handle;
 	}
 
 }

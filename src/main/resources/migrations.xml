@@ -29,9 +29,6 @@
 			</column>
 		</createTable>
 
-		<addUniqueConstraint columnNames="type, uuid"
-			tableName="timeline" />
-
 		<createTable tableName="todo">
 			<column name="id" type="character varying">
 				<constraints primaryKey="true" nullable="false" />
@@ -103,12 +100,4 @@
 
 	</changeSet>
 	
-	<changeSet id="006" author="annette">
-
-		<dropUniqueConstraint constraintName="timeline_type_uuid_key" tableName="timeline" uniqueColumns="type, uuid"/>  
-
-	</changeSet>
-
-	
-
 </databaseChangeLog>

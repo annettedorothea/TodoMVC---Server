@@ -34,6 +34,7 @@ import de.acegen.PersistenceHandle;
 import de.acegen.ReadAction;
 import de.acegen.ITimelineItem;
 import de.acegen.NonDeterministicDataProvider;
+import de.acegen.Config;
 
 
 import com.codahale.metrics.annotation.Timed;
@@ -95,12 +96,21 @@ public class ToggleAllResource extends Resource {
 			return ok();
 		} catch (IllegalArgumentException x) {
 			LOG.error("bad request due to {} ", x.getMessage());
+			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
+				x.printStackTrace();
+			}
 			return badRequest(x.getMessage());
 		} catch (SecurityException x) {
 			LOG.error("unauthorized due to {} ", x.getMessage());
+			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
+				x.printStackTrace();
+			}
 			return unauthorized("authorization needed for /todos/toggle-all");
 		} catch (Exception x) {
 			LOG.error("internal server error due to {} ", x.getMessage());
+			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
+				x.printStackTrace();
+			}
 			return internalServerError(x);
 		}
 	}

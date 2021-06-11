@@ -60,6 +60,7 @@ public abstract class AbstractCategoryData extends AbstractData implements ICate
 	public ICategoryData deepCopy() {
 		ICategoryData copy = new CategoryData(this.getUuid());
 		copy.setCategoryId(this.getCategoryId());
+		copy.setSystemTime(this.getSystemTime());
 		return copy;
 	}
 

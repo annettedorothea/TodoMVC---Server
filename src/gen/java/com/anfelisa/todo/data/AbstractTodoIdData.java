@@ -60,6 +60,7 @@ public abstract class AbstractTodoIdData extends AbstractData implements ITodoId
 	public ITodoIdData deepCopy() {
 		ITodoIdData copy = new TodoIdData(this.getUuid());
 		copy.setId(this.getId());
+		copy.setSystemTime(this.getSystemTime());
 		return copy;
 	}
 

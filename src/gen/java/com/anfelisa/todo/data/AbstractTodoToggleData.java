@@ -113,6 +113,7 @@ public abstract class AbstractTodoToggleData extends AbstractData implements ITo
 		copy.setDone(this.getDone());
 		copy.setTodoToBeToggled(this.getTodoToBeToggled().deepCopy());
 		copy.setUpdatedDateTime(this.getUpdatedDateTime());
+		copy.setSystemTime(this.getSystemTime());
 		return copy;
 	}
 

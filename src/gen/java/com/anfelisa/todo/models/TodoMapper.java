@@ -10,19 +10,20 @@ package com.anfelisa.todo.models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
-public class TodoMapper implements RowMapper<ITodoModel> {
+import de.acegen.AbstractMapper;
+
+public class TodoMapper extends AbstractMapper<ITodoModel> {
 	
 	public ITodoModel map(ResultSet r, StatementContext ctx) throws SQLException {
 		return new TodoModel(
-			r.getString("id"),
-			r.getString("description"),
-			r.getBoolean("done"),
-			r.getTimestamp("createdDateTime") != null ? r.getTimestamp("createdDateTime").toLocalDateTime() : null,
-			r.getTimestamp("updatedDateTime") != null ? r.getTimestamp("updatedDateTime").toLocalDateTime() : null,
-			r.getString("categoryId")
+			this.mapToString(r, "id"),
+			this.mapToString(r, "description"),
+			this.mapToBoolean(r, "done"),
+			this.mapToDateTime(r, "createdDateTime"),
+			this.mapToDateTime(r, "updatedDateTime"),
+			this.mapToString(r, "categoryId")
 		);
 	}
 }

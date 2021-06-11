@@ -117,6 +117,7 @@ public abstract class AbstractToggleAllData extends AbstractData implements ITog
 		copy.setTodosToBeToggled(todosToBeToggledCopy);
 		copy.setUpdatedDateTime(this.getUpdatedDateTime());
 		copy.setCategoryId(this.getCategoryId());
+		copy.setSystemTime(this.getSystemTime());
 		return copy;
 	}
 

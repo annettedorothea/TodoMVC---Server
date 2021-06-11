@@ -43,11 +43,11 @@ public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
 				return data;
 			}
 
+			data.setSystemTime(LocalDateTime.now());
 			if (appConfiguration.getConfig().writeTimeline()) {
 				daoProvider.getAceDao().addActionToTimeline(this.getActionName(), data, databaseHandle.getTimelineHandle());
 			}
 
-			data.setSystemTime(LocalDateTime.now());
 			data = this.initActionData(data);
 			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
 				data = initActionDataFromNonDeterministicDataProvider(data);

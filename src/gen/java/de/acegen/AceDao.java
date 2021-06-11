@@ -10,6 +10,7 @@ package de.acegen;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.time.LocalDateTime;
 
 import org.jdbi.v3.core.statement.Update;
 
@@ -53,12 +54,13 @@ public class AceDao {
 		return count > 0;
 	}
 
-	public void insertIntoTimeline(PersistenceHandle handle, String type, String name, String data, String uuid) {
-		Update statement = handle.getHandle().createUpdate("INSERT INTO timeline (type, name, time, data, uuid) " + "VALUES (:type, :name, NOW(), :data, :uuid);");
+	private void insertIntoTimeline(PersistenceHandle handle, String type, String name, String data, String uuid, LocalDateTime timestamp) {
+		Update statement = handle.getHandle().createUpdate("INSERT INTO timeline (type, name, time, data, uuid) " + "VALUES (:type, :name, :timestamp, :data, :uuid);");
 		statement.bind("type", type);
 		statement.bind("name", name);
 		statement.bind("data", data);
 		statement.bind("uuid", uuid);
+		statement.bind("timestamp", timestamp);
 		statement.execute();
 	}
 
@@ -95,19 +97,24 @@ public class AceDao {
 	}
 
 	public void addPreparingEventToTimeline(String eventName, IDataContainer data, PersistenceHandle timelineHandle) {
-		addItemToTimeline("preparing event", eventName, data, timelineHandle);
+		try {
+			String json = mapper.writeValueAsString(data);
+			this.insertIntoTimeline(timelineHandle, "preparing event", eventName, json, data.getUuid(), LocalDateTime.now());
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void addExceptionToTimeline(String uuid, Throwable x, PersistenceHandle timelineHandle) {
 		this.insertIntoTimeline(timelineHandle, "exception", x.getClass().getName(),
-				x.getMessage() != null ? x.getMessage() : "", uuid);
+				x.getMessage() != null ? x.getMessage() : "", uuid, LocalDateTime.now());
 	}
 
-	private void addItemToTimeline(String type, String name, IDataContainer data,
+	private void addItemToTimeline(String type, String name, IDataContainer data, 
 			PersistenceHandle timelineHandle) {
 		try {
 			String json = mapper.writeValueAsString(data);
-			this.insertIntoTimeline(timelineHandle, type, name, json, data.getUuid());
+			this.insertIntoTimeline(timelineHandle, type, name, json, data.getUuid(), data.getSystemTime());
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);
 		}
