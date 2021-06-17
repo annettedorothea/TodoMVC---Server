@@ -12,10 +12,10 @@ See [TodoMVC---Client](https://github.com/annettedorothea/TodoMVC---Client) for 
 ## Setup
 
 - You need Java
-- Get [Maven](https://maven.apache.org/install.html).
+- Get [Maven](https://maven.apache.org/install.html)
 - Go to root of the project where the [pom.xml](./pom.xml) is
 - Run <code>mvn package -Dmaven.test.skip=true</code>
-- Run <code>java -jar target/todo-<current version>.jar server dev.yml</code>
+- Run <code>java -jar target/todo-&lt;current version&gt;.jar server dev.yml</code>
 
 ## Run the integration tests
 
