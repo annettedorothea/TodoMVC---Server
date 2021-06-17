@@ -9,25 +9,26 @@ DSL and code generator and uses Dropwizard as http server framework.
 
 See [TodoMVC---Client](https://github.com/annettedorothea/TodoMVC---Client) for the client project.
 
-## Installation
+## Setup
 
-- Get latest Ecplise.
-- Install the [de.acegen](https://github.com/annettedorothea/de.acegen) Ecplise plugin from [http://acegen.de](http://acegen.de).
-- Maven install the project dependencies.
-- Create a PostgreSQL database.
-- Create a yml file like [sample.yml](sample.yml).
-- Run the migrations with `db migrate <your-yml-file>.yml` as argument.
-- Start the application with the arguments `server <your-yml-file>.yml` as argument.
+- You need Java
+- Get [Maven](https://maven.apache.org/install.html).
+- Go to root of the project where the [pom.xml](./pom.xml) is
+- Run <code>mvn package -Dmaven.test.skip=true</code>
+- Run <code>java -jar target/todo-<current version>.jar server dev.yml</code>
 
-## Execute the tests
+## Run the integration tests
 
-If you want to execute the tests you need to start the server in dev mode:
+- Start the server
+- un <code>mvn test</code>
 
-```
-config:
-  mode: DEV
-  writeTimeline: ALWAYS
-```
+## View with DSL
+
+- Get latest Ecplise
+- Install the [de.acegen](https://github.com/annettedorothea/de.acegen) Ecplise plugin from [http://acegen.de](http://acegen.de)
+- Create a project by choosing File - Import - Projects from Folder or Archive with the project root
+- Open [todo-server.ace](./todo-server.ace)
+
 
 ## License
 [ISC](License.txt)
