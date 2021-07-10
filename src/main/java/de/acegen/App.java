@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.acegen.resources.GetServerInfoResource;
-import de.acegen.resources.NonDeterministicDataProviderResource;
+import de.acegen.resources.SquishyDataProviderResource;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi3.JdbiFactory;
@@ -61,8 +61,8 @@ public class App extends Application<CustomAppConfiguration> {
 
 		String mode = configuration.getConfig().getMode();
 		if (Config.DEV.equals(mode)) {
-			environment.jersey().register(new NonDeterministicDataProviderResource());
-			LOG.warn("NonDeterministicDataProvider was made available as API endpoint. This is a security risk.");
+			environment.jersey().register(new SquishyDataProviderResource());
+			LOG.warn("SquishyDataProviderResource was made available as API endpoint. This is a security risk.");
 		}
 
 		environment.jersey().register(new JsonProcessingExceptionMapper(true));

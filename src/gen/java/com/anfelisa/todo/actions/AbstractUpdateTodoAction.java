@@ -21,7 +21,7 @@ import de.acegen.IDaoProvider;
 import de.acegen.IDataContainer;
 import de.acegen.ITimelineItem;
 import de.acegen.ViewProvider;
-import de.acegen.NonDeterministicDataProvider;
+import de.acegen.SquishyDataProvider;
 import de.acegen.PersistenceConnection;
 import de.acegen.WriteAction;
 
@@ -46,8 +46,8 @@ public abstract class AbstractUpdateTodoAction extends WriteAction<ITodoData> {
 	}
 	
 	@Override
-	protected ITodoData initActionDataFromNonDeterministicDataProvider(ITodoData data) {
-		LocalDateTime systemTime = NonDeterministicDataProvider.consumeSystemTime(data.getUuid());
+	protected ITodoData initActionDataFromSquishyDataProvider(ITodoData data) {
+		LocalDateTime systemTime = SquishyDataProvider.consumeSystemTime(data.getUuid());
 		if (systemTime != null) {
 			data.setSystemTime(systemTime);
 		}

@@ -29,7 +29,7 @@ public abstract class ReadAction<T extends IDataContainer> extends Action<T> {
 
 	protected abstract T loadDataForGetRequest(T data, PersistenceHandle readonlyHandle);
 	
-	protected abstract T initActionDataFromNonDeterministicDataProvider(T data);
+	protected abstract T initActionDataFromSquishyDataProvider(T data);
 
 	public T apply(T data) {
 		DatabaseHandle databaseHandle = new DatabaseHandle(persistenceConnection.getJdbi(), appConfiguration);
@@ -49,7 +49,7 @@ public abstract class ReadAction<T extends IDataContainer> extends Action<T> {
 
 			data = this.initActionData(data);
 			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
-				data = initActionDataFromNonDeterministicDataProvider(data);
+				data = initActionDataFromSquishyDataProvider(data);
 			}
 			data = this.loadDataForGetRequest(data, databaseHandle.getReadonlyHandle());
 			

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import de.acegen.BaseScenario;
 import de.acegen.ITimelineItem;
-import de.acegen.NonDeterministicDataProvider;
+import de.acegen.SquishyDataProvider;
 import de.acegen.HttpResponse;
 
 @SuppressWarnings("unused")
@@ -64,7 +64,7 @@ public abstract class AbstractDeleteTodoScenario extends BaseScenario {
 
 		if (prerequisite("CreateTodo")) {
 			uuid = "" + this.getTestId() + "";
-			this.callNonDeterministicDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
+			this.callSquishyDataProviderPutSystemTime(uuid, LocalDateTime.parse("20200707 16:30", DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")));
 			com.anfelisa.todo.data.CreateTodoPayload payload_1 = objectMapper.readValue("{" +
 				"\"description\" : \"todo " + this.getTestId() + "\"," + 
 				"\"categoryId\" : \"category_" + this.getTestId() + "\"} ",

@@ -21,7 +21,7 @@ import de.acegen.IDaoProvider;
 import de.acegen.IDataContainer;
 import de.acegen.ITimelineItem;
 import de.acegen.ViewProvider;
-import de.acegen.NonDeterministicDataProvider;
+import de.acegen.SquishyDataProvider;
 import de.acegen.PersistenceConnection;
 import de.acegen.WriteAction;
 
@@ -46,8 +46,8 @@ public abstract class AbstractToggleAllAction extends WriteAction<IToggleAllData
 	}
 	
 	@Override
-	protected IToggleAllData initActionDataFromNonDeterministicDataProvider(IToggleAllData data) {
-		LocalDateTime systemTime = NonDeterministicDataProvider.consumeSystemTime(data.getUuid());
+	protected IToggleAllData initActionDataFromSquishyDataProvider(IToggleAllData data) {
+		LocalDateTime systemTime = SquishyDataProvider.consumeSystemTime(data.getUuid());
 		if (systemTime != null) {
 			data.setSystemTime(systemTime);
 		}

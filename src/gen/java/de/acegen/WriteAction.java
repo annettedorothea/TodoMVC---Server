@@ -29,7 +29,7 @@ public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
 		this.viewProvider = viewProvider;
 	}
 
-	protected abstract T initActionDataFromNonDeterministicDataProvider(T data);
+	protected abstract T initActionDataFromSquishyDataProvider(T data);
 
 	protected abstract ICommand<T> getCommand();
 
@@ -50,7 +50,7 @@ public abstract class WriteAction<T extends IDataContainer> extends Action<T> {
 
 			data = this.initActionData(data);
 			if (Config.DEV.equals(appConfiguration.getConfig().getMode())) {
-				data = initActionDataFromNonDeterministicDataProvider(data);
+				data = initActionDataFromSquishyDataProvider(data);
 			}
 			
 			ICommand<T> command = this.getCommand();

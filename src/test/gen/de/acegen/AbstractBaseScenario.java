@@ -64,10 +64,10 @@ public abstract class AbstractBaseScenario {
 
 	protected abstract boolean prerequisite(String scenarioName);
 	
-	protected abstract HttpResponse<Object> callNonDeterministicDataProviderPutValue(
+	protected abstract HttpResponse<Object> callSquishyDataProviderPutValue(
 				String uuid, String key, String data);
 				
-	protected abstract HttpResponse<Object> callNonDeterministicDataProviderPutSystemTime(
+	protected abstract HttpResponse<Object> callSquishyDataProviderPutSystemTime(
 				String uuid, LocalDateTime dateTime);
 				
 	protected abstract void addToMetrics(String action, Long duration);

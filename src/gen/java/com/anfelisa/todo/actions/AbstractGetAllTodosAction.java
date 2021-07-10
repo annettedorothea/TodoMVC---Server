@@ -22,7 +22,7 @@ import de.acegen.PersistenceConnection;
 import de.acegen.PersistenceHandle;
 import de.acegen.ReadAction;
 import de.acegen.ITimelineItem;
-import de.acegen.NonDeterministicDataProvider;
+import de.acegen.SquishyDataProvider;
 
 import com.anfelisa.todo.data.ITodoListData;
 import com.anfelisa.todo.data.TodoListData;
@@ -40,8 +40,8 @@ public abstract class AbstractGetAllTodosAction extends ReadAction<ITodoListData
 	protected abstract ITodoListData loadDataForGetRequest(ITodoListData data, PersistenceHandle readonlyHandle);
 
 	@Override
-	protected ITodoListData initActionDataFromNonDeterministicDataProvider(ITodoListData data) {
-		LocalDateTime systemTime = NonDeterministicDataProvider.consumeSystemTime(data.getUuid());
+	protected ITodoListData initActionDataFromSquishyDataProvider(ITodoListData data) {
+		LocalDateTime systemTime = SquishyDataProvider.consumeSystemTime(data.getUuid());
 		if (systemTime != null) {
 			data.setSystemTime(systemTime);
 		}

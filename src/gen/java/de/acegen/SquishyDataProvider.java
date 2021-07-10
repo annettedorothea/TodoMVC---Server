@@ -12,7 +12,7 @@
 	
 	import java.time.LocalDateTime;
 	
-	public class NonDeterministicDataProvider {
+	public class SquishyDataProvider {
 		
 		private static ConcurrentMap<String, LocalDateTime> systemTimeMap = new ConcurrentHashMap<>();
 
