@@ -7,8 +7,18 @@
 
 package com.anfelisa.todo.models;
 
+import org.jdbi.v3.core.statement.Update;
+import de.acegen.PersistenceHandle;
+
 public class CategoryDao extends AbstractCategoryDao {
-	
+
+	@Override
+	public void truncate(PersistenceHandle handle) {
+		Update statement = handle.getHandle().createUpdate("DELETE FROM \"category\"");
+		statement.execute();
+	}
+
+
 }
 
 

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.jdbi.v3.core.statement.Update;
+
 import com.anfelisa.todo.data.IToggleAllData;
 
 import de.acegen.PersistenceHandle;
@@ -53,6 +55,12 @@ public class TodoDao extends AbstractTodoDao {
 		Map<String, Object> params = new HashMap<String, Object> ();
 		params.put("categoryid", categoryId);
 		return selectList(handle, "SELECT id, description, done, createddatetime, updateddatetime, categoryid FROM todo WHERE categoryid = :categoryid", params, new TodoMapper());
+	}
+
+	@Override
+	public void truncate(PersistenceHandle handle) {
+		Update statement = handle.getHandle().createUpdate("DELETE FROM \"todo\"");
+		statement.execute();
 	}
 
 }

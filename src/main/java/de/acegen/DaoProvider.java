@@ -11,6 +11,7 @@ public class DaoProvider extends AbstractDaoProvider {
 	@Override
 	public void truncateAllViews(PersistenceHandle handle) {
 		todoDao.truncate(handle);
+		categoryDao.truncate(handle);
 	}
 
 	@Override

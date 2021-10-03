@@ -9,7 +9,7 @@ package de.acegen;
 
 public class EventReplayService {
 	public static void replayEvent(String eventClass, String json, PersistenceHandle handle, IDaoProvider daoProvider, ViewProvider viewProvider, CustomAppConfiguration appConfiguration) {
-		//delegate to package EventReplayService
+		com.anfelisa.todo.events.EventReplayService.replayEvent(eventClass, json, handle, daoProvider, viewProvider, appConfiguration);
 	}
 }
 
