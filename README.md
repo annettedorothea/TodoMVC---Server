@@ -21,7 +21,7 @@ See [TodoMVC---Client](https://github.com/annettedorothea/TodoMVC---Client) for 
 ## Run the integration tests
 
 - Start the server
-- un <code>mvn test</code>
+- run <code>mvn test</code>
 
 ## View with DSL
 
