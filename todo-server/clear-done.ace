@@ -7,7 +7,7 @@ scenarios
 	ClearDone 
 		GIVEN 
 			com.anfelisa.todo.toggle.ToggleTodo 
-			com.anfelisa.todo.create.CreateSecondTodo excludeGIVEN
+			com.anfelisa.todo.create.CreateSecondTodo exclude GIVEN
 		WHEN com.anfelisa.todo.ClearDone 
 			systemTime "20200707 17:20" "yyyyMMdd HH:mm" {
 				categoryId: "category_${testId}"

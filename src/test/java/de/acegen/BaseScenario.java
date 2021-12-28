@@ -19,8 +19,8 @@ package de.acegen;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 
-import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -55,19 +55,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.GetAllTodosResponse;
 import com.anfelisa.todo.models.ITodoModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import io.dropwizard.db.ManagedDataSource;
+import io.dropwizard.jdbi3.JdbiFactory;
+import io.dropwizard.testing.junit5.DropwizardAppExtension;
+import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
+import liquibase.Liquibase;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.resource.ClassLoaderResourceAccessor;
 
 @RunWith(JUnitPlatform.class)
 @ExtendWith(TestLogger.class)
+@ExtendWith(DropwizardExtensionsSupport.class)
 public abstract class BaseScenario extends AbstractBaseScenario {
 
 	static Logger LOG;
@@ -88,24 +94,35 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 
 	protected static Map<String, DescriptiveStatistics> metrics;
 
+	@SuppressWarnings("unused")
+	private static DropwizardAppExtension<CustomAppConfiguration> EXT = new DropwizardAppExtension<>(
+			App.class,
+			"dev.yml");
+
 	@BeforeAll
 	public static void beforeClass() throws Exception {
+		ManagedDataSource ds = EXT.getConfiguration().getDataSourceFactory().build(
+				EXT.getEnvironment().metrics(), "migrations");
+		try (Connection connection = ds.getConnection()) {
+			Liquibase migrator = new Liquibase("migrations.xml", new ClassLoaderResourceAccessor(),
+					new JdbcConnection(connection));
+			migrator.update("");
+			migrator.close();
+		}
+
 		LOG = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 		LOG.setLevel(Level.INFO);
 
-		ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
-				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		YamlConfiguration config = mapper.readValue(new File("dev.yml"), YamlConfiguration.class);
-		port = Integer.parseInt(config.getServer().getApplicationConnectors()[0].getPort());
-		protocol = config.getServer().getApplicationConnectors()[0].getType();
-		rootPath = config.getServer().getRootPath();
-		if (rootPath.charAt(rootPath.length() - 1) == '/') {
-			rootPath = rootPath.substring(0, rootPath.length() - 1);
-		}
-		jdbi = Jdbi.create(config.getDatabase().getUrl());
+		port = EXT.getLocalPort();
+		protocol = "http";
+		rootPath = "/api";
+		final JdbiFactory factory = new JdbiFactory();
+		jdbi = factory.build(EXT.getEnvironment(), EXT.getConfiguration().getDataSourceFactory(), "anfelisa test database");
+
 		if (metrics == null) {
 			metrics = new HashMap<>();
 		}
+
 	}
 
 	@AfterAll

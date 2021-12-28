@@ -3,3 +3,4 @@ bin
 target
 todo.db
 live.yml
+.classpath
