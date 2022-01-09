@@ -21,11 +21,11 @@ See [TodoMVC---Client](https://github.com/annettedorothea/TodoMVC---Client) for 
 ## Run the integration tests
 
 - Start the server
-- run <code>mvn test</code>
+- Run <code>mvn test</code>
 
 ## View with DSL
 
-- Get latest Ecplise
+- Get the latest Ecplise
 - Install the [de.acegen](https://github.com/annettedorothea/de.acegen) Ecplise plugin from [http://acegen.de](http://acegen.de)
 - Create a project by choosing File - Import - Projects from Folder or Archive with the project root
 - Open [todo-server.ace](./todo-server.ace)
