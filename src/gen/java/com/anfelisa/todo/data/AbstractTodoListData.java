@@ -28,13 +28,13 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	
 	static final Logger LOG = LoggerFactory.getLogger(AbstractTodoListData.class);
 	
-	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
+	private java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList;
 	
 	private String categoryId;
 	
 
 	public AbstractTodoListData(
-		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList,
+		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList,
 		@JsonProperty("categoryId") String categoryId
 ,		@JsonProperty("uuid") String uuid
 	) {
@@ -48,13 +48,13 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	}
 
 	@JsonProperty
-	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+	public java.util.List<com.anfelisa.todo.models.ITodoItemModel> getTodoList() {
 		return this.todoList;
 	}
-	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
+	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList) {
 		this.todoList = todoList;
 	}
-	public ITodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
+	public ITodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList) {
 		this.todoList = todoList;
 		return this;
 	}
@@ -75,9 +75,9 @@ public abstract class AbstractTodoListData extends AbstractData implements ITodo
 	
 	public ITodoListData deepCopy() {
 		ITodoListData copy = new TodoListData(this.getUuid());
-		List<com.anfelisa.todo.models.ITodoModel> todoListCopy = new ArrayList<com.anfelisa.todo.models.ITodoModel>();
+		List<com.anfelisa.todo.models.ITodoItemModel> todoListCopy = new ArrayList<com.anfelisa.todo.models.ITodoItemModel>();
 		if (this.getTodoList() != null) {
-			for(com.anfelisa.todo.models.ITodoModel item: this.getTodoList()) {
+			for(com.anfelisa.todo.models.ITodoItemModel item: this.getTodoList()) {
 				todoListCopy.add(item.deepCopy());
 			}
 		}

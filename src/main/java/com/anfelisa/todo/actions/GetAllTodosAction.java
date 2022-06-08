@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.ITodoListData;
 import com.anfelisa.todo.models.ICategoryModel;
-import com.anfelisa.todo.models.ITodoModel;
+import com.anfelisa.todo.models.ITodoItemModel;
 
 import de.acegen.CustomAppConfiguration;
 import de.acegen.IDaoProvider;
@@ -36,7 +36,7 @@ public class GetAllTodosAction extends AbstractGetAllTodosAction {
 	protected ITodoListData loadDataForGetRequest(ITodoListData data, PersistenceHandle readonlyHandle) {
 		ICategoryModel categoryModel = daoProvider.getCategoryDao().selectByCategoryId(readonlyHandle, data.getCategoryId());
 		if (categoryModel != null) {
-			List<ITodoModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle, data.getCategoryId());
+			List<ITodoItemModel> todos = daoProvider.getTodoDao().selectAllOrderedByCreatedDate(readonlyHandle, data.getCategoryId());
 			data.setTodoList(todos);
 		}
 		return data;

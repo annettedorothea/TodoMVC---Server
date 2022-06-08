@@ -73,8 +73,14 @@ models
 	}
 	
 	TodoList {
-		List Todo todoList
+		List TodoItem todoList
 		String categoryId
+	}
+	
+	TodoItem {
+		String id
+		String description
+		Boolean done
 	}
 	
 	TodoId {

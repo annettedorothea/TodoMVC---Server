@@ -13,11 +13,9 @@ scenarios
 			response shouldBe {
 				todoList: [
 					{
-						createdDateTime: "20200707 16:30" "yyyyMMdd HH:mm",
 						description: "todo ${testId}",
 						done: false,
-						id: "${testId}",
-						updatedDateTime: null
+						id: "${testId}"
 					}
 				]
 			}

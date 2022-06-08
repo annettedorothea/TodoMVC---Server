@@ -148,11 +148,9 @@ public abstract class AbstractGetAllTodosScenario extends BaseScenario {
 	
 			com.anfelisa.todo.data.TodoListData expectedData = objectMapper.readValue("{" +
 				"\"uuid\" : \"\"," + 
-				"\"todoList\" : [ { \"createdDateTime\" : \"2020-07-07T16:30\"," + 
-				"\"description\" : \"todo " + this.getTestId() + "\"," + 
+				"\"todoList\" : [ { \"description\" : \"todo " + this.getTestId() + "\"," + 
 				"\"done\" : false," + 
-				"\"id\" : \"" + this.getTestId() + "\"," + 
-				"\"updatedDateTime\" : null}]} ",
+				"\"id\" : \"" + this.getTestId() + "\"}]} ",
 			com.anfelisa.todo.data.TodoListData.class);
 			
 			com.anfelisa.todo.data.GetAllTodosResponse expected = new com.anfelisa.todo.data.GetAllTodosResponse(expectedData);

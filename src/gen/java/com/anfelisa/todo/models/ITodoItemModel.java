@@ -11,17 +11,20 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @SuppressWarnings("unused")
-@JsonDeserialize(as=TodoListModel.class)
-public interface ITodoListModel {
+@JsonDeserialize(as=TodoItemModel.class)
+public interface ITodoItemModel {
 
-	java.util.List<com.anfelisa.todo.models.ITodoItemModel> getTodoList();
-	void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList);
+	String getId();
+	void setId(String id);
 	
-	String getCategoryId();
-	void setCategoryId(String categoryId);
+	String getDescription();
+	void setDescription(String description);
+	
+	Boolean getDone();
+	void setDone(Boolean done);
 	
 	
-	ITodoListModel deepCopy();
+	ITodoItemModel deepCopy();
 }
 
 

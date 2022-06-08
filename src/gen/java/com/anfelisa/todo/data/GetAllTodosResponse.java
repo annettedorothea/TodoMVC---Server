@@ -22,7 +22,7 @@ import de.acegen.StringToDateTimeConverter;
 @SuppressWarnings("all")
 public class GetAllTodosResponse implements IGetAllTodosResponse {
 	
-	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
+	private java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList;
 	
 	public GetAllTodosResponse() {
 	}
@@ -32,7 +32,7 @@ public class GetAllTodosResponse implements IGetAllTodosResponse {
 	}
 	
 	@JsonProperty
-	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+	public java.util.List<com.anfelisa.todo.models.ITodoItemModel> getTodoList() {
 		return this.todoList;
 	}
 	

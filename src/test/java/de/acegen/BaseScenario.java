@@ -58,7 +58,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.GetAllTodosResponse;
-import com.anfelisa.todo.models.ITodoModel;
+import com.anfelisa.todo.models.ITodoItemModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ch.qos.logback.classic.Level;
@@ -320,8 +320,8 @@ public abstract class BaseScenario extends AbstractBaseScenario {
 	private void assertThat(GetAllTodosResponse actual, GetAllTodosResponse expected) {
 		assertThat(actual.getTodoList().size(), expected.getTodoList().size());
 		for (int i = 0; i < actual.getTodoList().size(); i++) {
-			ITodoModel actualTodo = actual.getTodoList().get(i);
-			ITodoModel expectedTodo = expected.getTodoList().get(i);
+			ITodoItemModel actualTodo = actual.getTodoList().get(i);
+			ITodoItemModel expectedTodo = expected.getTodoList().get(i);
 			assertThat(actualTodo, expectedTodo);
 		}
 	}

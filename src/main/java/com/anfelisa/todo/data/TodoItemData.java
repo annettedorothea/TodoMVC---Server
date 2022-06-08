@@ -9,38 +9,35 @@ package com.anfelisa.todo.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TodoListData extends AbstractTodoListData implements ITodoListData {
+public class TodoItemData extends AbstractTodoItemData implements ITodoItemData {
 	
-	public TodoListData(
-		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList, 
-		@JsonProperty("categoryId") String categoryId, 
+	public TodoItemData(
+		@JsonProperty("id") String id, 
+		@JsonProperty("description") String description, 
+		@JsonProperty("done") Boolean done, 
 		@JsonProperty("uuid") String uuid
 	) {
 		super(
-			todoList,
-			categoryId,
+			id,
+			description,
+			done,
 			uuid
 		);
 	}
 
-	public TodoListData( String uuid ) {
+	public TodoItemData( String uuid ) {
 		super(uuid);
 	}
 
 	public void migrateLegacyData(String json) {
 	}
 
-	public static com.anfelisa.todo.models.ITodoListModel generateTestData() {
+	public static com.anfelisa.todo.models.ITodoItemModel generateTestData() {
 		java.util.Random random = new java.util.Random();
-		int n;
-		com.anfelisa.todo.models.ITodoListModel testData = new com.anfelisa.todo.models.TodoListModel();
-		java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoListList = new java.util.ArrayList<com.anfelisa.todo.models.ITodoItemModel>();
-		n = random.nextInt(20) + 1;
-		for ( int i = 0; i < n; i++ ) {
-			todoListList.add(com.anfelisa.todo.data.TodoItemData.generateTestData());
-		}
-		testData.setTodoList(todoListList);
-		testData.setCategoryId(randomString(random));
+		com.anfelisa.todo.models.ITodoItemModel testData = new com.anfelisa.todo.models.TodoItemModel();
+		testData.setId(randomString(random));
+		testData.setDescription(randomString(random));
+		testData.setDone(random.nextBoolean());
 		return testData;
 	}
 	

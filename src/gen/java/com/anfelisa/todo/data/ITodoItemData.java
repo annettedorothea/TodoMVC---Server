@@ -11,17 +11,19 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import de.acegen.IDataContainer;
 
-import com.anfelisa.todo.models.ITodoListModel;
+import com.anfelisa.todo.models.ITodoItemModel;
 
-@JsonDeserialize(as=TodoListData.class)
-public interface ITodoListData extends ITodoListModel, IDataContainer {
+@JsonDeserialize(as=TodoItemData.class)
+public interface ITodoItemData extends ITodoItemModel, IDataContainer {
 	
-	ITodoListData withTodoList(java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList);
+	ITodoItemData withId(String id);
 	
-	ITodoListData withCategoryId(String categoryId);
+	ITodoItemData withDescription(String description);
+	
+	ITodoItemData withDone(Boolean done);
 	
 	
-	ITodoListData deepCopy();
+	ITodoItemData deepCopy();
 }
 
 

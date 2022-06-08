@@ -20,7 +20,7 @@ import de.acegen.StringToDateTimeConverter;
 @SuppressWarnings("all")
 public class TodoListModel implements ITodoListModel {
 
-	private java.util.List<com.anfelisa.todo.models.ITodoModel> todoList;
+	private java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList;
 
 	private String categoryId;
 
@@ -29,7 +29,7 @@ public class TodoListModel implements ITodoListModel {
 	}
 
 	public TodoListModel(
-		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoModel> todoList,
+		@JsonProperty("todoList") java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList,
 		@JsonProperty("categoryId") String categoryId
 	) {
 		this.todoList = todoList;
@@ -37,10 +37,10 @@ public class TodoListModel implements ITodoListModel {
 	}
 
 	@JsonProperty
-	public java.util.List<com.anfelisa.todo.models.ITodoModel> getTodoList() {
+	public java.util.List<com.anfelisa.todo.models.ITodoItemModel> getTodoList() {
 		return this.todoList;
 	}
-	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoModel> todoList) {
+	public void setTodoList(java.util.List<com.anfelisa.todo.models.ITodoItemModel> todoList) {
 		this.todoList = todoList;
 	}
 	
@@ -55,9 +55,9 @@ public class TodoListModel implements ITodoListModel {
 
 	public ITodoListModel deepCopy() {
 		ITodoListModel copy = new TodoListModel();
-		List<com.anfelisa.todo.models.ITodoModel> todoListCopy = new ArrayList<com.anfelisa.todo.models.ITodoModel>();
+		List<com.anfelisa.todo.models.ITodoItemModel> todoListCopy = new ArrayList<com.anfelisa.todo.models.ITodoItemModel>();
 		if (this.getTodoList() != null) {
-			for(com.anfelisa.todo.models.ITodoModel item: this.getTodoList()) {
+			for(com.anfelisa.todo.models.ITodoItemModel item: this.getTodoList()) {
 				todoListCopy.add(item.deepCopy());
 			}
 		}

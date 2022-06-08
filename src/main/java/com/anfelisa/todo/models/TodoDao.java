@@ -29,10 +29,10 @@ public class TodoDao extends AbstractTodoDao {
 		update(handle, "UPDATE todo SET description = :description, updateddatetime = :updateddatetime WHERE id = :id", params);
 	}
 
-	public List<ITodoModel> selectAllOrderedByCreatedDate(PersistenceHandle handle, String categoryId) {
+	public List<ITodoItemModel> selectAllOrderedByCreatedDate(PersistenceHandle handle, String categoryId) {
 		Map<String, Object> params = new HashMap<String, Object> ();
 		params.put("categoryid", categoryId);
-		return selectList(handle, "SELECT * FROM todo where categoryid = :categoryid order by createddatetime", params, new TodoMapper());
+		return selectList(handle, "SELECT id, description, done FROM todo where categoryid = :categoryid order by createddatetime", params, new TodoItemMapper());
 	}
 
 	public void deleteDone(PersistenceHandle handle, String categoryId) {
