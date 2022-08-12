@@ -34,7 +34,11 @@ public class App extends Application<CustomAppConfiguration> {
 	}
 
 	public static String getVersion() {
-		return "0.9.4";
+		String version = App.class.getPackage().getImplementationVersion();
+		if (version == null) {
+			version = "development";
+		}
+		return version;
 	}
 
 	@Override
