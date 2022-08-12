@@ -53,8 +53,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 
 import com.anfelisa.todo.data.GetAllTodosResponse;
@@ -71,8 +69,6 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 
-@RunWith(JUnitPlatform.class)
-@ExtendWith(TestLogger.class)
 @ExtendWith(DropwizardExtensionsSupport.class)
 public abstract class BaseScenario extends AbstractBaseScenario {
 
