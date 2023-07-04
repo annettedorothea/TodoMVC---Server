@@ -5,3 +5,4 @@ todo.db
 live.yml
 .classpath
 target-test
+bin-test
